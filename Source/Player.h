@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "Entity.h"
 #include <string>
-#include "Sprite2D.h"
+#include "Components\Sprite2D.h"
 
 class Player : public Entity
 {

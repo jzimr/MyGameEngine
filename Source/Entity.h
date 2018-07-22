@@ -5,8 +5,8 @@ class Component;
 #include <vector>
 #include <bitset>
 #include <cassert>
-#include "Component.h"
-#include "Health.h"
+#include "Components/Component.h"
+#include "Components/Health.h"
 
 //	Abstract class
 class Entity : public sf::Transformable, public sf::Drawable, public sf::NonCopyable
