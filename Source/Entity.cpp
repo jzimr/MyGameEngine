@@ -10,7 +10,7 @@ Entity::Entity()
 
 void Entity::attachChild(EntPtr child)
 {
-	//	Check if the child is already attached to this SceneNode
+	//	Check if the child is already attached to this Entity
 	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](EntPtr& p) { return p == child; });
 	assert(found == mChildren.end());
 

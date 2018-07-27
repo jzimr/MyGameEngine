@@ -31,7 +31,9 @@ void Game::run()
 		timeSinceLastUpdate += elapsedTime;
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
-			timeSinceLastUpdate -= TimePerFrame;
+			timeSinceLastUpdate -= TimePerFrame;	
+
+			///		ADD MORE SYSTEMS (Physics, collision, etc.)
 
 			processInput();
 			update(TimePerFrame);
@@ -44,13 +46,13 @@ void Game::run()
 
 void Game::processInput()
 {
-
 	sf::Event event;
+	//std::queue<sf::Event> eventQueue;
 	while (mWindow.pollEvent(event))
 	{
-
 		if (event.type == sf::Event::Closed)
 			mWindow.close();
+		///		Temporary solution to input handling
 	}
 }
 

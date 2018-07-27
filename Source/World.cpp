@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "World.h"
+#include "Components/Sprite2D.h"
+#include "Components/Physics/Physics.h"
+#include "Components/Controller.h"
 
 World::World(sf::RenderWindow& window)
 	: mWindow{ window }
@@ -35,12 +38,20 @@ void World::buildScene()
 		mSceneGraph.attachChild(std::move(layer));
 	}
 
-	sf::Texture texture = textureHolder.get("Raptor");
-	std::unique_ptr<Entity> scenePtr(new Player());
+	//	Read all entities from file
+		//	If entity.component contains Controller component
+		//	player = entity;
+	
 
-	scenePtr.get()->addComponent<Sprite2D>();
-	scenePtr.get()->getComponent<Sprite2D>().addTexture(texture);
+	//sf::Texture texture = textureHolder.get("Raptor");
+	//std::unique_ptr<Entity> player(new Entity());
 
-	scenePtr->setPosition(400.f, 50.f);
-	mSceneLayers[Front]->attachChild(std::move(scenePtr));
+	//player.get()->addComponent<Sprite2D>();
+	//player.get()->getComponent<Sprite2D>().addTexture(texture);
+
+	//player.get()->addComponent<Physics>();
+	//player.get()->addComponent<Controller>();
+
+	//player->setPosition(400.f, 50.f);
+	//mSceneLayers[Front]->attachChild(std::move(player));
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include "Entity.h"
-#include "Player.h"
 #include "TextureHolder.h"
 #include <array>
 
@@ -32,4 +31,5 @@ private:
 
 	TextureHolder<std::string> textureHolder;		//	String can later be changed to an enum
 
+	Entity* player;
 };

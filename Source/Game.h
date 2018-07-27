@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 #include "World.h"
+#include "Components/Commands/Command.h"
+
+#include <queue>
 
 class Game : private sf::NonCopyable
 {
@@ -29,6 +32,8 @@ private:
 	sf::Text				mStatisticsText;
 	sf::Time				mStatisticsUpdateTime;
 	std::size_t				mStatisticsNumFrames;
+
+	std::queue<std::unique_ptr<Command*>>	commands;
 };
 
 #endif // BOOK_GAME_HPP

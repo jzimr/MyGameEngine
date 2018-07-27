@@ -13,7 +13,7 @@ public:
 
 	virtual void				update(float dt);
 	virtual void				draw(sf::RenderTarget& target, sf::RenderStates states);
-	Entity* entity;		//	A component can have one and only one entity
 
-//protected:
+protected:
+	Entity* entity;		//	A component can have one and only one entity
 };

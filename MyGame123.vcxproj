@@ -23,13 +23,15 @@
     <ClCompile Include="Source\Components\Component.cpp">
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
+    <ClCompile Include="Source\Components\Controller.cpp" />
     <ClCompile Include="Source\Components\Health.cpp" />
+    <ClCompile Include="Source\Components\Physics\Physics.cpp" />
     <ClCompile Include="Source\Components\Sprite2D.cpp" />
+    <ClCompile Include="Source\Components\State.cpp" />
     <ClCompile Include="Source\Components\Test.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\SceneNode.cpp" />
     <ClCompile Include="Source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -38,13 +40,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\BaseProperty.h" />
+    <ClInclude Include="Source\Components\Commands\Command.h" />
+    <ClInclude Include="Source\Components\Commands\Move.h" />
     <ClInclude Include="Source\Components\Component.h" />
+    <ClInclude Include="Source\Components\Controller.h" />
     <ClInclude Include="Source\Components\Health.h" />
+    <ClInclude Include="Source\Components\Physics\Physics.h" />
     <ClInclude Include="Source\Components\Sprite2D.h" />
+    <ClInclude Include="Source\Components\State.h" />
     <ClInclude Include="Source\Components\Test.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\Game.h" />
-    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Property.h" />
     <ClInclude Include="Source\SceneNode.h" />
     <ClInclude Include="Source\stdafx.h" />

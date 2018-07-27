@@ -1,0 +1,3 @@
+//	Use XML for entities and components
+//	Create own XML files for components and their default values
+//	For each entity, finetune the components

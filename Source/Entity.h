@@ -24,11 +24,11 @@ public:
 	void					update(float dt);
 
 private:
-	virtual void			updateCurrent(float dt);
-	virtual void			updateChildren(float dt);
+	/*virtual*/ void		updateCurrent(float dt);
+	/*virtual*/ void		updateChildren(float dt);
 
 	void					draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	/*virtual*/ void		drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	void					drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
@@ -64,6 +64,18 @@ public:
 
 		return *it;
 	}
+
+	template<typename T> bool hasComponent(T& component) const
+	{
+		for (int i = 0; i < components.size(); i++)
+		{
+			it = dynamic_cast<T*> (components[i].get());
+			if (it != NULL)
+				return true;
+		}
+		return false;
+	}
+
 	template<typename T> T&	removeComponent();
 
 private:
