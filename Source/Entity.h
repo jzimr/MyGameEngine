@@ -1,51 +1,33 @@
 #pragma once
 #include "stdafx.h"
 //#include "SceneNode.h"
-class Component;
+//class Component;
 #include <vector>
 #include <bitset>
 #include <cassert>
 #include "Components/Component.h"
-#include "Components/Health.h"
 
-//	Abstract class
-class Entity : public sf::Transformable, public sf::Drawable, public sf::NonCopyable
+class Entity : public sf::NonCopyable
 {
 public:
-	typedef std::unique_ptr<Component> CompPtr;
-	typedef std::unique_ptr<Entity> EntPtr;
+	typedef std::unique_ptr<BaseComponent> CompPtr;
+	//typedef std::unique_ptr<Entity> EntPtr;
 
 public:
-							Entity();	
-
-	void					attachChild(EntPtr child);
-	EntPtr					detachChild(const Entity& node);		//	Returns the child after detaching it
-
-	void					update(float dt);
+							Entity(int id);
+	int						getID() const;
 
 private:
-	/*virtual*/ void		updateCurrent(float dt);
-	/*virtual*/ void		updateChildren(float dt);
-
-	void					draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	/*virtual*/ void		drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	void					drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
-
-private:
-	std::vector<EntPtr>		mChildren;
-	Entity*					mParent;
-
-
+	int						uniqueID;
 
 	////////////////////////////////////////////////////////////
 	/// Component System
-	///
+	///	TODO: Implement own system that handles this
 	////////////////////////////////////////////////////////////
 public:
-	//	TODO: Add check if the entity already has this component
-	template<typename T> T	addComponent()
+	template<typename T> T&	addComponent()
 	{
-		CompPtr newComp(new T(this));
+		CompPtr newComp(new T()/*(this)*/);
 		components.push_back(std::move(newComp));
 		return *((T*) components.back().get());
 	}
@@ -65,8 +47,9 @@ public:
 		return *it;
 	}
 
-	template<typename T> bool hasComponent(T& component) const
+	template<typename T> bool hasComponent() const
 	{
+		T* it = NULL;
 		for (int i = 0; i < components.size(); i++)
 		{
 			it = dynamic_cast<T*> (components[i].get());
@@ -76,7 +59,7 @@ public:
 		return false;
 	}
 
-	template<typename T> T&	removeComponent();
+	template<typename T> T&	removeComponent();		//	TODO
 
 private:
 	std::vector<CompPtr>	components;		//	Components attached to this entity

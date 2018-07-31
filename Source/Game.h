@@ -33,7 +33,7 @@ private:
 	sf::Time				mStatisticsUpdateTime;
 	std::size_t				mStatisticsNumFrames;
 
-	std::queue<std::unique_ptr<Command*>>	commands;
+	//std::queue<std::unique_ptr<Command*>>	commands;
 };
 
 #endif // BOOK_GAME_HPP

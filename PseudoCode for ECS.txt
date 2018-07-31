@@ -1,0 +1,26 @@
+
+//	This is to mask all components an entity has
+typedef enum{
+	SPRITE2D,			//	0
+	BOXCOLLIDER,		//	1
+	VELOCITY,			//	2
+	HEALTH,				//	3
+} Component
+
+//	An entity is simply a unique ID consisting of components
+	
+
+//	Create the world so you can make several instances of it
+World:
+		//	UniqueEntityID with a bitset of all activated components
+	std::map<int, bitset<(Components size)>> entities;
+	std::map<int, bitset<(Components size)>> deletedEntities;
+	
+		//	Holds all instances of the Sprite2D that is linked to the entities
+	std::map<int, uniqure_ptr<Sprite2D>> sprite2Ds;
+	std::map<int, unique_ptr<BoxCollider>> boxColliders;
+	
+	
+	
+	
+	
