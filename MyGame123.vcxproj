@@ -38,6 +38,7 @@
     <ClCompile Include="Source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Systems\MessageChannel.cpp" />
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Systems\System.cpp" />
@@ -45,7 +46,6 @@
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MessageChannel.h" />
     <ClInclude Include="Source\BaseProperty.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\Components\Commands\Command.h" />
@@ -63,6 +63,7 @@
     <ClInclude Include="Source\Property.h" />
     <ClInclude Include="Source\SceneNode.h" />
     <ClInclude Include="Source\stdafx.h" />
+    <ClInclude Include="Source\Systems\MessageChannel.h" />
     <ClInclude Include="Source\Systems\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />
     <ClInclude Include="Source\Systems\System.h" />

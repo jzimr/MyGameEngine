@@ -22,10 +22,10 @@ void World::createEntity()
 	std::unique_ptr<Entity> newPlayer(new Entity(uniqueEntID++));
 
 	Transform& transform = newPlayer.get()->addComponent<Transform>();
+	Sprite2D& sprite2D = newPlayer.get()->addComponent<Sprite2D>();
+
 	newPlayer.get()->getComponent<Transform>().transform.setPosition(200, 200);
 
-	Sprite2D& sprite2D = newPlayer.get()->addComponent<Sprite2D>();
-	
 	sprite2D.texture = textureHolder.get("Raptor");
 	newPlayer.get()->getComponent<Sprite2D>().sprite = sf::Sprite(newPlayer.get()->getComponent<Sprite2D>().texture);
 

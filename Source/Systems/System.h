@@ -24,5 +24,5 @@ public:
 	virtual void				update(float dt);	//	Each game tick
 	virtual void				end();				//	After update()
 
-	virtual void				onEntityUpdate(Entity* ent) = 0;
+	virtual void				onEntityUpdate(const Entity* ent) = 0;
 };

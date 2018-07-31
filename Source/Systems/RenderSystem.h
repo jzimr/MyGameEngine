@@ -11,7 +11,7 @@ public:
 
 	//void						init() override;
 	void						update(float dt) override;
-	void						onEntityUpdate(Entity* ent);
+	void						onEntityUpdate(const Entity* ent);
 
 	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);
 

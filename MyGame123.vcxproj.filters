@@ -93,6 +93,9 @@
     <ClCompile Include="Source\Systems\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\MessageChannel.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Components\Health.h">
@@ -164,11 +167,11 @@
     <ClInclude Include="Source\Systems\SystemManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="MessageChannel.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\MessageChannel.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

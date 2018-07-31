@@ -23,6 +23,6 @@ void System::end()
 {
 }
 
-void System::onEntityUpdate(Entity * ent)
+void System::onEntityUpdate(const Entity * ent)
 {
 }

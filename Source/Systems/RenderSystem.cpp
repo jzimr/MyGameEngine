@@ -12,7 +12,7 @@ void RenderSystem::update(float dt)
 	//	to draw all sprites unless inside the FOV of the client?
 }
 
-void RenderSystem::onEntityUpdate(Entity* entity)
+void RenderSystem::onEntityUpdate(const Entity* entity)
 {
 	bool hasRequirements = entity->hasComponent<Sprite2D>()
 		&& entity->hasComponent<Transform>();		//	0 or 1
@@ -48,10 +48,11 @@ void RenderSystem::onEntityUpdate(Entity* entity)
 
 void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 {
+	sf::RenderStates state;
+
 	//	Draw all sprites
 	for (auto& entity : entities)
 	{
-		sf::RenderStates state;
 		state.transform = entity.second.get()->transformComp->transform.getTransform();
 		target.draw(entity.second->spriteComp->sprite, state);
 	}
