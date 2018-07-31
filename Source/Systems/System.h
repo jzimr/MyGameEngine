@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "Components/Component.h"
+#include "Component.h"
 #include <bitset>
 #include <algorithm>
 #include <cassert>

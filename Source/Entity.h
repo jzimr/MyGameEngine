@@ -5,7 +5,7 @@
 #include <vector>
 #include <bitset>
 #include <cassert>
-#include "Components/Component.h"
+#include "Component.h"
 
 class Entity : public sf::NonCopyable
 {
