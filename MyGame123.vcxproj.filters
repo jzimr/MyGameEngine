@@ -90,10 +90,10 @@
     <ClCompile Include="Source\Systems\SystemManager.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Systems\RenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Systems\MessageChannel.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\RenderSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>

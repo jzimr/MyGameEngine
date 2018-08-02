@@ -14,9 +14,10 @@ void RenderSystem::update(float dt)
 
 void RenderSystem::onEntityUpdate(const Entity* entity)
 {
+	int entityID = entity->getID();
 	bool hasRequirements = entity->hasComponent<Sprite2D>()
 		&& entity->hasComponent<Transform>();		//	0 or 1
-	auto foundInMap = entities.find(entity->getID());
+	auto foundInMap = entities.find(entityID);
 
 	//	False in Entity			
 	if (!hasRequirements)
@@ -27,18 +28,18 @@ void RenderSystem::onEntityUpdate(const Entity* entity)
 
 		//	Found in our list		=	Remove from list
 		else if (foundInMap != entities.end())
-			entities.erase(entity->getID());
+			entities.erase(entityID);
 	}
 	//	True in Entity
 	else if (hasRequirements)
 	{
 		Sprite2D* playerSprite = &entity->getComponent<Sprite2D>();
 		Transform* playerTrans = &entity->getComponent<Transform>();
-		std::unique_ptr<RequiredComps> newInsert{ new RequiredComps(playerSprite, playerTrans) };
+		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerSprite, playerTrans) };
 
 		//	Not found in our list	=	Add to list
 		if (foundInMap == entities.end())
-			entities.insert(std::make_pair(entity->getID(), std::move(newInsert)));	//	Add to list
+			entities.insert(std::make_pair(entityID, std::move(newInsert)));	//	Add to list
 
 		//	Found in our list		=	Calibrate component adress
 		else if (foundInMap != entities.end())
@@ -48,12 +49,11 @@ void RenderSystem::onEntityUpdate(const Entity* entity)
 
 void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 {
-	sf::RenderStates state;
-
 	//	Draw all sprites
 	for (auto& entity : entities)
 	{
-		state.transform = entity.second.get()->transformComp->transform.getTransform();
-		target.draw(entity.second->spriteComp->sprite, state);
+		EntComponents* reqComp = entity.second.get();
+		reqComp->spriteComp->sprite.setPosition(reqComp->transformComp->transform.getPosition());
+		target.draw(entity.second->spriteComp->sprite);
 	}
 }

@@ -4,6 +4,7 @@
 #include "Components/Physics/Physics.h"
 #include "Components/Controller.h"
 #include "Systems/SystemManager.h"
+#include "Entity Factories/EntityFactory.h"
 
 World::World(sf::RenderWindow& window)
 	: mWindow{ window }
@@ -17,22 +18,22 @@ World::World(sf::RenderWindow& window)
 	buildScene();
 }
 
-void World::createEntity()
+void World::addEntity(std::unique_ptr<Entity> entity)
 {
-	std::unique_ptr<Entity> newPlayer(new Entity(uniqueEntID++));
-
-	Transform& transform = newPlayer.get()->addComponent<Transform>();
-	Sprite2D& sprite2D = newPlayer.get()->addComponent<Sprite2D>();
-
-	newPlayer.get()->getComponent<Transform>().transform.setPosition(200, 200);
-
-	sprite2D.texture = textureHolder.get("Raptor");
-	newPlayer.get()->getComponent<Sprite2D>().sprite = sf::Sprite(newPlayer.get()->getComponent<Sprite2D>().texture);
+	//std::cout << "World 1: " << entity.get()->getComponent<Transform>().transform.getPosition().y << '\n';
 
 	//	Notify the system about changes
-	systemManager->notify(newPlayer.get(), SystemEvent::ENTITY_UPDATE);
+	systemManager->notify(entity.get(), SystemEvent::ENTITY_UPDATE);
 
-	entities.push_back(std::move(newPlayer));
+	//std::cout << "World 2: " << entity.get()->getComponent<Transform>().transform.getPosition().y << '\n';
+
+	//	Add to list
+	entities.push_back(std::move(entity));
+}
+
+int World::getUniqueID()
+{
+	return uniqueEntID++;
 }
 
 void World::update(float dt)
@@ -48,14 +49,23 @@ void World::draw()
 	systemManager->getSystem<RenderSystem>().draw(mWindow);
 }
 
+sf::Texture World::getTexture(std::string name) const
+{
+	return textureHolder.get(name);
+}
+
 void World::loadTextures()
 {
 	textureHolder.load("Raptor", "Media/Textures/Raptor.png");
+	textureHolder.load("Ground", "Media/Textures/Ground.png");
 }
 
 void World::buildScene()
 {
-	createEntity();
+	EntityFactory factory(this);
+
+	factory.createPlayer();
+	factory.createGround();
 
 	//for (int i = 0; i < Layer::LayerSize; i++)
 	//{

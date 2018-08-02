@@ -11,20 +11,21 @@ public:
 
 	//void						init() override;
 	void						update(float dt) override;
-	void						onEntityUpdate(const Entity* ent);
+	void						onEntityUpdate(const Entity* ent) override;
 
 	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);
 
 private:
-	struct RequiredComps
+	struct EntComponents
 	{
-		Sprite2D* spriteComp;		//	NULL by default
-		Transform* transformComp;
+		Sprite2D* spriteComp;			//	Required
+		Transform* transformComp;		//	Required
 
-		RequiredComps(Sprite2D* sprite, Transform* trans)
+		EntComponents(Sprite2D* sprite, Transform* trans)
 			: spriteComp{ sprite }, transformComp{ trans }
 		{
+			//std::cout << "rendersystem: " << transformComp->transform.getPosition().x << '\n';
 		}
 	};
-	std::map<int, std::unique_ptr<RequiredComps>> entities;
+	std::map<int, std::unique_ptr<EntComponents>> entities;
 };

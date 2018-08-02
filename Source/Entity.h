@@ -14,7 +14,7 @@ public:
 	//typedef std::unique_ptr<Entity> EntPtr;
 
 public:
-							Entity(int id);
+	Entity(int id);
 	int						getID() const;
 
 private:
@@ -25,11 +25,13 @@ private:
 	///	TODO: Implement own system that handles this
 	////////////////////////////////////////////////////////////
 public:
-	template<typename T> T&	addComponent()
+	template<typename T> T*	addComponent()
 	{
-		CompPtr newComp(new T()/*(this)*/);
+		CompPtr newComp(new T());
 		components.push_back(std::move(newComp));
-		return *((T*) components.back().get());
+		T* it = dynamic_cast<T*>(components.back().get());
+
+		return dynamic_cast<T*>(components.back().get());
 	}
 
 	template<typename T> T& getComponent() const
@@ -59,7 +61,7 @@ public:
 		return false;
 	}
 
-	template<typename T> T&	removeComponent();		//	TODO
+	template<typename T> T&	removeComponent();		//	TODO (Also disable possibility of removing transform component)
 
 private:
 	std::vector<CompPtr>	components;		//	Components attached to this entity

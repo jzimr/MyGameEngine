@@ -13,6 +13,7 @@ void SystemManager::init()
 {
 	
 	//	Initialize all systems
+	addSystem<PhysicsSystem>();
 	addSystem<RenderSystem>();	//	Must come last
 
 	for (auto& system : systems)		//	Update all systems

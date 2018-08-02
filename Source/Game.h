@@ -29,9 +29,10 @@ private:
 	//Player					mPlayer;
 
 	sf::Font				mFont;
-	sf::Text				mStatisticsText;
-	sf::Time				mStatisticsUpdateTime;
-	std::size_t				mStatisticsNumFrames;
+	sf::Text				mFrameRate;
+	sf::Text				mStatistics;
+	sf::Time				mFrameRateUpdateTime;
+	std::size_t				mFrameRateNumFrames;
 
 	//std::queue<std::unique_ptr<Command*>>	commands;
 };

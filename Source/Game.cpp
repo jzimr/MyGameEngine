@@ -9,16 +9,17 @@ Game::Game()
 	, mWorld(mWindow)
 	//, mPlayer()
 	, mFont()
-	, mStatisticsText()
-	, mStatisticsUpdateTime()
-	, mStatisticsNumFrames(0)
+	, mFrameRate()
+	, mFrameRateUpdateTime()
+	, mFrameRateNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
 
 	mFont.loadFromFile("Media/Sansation.ttf");
-	mStatisticsText.setFont(mFont);
-	mStatisticsText.setPosition(5.f, 5.f);
-	mStatisticsText.setCharacterSize(10);
+	mFrameRate.setFont(mFont);
+	mFrameRate.setPosition(5.f, 5.f);
+	mFrameRate.setCharacterSize(10);
+	mStatistics = mFrameRate;
 }
 
 void Game::run()
@@ -31,7 +32,7 @@ void Game::run()
 		timeSinceLastUpdate += elapsedTime;
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
-			timeSinceLastUpdate -= TimePerFrame;	
+			timeSinceLastUpdate -= TimePerFrame;
 
 			///		ADD MORE SYSTEMS (Physics, collision, etc.)
 
@@ -67,22 +68,25 @@ void Game::render()
 	mWorld.draw();
 
 	mWindow.setView(mWindow.getDefaultView());
-	mWindow.draw(mStatisticsText);
+	mWindow.draw(mFrameRate);
+	mWindow.draw(mStatistics);
 	mWindow.display();
 }
 
 void Game::updateStatistics(sf::Time elapsedTime)
 {
-	mStatisticsUpdateTime += elapsedTime;
-	mStatisticsNumFrames += 1;
+	mFrameRateUpdateTime += elapsedTime;
+	mFrameRateNumFrames += 1;
 
-	if (mStatisticsUpdateTime >= sf::seconds(1.0f))
+	if (mFrameRateUpdateTime >= sf::seconds(1.0f))
 	{
-		mStatisticsText.setString(
-			"Frames / Second = " + std::to_string(mStatisticsNumFrames) + "\n" +
-			"Time / Update = " + std::to_string(mStatisticsUpdateTime.asMicroseconds() / mStatisticsNumFrames) + "us");
+		mFrameRate.setString(
+			"Frames / Second = " + std::to_string(mFrameRateNumFrames) + "\n" +
+			"Time / Update = " + std::to_string(mFrameRateUpdateTime.asMicroseconds() / mFrameRateNumFrames) + "us\n");
 
-		mStatisticsUpdateTime -= sf::seconds(1.0f);
-		mStatisticsNumFrames = 0;
+		mFrameRateUpdateTime -= sf::seconds(1.0f);
+		mFrameRateNumFrames = 0;
 	}
+	if(mFrameRateUpdateTime >= sf::seconds(0.1f))
+		mStatistics.setString("\n\nMouse position = x: " + std::to_string(sf::Mouse::getPosition(mWindow).x) + ", y: " + std::to_string(sf::Mouse::getPosition(mWindow).y));
 }

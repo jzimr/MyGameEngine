@@ -5,13 +5,8 @@
 #include <array>
 #include <bitset>
 #include "Entity.h"
+#include <memory>
 class SystemManager;
-
-//struct Entity
-//{
-//	int ID;
-//	std::bitset<COMPONENT_SIZE> components;
-//};
 
 class World : sf::NonCopyable
 {
@@ -23,9 +18,11 @@ public:
 	void						update(float dt);
 	void						draw();
 
-	//	This is only a test function
-	void						createEntity();
-	//	CREATE FUNCTION: void changeEntity(id, bitset<>);
+	void						addEntity(std::unique_ptr<Entity> entity);
+	//Entity*					removeEntity();		//	REMEMBER TO NOTIFY SYSTEMS ABOUT ENTITY CHANGE
+
+	int							getUniqueID();
+	sf::Texture getTexture(std::string name) const;
 
 private:
 	void						loadTextures();		//	Load all textures you want to use
@@ -34,19 +31,20 @@ private:
 	std::vector<std::unique_ptr<Entity>> entities;		//	List of all entities
 
 private:
+
+	TextureHolder<std::string> textureHolder;		//	String can later be changed to an enum
 	sf::RenderWindow&			mWindow;
 	//	Entity						mSceneGraph;
 	//	Each Entity here is an empty node that stores all children inside and draws them after the layer
 	//std::array<Entity*, Layer::LayerSize> mSceneLayers;	//	Array with all GameObjects divided into layers
 
-	TextureHolder<std::string> textureHolder;		//	String can later be changed to an enum
 
 
 	////////////////////////////////////////////////////////////
 	/// Component System
 	///	TODO: Implement own system that handles this
 	////////////////////////////////////////////////////////////
-	int uniqueEntID;
+	unsigned int uniqueEntID;			//	4,294,967,295 of unique ID's
 	SystemManager* systemManager;		//	Handles all system notifications etc.
 };
 
