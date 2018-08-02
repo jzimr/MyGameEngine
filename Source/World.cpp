@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include "Entity.h"
-#include "Components/Sprite2D.h"
-#include "Components/Physics/Physics.h"
-#include "Components/Controller.h"
 #include "Systems/SystemManager.h"
 #include "Entity Factories/EntityFactory.h"
 
@@ -20,12 +17,8 @@ World::World(sf::RenderWindow& window)
 
 void World::addEntity(std::unique_ptr<Entity> entity)
 {
-	//std::cout << "World 1: " << entity.get()->getComponent<Transform>().transform.getPosition().y << '\n';
-
 	//	Notify the system about changes
 	systemManager->notify(entity.get(), SystemEvent::ENTITY_UPDATE);
-
-	//std::cout << "World 2: " << entity.get()->getComponent<Transform>().transform.getPosition().y << '\n';
 
 	//	Add to list
 	entities.push_back(std::move(entity));
