@@ -9,7 +9,7 @@ World::World(sf::RenderWindow& window)
 	//, mSceneLayers{}
 	, textureHolder{}
 	, uniqueEntID{ 0 }
-	, systemManager{ new SystemManager(/*window*/) }
+	, systemManager{ new SystemManager() }
 {
 	loadTextures();
 	buildScene();
@@ -36,6 +36,12 @@ void World::update(float dt)
 	//mSceneGraph.update(dt);	//	Make systems responsible for update 
 }
 
+void World::handleInput()	//	From Game.cpp
+{
+	//	Temporary
+	systemManager->getSystem<ControllerSystem>().handleInput(eventQueue);
+}
+
 void World::draw()
 {
 	//	Temporary
@@ -47,10 +53,16 @@ sf::Texture World::getTexture(std::string name) const
 	return textureHolder.get(name);
 }
 
+std::queue<sf::Event>& World::getEventQueue()
+{
+	return eventQueue;
+}
+
 void World::loadTextures()
 {
 	textureHolder.load("Raptor", "Media/Textures/Raptor.png");
 	textureHolder.load("Ground", "Media/Textures/Ground.png");
+	textureHolder.load("Wood", "Media/Textures/Wood.png");
 }
 
 void World::buildScene()

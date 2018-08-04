@@ -34,8 +34,6 @@ void Game::run()
 		{
 			timeSinceLastUpdate -= TimePerFrame;
 
-			///		ADD MORE SYSTEMS (Physics, collision, etc.)
-
 			processInput();
 			update(TimePerFrame);
 		}
@@ -48,13 +46,18 @@ void Game::run()
 void Game::processInput()
 {
 	sf::Event event;
-	//std::queue<sf::Event> eventQueue;
+	
 	while (mWindow.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 			mWindow.close();
-		///		Temporary solution to input handling
+
+		//	Handled by ControllerSystem
+		mWorld.getEventQueue().push(event);
+		//	Event flow:
+		//	Game -> (Input) -> World -> ControllerSystem -> (Command) -> Entity
 	}
+	mWorld.handleInput();
 }
 
 void Game::update(sf::Time elapsedTime)

@@ -10,32 +10,44 @@ void PhysicsSystem::update(float dt)
 	Transform* transform;
 	Physics* physics;
 	Collider* collider;
+	Movement* movement;
 
 	for (auto& entity : entities)
 	{
 		transform = entity.second.get()->transformComp;
 		physics = entity.second.get()->physicsComp;
 		collider = entity.second.get()->colliderComp;
+		movement = entity.second.get()->movementComp;
 
-		//	Apply gravity
+		//	Temporary physics system (Will fail if velocity i too high)
 		if (physics)
 		{
+			///	Do physics
 			physics->velocity.y += physics->gravity * dt;
 
-			if (collider)
+			//	Check for max falling speed
+			if (physics->velocity.y >= physics->maxFallingSpeed)
+				physics->velocity.y = physics->maxFallingSpeed;
+			
+			///	Do movement
+			if (movement)
 			{
-				if (checkCollision(*entity.second.get(), entity.first))
-				{
-					physics->velocity.y = 0;
-				}
-				//	Update collider position
+
 			}
 
-			//	Apply all transformations calculated
+			/// Do collision (Must be done at end of all components)
+			if (collider)
+			{
+				//	Check collision on ground
+				if (checkCollision(*entity.second.get(), entity.first) && physics->velocity.y > 0)
+					physics->velocity.y = 0;
+			}
+
+			///	Apply all transformations
 			//	Move entity
-			transform->transform.move(physics->velocity * dt);	
+			transform->transform.move(physics->velocity * dt);
 			//	Move collider
-			if (collider)										
+			if (collider)
 			{
 				collider->colliderBox.left = transform->transform.getPosition().x;
 				collider->colliderBox.top = transform->transform.getPosition().y;
@@ -45,9 +57,51 @@ void PhysicsSystem::update(float dt)
 }
 
 ////////////////////////////////////////////////////////////
+/// Handle events between systems
+///	
+////////////////////////////////////////////////////////////
+
+void PhysicsSystem::onNotify(int entity, Event event)
+{
+	Physics* physicsComp = NULL;
+	Movement* movementComp = NULL;
+
+	//	Find the entity
+	auto found = entities.find(entity);
+	if (found != entities.end())
+	{
+		physicsComp = found->second.get()->physicsComp;
+		movementComp = found->second.get()->movementComp;
+	}
+
+	switch (event)
+	{
+	case Event::ENTITY_JUMP:		//	ControllerSystem
+		physicsComp->velocity.y = movementComp->jumpForce * -1;
+		break;
+	case Event::ENTITY_LEFT:		//	ControllerSystem
+		physicsComp->velocity.x = -1 * movementComp->horizontalSpeed;
+		break;
+	case Event::ENTITY_RIGHT:		//	ControllerSystem
+		physicsComp->velocity.x = movementComp->horizontalSpeed;
+		break;
+	case Event::STOP_ENTITY_LEFT:
+		physicsComp->velocity.x += movementComp->horizontalSpeed;
+		break;
+	case Event::STOP_ENTITY_RIGHT:
+		physicsComp->velocity.x -= movementComp->horizontalSpeed;
+	}
+}
+
+////////////////////////////////////////////////////////////
 /// Methods to perform physics stuff
 ///	
 ////////////////////////////////////////////////////////////
+
+void PhysicsSystem::addForce(Physics& physicsComp, sf::Vector2f velocity)
+{
+	physicsComp.velocity += velocity;
+}
 
 bool PhysicsSystem::checkCollision(const EntComponents& entity, int ID) const
 {
@@ -73,7 +127,7 @@ bool PhysicsSystem::checkCollision(const EntComponents& entity, int ID) const
 		//	<< '\n';
 
 		//	Collision ontop of an object
-		if (top + height >= oTop && (left + width >= oLeft || left <= oLeft + width))
+		if (top + height >= oTop && (left + width >= oLeft && left <= oLeft + oWidth))
 			return true;
 		//	Collision infront of an object
 
@@ -84,11 +138,13 @@ bool PhysicsSystem::checkCollision(const EntComponents& entity, int ID) const
 	return false;
 }
 
+
 void PhysicsSystem::onEntityUpdate(const Entity* entity)
 {
 	int entityID = entity->getID();
 	bool hasRequirements = entity->hasComponent<Transform>() &&
-		(entity->hasComponent<Physics>() || entity->hasComponent<Collider>());
+		(entity->hasComponent<Physics>() || entity->hasComponent<Collider>()
+			|| entity->hasComponent<Movement>());
 	auto foundInMap = entities.find(entityID);
 
 	//	False in entity
@@ -108,10 +164,12 @@ void PhysicsSystem::onEntityUpdate(const Entity* entity)
 		Transform* playerTrans = &entity->getComponent<Transform>();
 		Physics* playerPhys = entity->hasComponent<Physics>() ?
 			&entity->getComponent<Physics>() : NULL;
-		Collider* PlayerColl = entity->hasComponent<Collider>() ?
+		Collider* playerColl = entity->hasComponent<Collider>() ?
 			&entity->getComponent<Collider>() : NULL;
+		Movement* playerMove = entity->hasComponent<Movement>() ?
+			&entity->getComponent<Movement>() : NULL;
 
-		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerTrans, playerPhys, PlayerColl) };
+		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerTrans, playerPhys, playerColl, playerMove) };
 
 		//	Not found in our list	=	Add to list
 		if (foundInMap == entities.end())

@@ -24,7 +24,6 @@ private:
 		EntComponents(Sprite2D* sprite, Transform* trans)
 			: spriteComp{ sprite }, transformComp{ trans }
 		{
-			//std::cout << "rendersystem: " << transformComp->transform.getPosition().x << '\n';
 		}
 	};
 	std::map<int, std::unique_ptr<EntComponents>> entities;

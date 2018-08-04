@@ -22,20 +22,17 @@
     <Filter Include="Systems">
       <UniqueIdentifier>{25d77080-5454-4dc6-b649-a716a8e3531c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%28Deprecated%29 Components">
+    <Filter Include="Old Code">
       <UniqueIdentifier>{22d55588-20cb-4442-9afb-c04e13b8939e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%28Deprecated%29 Components\Physics">
+    <Filter Include="Old Code\Physics">
       <UniqueIdentifier>{eddd6252-e499-4b99-b963-81207a94ace1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="%28Deprecated%29 Components\Commands">
+    <Filter Include="Old Code\Commands">
       <UniqueIdentifier>{a013f867-231c-47be-b64e-ee2cd5de3b17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\BaseProperty.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,41 +70,38 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Component.cpp">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Controller.cpp">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Health.cpp">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Sprite2D.cpp">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\State.cpp">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Test.cpp">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Physics\Collider.cpp">
-      <Filter>%28Deprecated%29 Components\Physics</Filter>
+      <Filter>Old Code\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Physics\Physics.cpp">
-      <Filter>%28Deprecated%29 Components\Physics</Filter>
+      <Filter>Old Code\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\ControllerSystem.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\BaseProperty.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Property.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneNode.h">
@@ -147,37 +141,37 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Controller.h">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Health.h">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Sprite2D.h">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\State.h">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Test.h">
-      <Filter>%28Deprecated%29 Components</Filter>
+      <Filter>Old Code</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Physics\Collider.h">
-      <Filter>%28Deprecated%29 Components\Physics</Filter>
+      <Filter>Old Code\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Physics\Physics.h">
-      <Filter>%28Deprecated%29 Components\Physics</Filter>
+      <Filter>Old Code\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Commands\Command.h">
-      <Filter>%28Deprecated%29 Components\Commands</Filter>
+      <Filter>Old Code\Commands</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Commands\Move.h">
-      <Filter>%28Deprecated%29 Components\Commands</Filter>
+      <Filter>Old Code\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\ControllerSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Property.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="Source\TextureHolder.inl">
       <Filter>Header Files</Filter>
     </None>

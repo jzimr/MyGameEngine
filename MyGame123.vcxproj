@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\BaseProperty.cpp" />
     <ClCompile Include="Source\Entity Factories\EntityFactory.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\Game.cpp" />
@@ -52,6 +51,7 @@
     <ClCompile Include="Source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Systems\ControllerSystem.cpp" />
     <ClCompile Include="Source\Systems\MessageChannel.cpp" />
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
@@ -60,7 +60,6 @@
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\BaseProperty.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\Entity Factories\EntityFactory.h" />
     <ClInclude Include="Source\Entity.h" />
@@ -92,9 +91,9 @@
     <ClInclude Include="Source\Old Code\Components\Test.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Source\Property.h" />
     <ClInclude Include="Source\SceneNode.h" />
     <ClInclude Include="Source\stdafx.h" />
+    <ClInclude Include="Source\Systems\ControllerSystem.h" />
     <ClInclude Include="Source\Systems\MessageChannel.h" />
     <ClInclude Include="Source\Systems\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />
@@ -105,7 +104,6 @@
     <ClInclude Include="Source\World.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Property.inl" />
     <None Include="Source\TextureHolder.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

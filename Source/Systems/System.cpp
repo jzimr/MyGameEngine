@@ -26,12 +26,17 @@ void System::onEntityUpdate(const Entity * ent)
 {
 }
 
-void System::onNotify(int entity, Event event) const
+void System::onNotify(int entity, std::function<void()> command)
 {
-	//	switch through Events in derived class
+	//	Execute task in derived class
 }
 
-void System::addObserver(const System * observer)
+void System::onNotify(int entity, Event event)
+{
+	//	Switch through Events in derived class
+}
+
+void System::addObserver(System * observer)
 {
 	//	Check if the observer is already subscribed to this subject
 	for (const auto& listObserver : observers)
@@ -42,7 +47,7 @@ void System::addObserver(const System * observer)
 	observers.push_back(observer);
 }
 
-void System::removeObserver(const System * observer)
+void System::removeObserver(System * observer)
 {
 	auto it = std::find(observers.begin(), observers.end(), observer);
 
@@ -50,9 +55,15 @@ void System::removeObserver(const System * observer)
 		observers.erase(it);
 }
 
+void System::notify(int entity, std::function<void()> command)
+{
+	for (auto& observer : observers)
+		observer->onNotify(entity, command);
+}
+
 void System::notify(int entity, Event event)
 {
 	//	Notify all observers
-	for (const auto& observer : observers)
+	for (auto& observer : observers)
 		observer->onNotify(entity, event);
 }

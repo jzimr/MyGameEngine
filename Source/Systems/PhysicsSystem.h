@@ -1,9 +1,10 @@
 #pragma once
 #include "stdafx.h"
 #include "System.h"
+#include <cmath>
 
 ////////////////////////////////////////////////////////////
-/// Components used: Transform, Physics, Collider
+/// Components used: Transform, Physics, Collider, Movement
 ///	 
 ////////////////////////////////////////////////////////////
 
@@ -19,12 +20,16 @@ public:
 	void						update(float dt) override;
 	void						onEntityUpdate(const Entity* ent) override;
 
+	//	Get notified from subscriptions
+	void				onNotify(int entity, Event event) override;
 
 	////////////////////////////////////////////////////////////
 	/// Methods to perform physics stuff
 	///	
 	////////////////////////////////////////////////////////////
 private:
+	//	Add force to an entity
+	void					addForce(Physics& physicsComp, sf::Vector2f velocity);
 	//	Check collision on an entity
 	bool					checkCollision(const EntComponents& entity, int ID) const;
 
@@ -33,11 +38,13 @@ private:
 	{
 		Transform* transformComp;		//	Required
 		Physics* physicsComp;			//	This or/and
-		Collider* colliderComp;			//	this required
+		Collider* colliderComp;			//	this 
+		Movement* movementComp;			//	physicsComp required
 
 		EntComponents(Transform* trans, Physics* phys,
-			Collider* coll)
-			: transformComp{ trans }, physicsComp{ phys }, colliderComp{coll}
+			Collider* coll, Movement* move)
+			: transformComp{ trans }, physicsComp{ phys }, colliderComp{coll},
+			movementComp{ move }
 		{ 
 		}
 	};

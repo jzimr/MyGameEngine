@@ -4,6 +4,7 @@
 #include <vector>
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
+#include "ControllerSystem.h"
 #include <memory>
 
 enum class SystemEvent
@@ -28,11 +29,11 @@ public:
 	void						notify(Entity* entity, SystemEvent event);
 
 public:
-	template<typename T> T&	addSystem()
+	template<typename T> T*	addSystem()
 	{
 		SysPtr newSys(new T());
 		systems.push_back(std::move(newSys));
-		return *((T*)systems.back().get());
+		return dynamic_cast<T*>(systems.back().get());
 	}
 
 	template<typename T> T& getSystem() const

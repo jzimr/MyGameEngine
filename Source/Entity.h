@@ -29,7 +29,6 @@ public:
 	{
 		CompPtr newComp(new T());
 		components.push_back(std::move(newComp));
-		T* it = dynamic_cast<T*>(components.back().get());
 
 		return dynamic_cast<T*>(components.back().get());
 	}
@@ -37,7 +36,7 @@ public:
 	template<typename T> T& getComponent() const
 	{
 		T* it = NULL;
-		for (int i = 0; i < components.size(); i++)
+		for (size_t i = 0; i < components.size(); i++)
 		{
 			it = dynamic_cast<T*> (components[i].get());
 			if (it != NULL)
@@ -52,7 +51,7 @@ public:
 	template<typename T> bool hasComponent() const
 	{
 		T* it = NULL;
-		for (int i = 0; i < components.size(); i++)
+		for (size_t i = 0; i < components.size(); i++)
 		{
 			it = dynamic_cast<T*> (components[i].get());
 			if (it != NULL)

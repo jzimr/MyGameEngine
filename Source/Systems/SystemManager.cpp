@@ -13,8 +13,12 @@ void SystemManager::init()
 {
 	
 	//	Initialize all systems
-	addSystem<PhysicsSystem>();
-	addSystem<RenderSystem>();	//	Must come last
+	ControllerSystem* controller = addSystem<ControllerSystem>();
+	PhysicsSystem* physics = addSystem<PhysicsSystem>();
+	RenderSystem* render = addSystem<RenderSystem>();	//	Must come last
+
+	//	Add observers
+	controller->addObserver(physics);
 
 	for (auto& system : systems)		//	Update all systems
 		system->init();

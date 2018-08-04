@@ -14,6 +14,8 @@ void EntityFactory::createPlayer()
 	Sprite2D* sprite2D = newEntity.get()->addComponent<Sprite2D>();
 	Physics* physics = newEntity.get()->addComponent<Physics>();
 	Collider* collider = newEntity.get()->addComponent<Collider>();
+	Movement* movement = newEntity.get()->addComponent<Movement>();
+	Controller* controller = newEntity.get()->addComponent<Controller>();
 
 	//	Transform
 	transform->transform.setPosition(200, 200);

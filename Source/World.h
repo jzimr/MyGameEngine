@@ -6,6 +6,7 @@
 #include <bitset>
 #include "Entity.h"
 #include <memory>
+#include <queue>
 class SystemManager;
 
 class World : sf::NonCopyable
@@ -17,6 +18,7 @@ public:
 								World(sf::RenderWindow& window);
 	void						update(float dt);
 	void						draw();
+	void						handleInput();
 
 	void						addEntity(std::unique_ptr<Entity> entity);
 	//Entity*					removeEntity();		//	REMEMBER TO NOTIFY SYSTEMS ABOUT ENTITY CHANGE
@@ -24,11 +26,15 @@ public:
 	int							getUniqueID();
 	sf::Texture getTexture(std::string name) const;
 
+	std::queue<sf::Event>& getEventQueue();
+
 private:
 	void						loadTextures();		//	Load all textures you want to use
 	void						buildScene();
 	
 	std::vector<std::unique_ptr<Entity>> entities;		//	List of all entities
+
+	std::queue<sf::Event> eventQueue;
 
 private:
 
