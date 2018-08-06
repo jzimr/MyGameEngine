@@ -11,7 +11,6 @@ void ControllerSystem::update(float dt)
 
 void ControllerSystem::handleInput(std::queue<sf::Event>& events)
 {
-	//std::cout << "yo";
 	sf::Event event;
 	while (!events.empty())
 	{

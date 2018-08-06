@@ -25,12 +25,10 @@ public:
 	void				onNotify(int entity, Event event) override;
 
 	////////////////////////////////////////////////////////////
-	/// Methods to perform physics stuff
+	/// Methods for physics stuff
 	///	
 	////////////////////////////////////////////////////////////
 private:
-	//	Add force to an entity
-	void					addForce(Physics& physicsComp, sf::Vector2f velocity);
 	//	Check collision on an entity
 	Collision			checkCollision(const sf::Rect<float>& collider, const sf::Rect<float>& otherCollider, const sf::Vector2f velocity) const;
 

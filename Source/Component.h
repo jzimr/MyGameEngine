@@ -51,12 +51,6 @@ struct Sprite2D : BaseComponent
 		LAYER_SIZE
 	};
 
-	//Sprite2D() {}
-	//Sprite2D(sf::Texture tex, sf::Sprite spr, Layer lay = LAYER_FRONT)
-	//	: texture{ tex }, sprite{ spr }, layer{ lay }
-	//{
-	//}
-
 	Layer layer;
 	sf::Texture texture;
 	sf::Sprite sprite;

@@ -80,10 +80,6 @@ void World::buildScene()
 	Entity* ground = addEntity("Ground", sf::Vector2f(0, 400));
 	Entity* wood = addEntity("Wood", sf::Vector2f(300, 270));
 
-	//factory.createPlayer();
-	//factory.createGround();
-	//factory.createBlock();
-
 	//for (int i = 0; i < Layer::LayerSize; i++)
 	//{
 	//	Entity::EntPtr layer(new Entity());
@@ -91,12 +87,5 @@ void World::buildScene()
 	//	mSceneGraph.attachChild(std::move(layer));
 	//}
 
-	//	Read all entities from file
-		//	If entity.component contains Controller component
-		//	player = entity;
-	//sf::Texture texture = textureHolder.get("Raptor");
-	//std::unique_ptr<Entity> player = EntFactory::Player::create(texture);
-
-	//player->setPosition(300, 300);
 	//mSceneLayers[Front]->attachChild(std::move(player));
 }
