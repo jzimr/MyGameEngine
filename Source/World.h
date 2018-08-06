@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include <memory>
 #include <queue>
+#include "Entity Factories/EntityFactory.h"
 class SystemManager;
 
 class World : sf::NonCopyable
@@ -20,10 +21,10 @@ public:
 	void						draw();
 	void						handleInput();
 
-	void						addEntity(std::unique_ptr<Entity> entity);
+	Entity*						addEntity(std::string entityName, sf::Vector2f position = sf::Vector2f(0,0));
+	void						entityUpdated();
 	//Entity*					removeEntity();		//	REMEMBER TO NOTIFY SYSTEMS ABOUT ENTITY CHANGE
 
-	int							getUniqueID();
 	sf::Texture getTexture(std::string name) const;
 
 	std::queue<sf::Event>& getEventQueue();
@@ -33,8 +34,11 @@ private:
 	void						buildScene();
 	
 	std::vector<std::unique_ptr<Entity>> entities;		//	List of all entities
+	int							getUniqueID();
 
 	std::queue<sf::Event> eventQueue;
+	EntityFactory factory;
+	
 
 private:
 

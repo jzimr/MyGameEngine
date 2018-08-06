@@ -96,6 +96,9 @@
     <ClCompile Include="Source\Systems\ControllerSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Old Code\EntityFactory.cpp">
+      <Filter>Old Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Entity.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Source\Systems\ControllerSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Old Code\EntityFactory.h">
+      <Filter>Old Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

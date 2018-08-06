@@ -1,0 +1,7 @@
+Component Sprite2D
+	Texture Raptor
+Component Physics
+Component Collider
+	ColliderBox default
+Component Movement
+Component Controller

@@ -11,7 +11,6 @@ SystemManager::SystemManager(/*sf::RenderWindow& window*/)
 
 void SystemManager::init()
 {
-	
 	//	Initialize all systems
 	ControllerSystem* controller = addSystem<ControllerSystem>();
 	PhysicsSystem* physics = addSystem<PhysicsSystem>();
@@ -32,7 +31,6 @@ void SystemManager::begin()
 
 	for (auto& system : systems)
 		system->begin();
-
 }
 
 void SystemManager::update(float dt)

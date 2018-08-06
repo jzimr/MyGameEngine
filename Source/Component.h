@@ -15,10 +15,11 @@ struct Transform : BaseComponent	//	Position, rotation, scale
 
 struct Physics : BaseComponent		//	Making an object fall
 {
-	float gravity = 200.0f;			//	Default gravity (Disable for e.g. bullets)
+	sf::Vector2f gravity = sf::Vector2f(0.0f, 200.0f);	//	Default gravity (Disable for e.g. bullets)
 	sf::Vector2f velocity;
+	float horizontalVelocity;
 
-	const float maxFallingSpeed = 200.0f;
+	const float maxFallingSpeed = 100.0f;
 };
 
 struct Collider : BaseComponent		//	Collides with other objects
@@ -36,7 +37,7 @@ struct Controller : BaseComponent
 ///	Requires : PhysicsComponent
 struct Movement : BaseComponent		//	Can be applied to NPC's as well
 {
-	float horizontalSpeed = 30;
+	float horizontalSpeed = 60;
 	//float runSpeed = 50;
 	float jumpForce = 200;
 };

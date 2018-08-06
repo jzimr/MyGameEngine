@@ -1,0 +1,5 @@
+Component Sprite2D
+	Texture Ground
+Component Collider
+	ColliderBox default
+	

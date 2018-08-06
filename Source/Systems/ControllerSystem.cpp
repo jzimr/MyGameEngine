@@ -23,18 +23,16 @@ void ControllerSystem::handleInput(std::queue<sf::Event>& events)
 			{
 				if (event.key.code == sf::Keyboard::Space)
 					notify(entity.first, Event::ENTITY_JUMP);
-				if (event.key.code == sf::Keyboard::A)
+				else if (event.key.code == sf::Keyboard::A)
 					notify(entity.first, Event::ENTITY_LEFT);
-				if (event.key.code == sf::Keyboard::D)
+				else if (event.key.code == sf::Keyboard::D)
 					notify(entity.first, Event::ENTITY_RIGHT);
 			}
-			if (event.type == sf::Event::KeyReleased)
+			else if (event.type == sf::Event::KeyReleased)
 			{
 				if (event.key.code == sf::Keyboard::A)
-				{
 					notify(entity.first, Event::STOP_ENTITY_LEFT);
-				}
-				if (event.key.code == sf::Keyboard::D)
+				else if (event.key.code == sf::Keyboard::D)
 					notify(entity.first, Event::STOP_ENTITY_RIGHT);
 			}
 		}

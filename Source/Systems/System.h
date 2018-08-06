@@ -34,7 +34,7 @@ public:
 	////////////////////////////////////////////////////////////
 	/// Handle events between systems
 	///	THINK: Maybe move all into a seperate class and rather 
-	///		   have instances of its class instead?
+	///		   have instances of it instead?
 	////////////////////////////////////////////////////////////
 	virtual void				onNotify(int entity, std::function<void()> command);
 	virtual void				onNotify(int entity, Event event);//	Get notified from subscriptions

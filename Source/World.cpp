@@ -10,18 +10,27 @@ World::World(sf::RenderWindow& window)
 	, textureHolder{}
 	, uniqueEntID{ 0 }
 	, systemManager{ new SystemManager() }
+	, factory{ this }
 {
 	loadTextures();
 	buildScene();
 }
 
-void World::addEntity(std::unique_ptr<Entity> entity)
+Entity* World::addEntity(std::string entityName, sf::Vector2f position)
 {
-	//	Notify the system about changes
-	systemManager->notify(entity.get(), SystemEvent::ENTITY_UPDATE);
+	std::unique_ptr<Entity> newEntity = factory.spawnEntity(entityName, getUniqueID(), position);
+	entities.push_back(std::move(newEntity));	//	Add to list
+	Entity* entPtr = entities.back().get();
 
-	//	Add to list
-	entities.push_back(std::move(entity));
+	//	Notify the system about changes
+	systemManager->notify(entPtr, SystemEvent::ENTITY_UPDATE);
+
+	return entPtr;
+}
+
+void World::entityUpdated()
+{
+
 }
 
 int World::getUniqueID()
@@ -67,10 +76,13 @@ void World::loadTextures()
 
 void World::buildScene()
 {
-	EntityFactory factory(this);
+	Entity* player = addEntity("Player", sf::Vector2f(200, 200));
+	Entity* ground = addEntity("Ground", sf::Vector2f(0, 400));
+	Entity* wood = addEntity("Wood", sf::Vector2f(300, 270));
 
-	factory.createPlayer();
-	factory.createGround();
+	//factory.createPlayer();
+	//factory.createGround();
+	//factory.createBlock();
 
 	//for (int i = 0; i < Layer::LayerSize; i++)
 	//{

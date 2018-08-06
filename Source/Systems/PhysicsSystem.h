@@ -12,6 +12,7 @@ class PhysicsSystem : public System
 {
 private:
 	struct EntComponents;
+	enum Collision : int;
 
 public:
 								PhysicsSystem();
@@ -31,7 +32,16 @@ private:
 	//	Add force to an entity
 	void					addForce(Physics& physicsComp, sf::Vector2f velocity);
 	//	Check collision on an entity
-	bool					checkCollision(const EntComponents& entity, int ID) const;
+	Collision			checkCollision(const sf::Rect<float>& collider, const sf::Rect<float>& otherCollider, const sf::Vector2f velocity) const;
+
+	enum Collision
+	{
+		COLLISION_RIGHT,
+		COLLISION_LEFT,
+		COLLISION_BOTTOM,
+		COLLISION_TOP,
+		COLLISION_FAULT
+	};
 
 private:
 	struct EntComponents
