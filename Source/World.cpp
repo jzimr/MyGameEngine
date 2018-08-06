@@ -76,9 +76,9 @@ void World::loadTextures()
 
 void World::buildScene()
 {
-	Entity* player = addEntity("Player", sf::Vector2f(200, 200));
+	Entity* player = addEntity("Player", sf::Vector2f(216, 250));
 	Entity* ground = addEntity("Ground", sf::Vector2f(0, 400));
-	Entity* wood = addEntity("Wood", sf::Vector2f(300, 270));
+	Entity* wood = addEntity("Wood", sf::Vector2f(300, 370));
 
 	//for (int i = 0; i < Layer::LayerSize; i++)
 	//{

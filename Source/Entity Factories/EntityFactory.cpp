@@ -90,8 +90,8 @@ std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID,
 					Sprite2D* sprite2D = &entity->getComponent<Sprite2D>();
 
 					collider->colliderBox = sprite2D->sprite.getGlobalBounds();
-					collider->colliderBox.left -= 1; collider->colliderBox.top -= 1;
-					collider->colliderBox.width += 1; collider->colliderBox.height += 1;
+					//collider->colliderBox.left -= 1; collider->colliderBox.top -= 1;
+					//collider->colliderBox.width += 1; collider->colliderBox.height += 1;
 				}
 			}
 		}
