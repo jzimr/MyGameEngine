@@ -2,6 +2,11 @@
 #include "RenderSystem.h"
 #include "World.h"
 
+////////////////////////////////////////////////////////////
+/// TODO: Divide the world into chunks, and load them whenever
+///			the player is inside them instead.
+////////////////////////////////////////////////////////////
+
 RenderSystem::RenderSystem()
 {
 }

@@ -2,6 +2,8 @@
 #include "EntityFactory.h"
 #include "World.h"
 
+using namespace Settings;
+
 EntityFactory::EntityFactory(World * world)
 	: mWorld{ world }
 {
@@ -81,6 +83,7 @@ std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID,
 				spriteComp->texture = mWorld->getTexture(words[1]);	//	Get texture from world
 				spriteComp->sprite = sf::Sprite(spriteComp->texture);
 				spriteComp->sprite.setPosition(transform->transform.getPosition());
+				spriteComp->sprite.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 			}
 			else if (words[0] == "ColliderBox")
 			{

@@ -1,0 +1,4 @@
+Research about particles (Custom particle system (But let rendersystem take care of drawing))
+Resaerch about Procedural content generation (Perhaps use Perlin noise for terrain, and parametric for trees?)
+
+Create terrain blocks as a custom class (Not as entity, as this will be too generic)

@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "Constants.h"
 
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
+using namespace Settings;
 
-Game::Game()
-	: mWindow(sf::VideoMode(640, 480), "Input", sf::Style::Close)
+Game::Game()		//	640, 360
+	: mWindow(sf::VideoMode(WINDOW_X, WINDOW_Y), "Input", sf::Style::Close)
 	, mWorld(mWindow)
 	//, mPlayer()
 	, mFont()
@@ -70,7 +72,11 @@ void Game::render()
 	mWindow.clear();
 	mWorld.draw();
 
-	mWindow.setView(mWindow.getDefaultView());
+	sf::View view = mWindow.getDefaultView();
+	//view.zoom(5.0f);
+	//view.setCenter(3000, 500);
+
+	mWindow.setView(view);
 	mWindow.draw(mFrameRate);
 	mWindow.draw(mStatistics);
 	mWindow.display();

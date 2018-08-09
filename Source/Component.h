@@ -37,7 +37,7 @@ struct Controller : BaseComponent
 ///	Requires : PhysicsComponent
 struct Movement : BaseComponent		//	Can be applied to NPC's as well
 {
-	float horizontalSpeed = 150;
+	float horizontalSpeed = 20;
 	//float runSpeed = 50;
 	float jumpForce = 400;
 };

@@ -8,6 +8,8 @@
 #include <memory>
 #include <queue>
 #include "Entity Factories/EntityFactory.h"
+#include "Constants.h"
+class Terrain;
 class SystemManager;
 
 class World : sf::NonCopyable
@@ -38,6 +40,9 @@ private:
 
 	std::queue<sf::Event> eventQueue;
 	EntityFactory factory;
+
+	//	Temporary
+	Terrain* terrain;
 	
 
 private:

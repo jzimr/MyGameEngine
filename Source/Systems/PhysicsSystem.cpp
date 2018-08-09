@@ -32,6 +32,8 @@ void PhysicsSystem::update(float dt)
 		//	Temporary physics system
 		if (physics)
 		{
+			//std::cout << transform->transform.getPosition().x << ", " <<
+				//transform->transform.getPosition().y << '\n';
 			///	Do physics
 			physics->velocity.y += physics->gravity * dt;
 			//if(physics->velocity.x < 0.9999999 && physics->velocity.x > -0.9999999)

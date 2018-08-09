@@ -60,10 +60,12 @@
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Systems\System.cpp" />
     <ClCompile Include="Source\Systems\SystemManager.cpp" />
+    <ClCompile Include="Source\Terrain.cpp" />
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\Constants.h" />
     <ClInclude Include="Source\Entity Factories\EntityFactory.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\Game.h" />
@@ -106,6 +108,7 @@
     <ClInclude Include="Source\Systems\System.h" />
     <ClInclude Include="Source\Systems\SystemManager.h" />
     <ClInclude Include="Source\targetver.h" />
+    <ClInclude Include="Source\Terrain.h" />
     <ClInclude Include="Source\TextureHolder.h" />
     <ClInclude Include="Source\World.h" />
   </ItemGroup>
