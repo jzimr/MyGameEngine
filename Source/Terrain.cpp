@@ -62,7 +62,7 @@ float Terrain::octaveNoise(float x, int octaves, float persistence, float freque
 		frequency *= 2;
 	}
 
-	return total / maxValue;		//	maxvalue not used as we want the coordinates
+	return total / maxValue;		
 }
 
 float Terrain::noise(float x, bool makeSigned)

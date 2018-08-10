@@ -19,7 +19,7 @@ public:
 
 	//void						init() override;
 	void						update(float dt) override;
-	void						onEntityUpdate(const Entity* ent) override;
+	void						onEntityUpdate(const Entity* entity) override;
 
 	//	Get notified from subscriptions
 	void				onNotify(int entity, Event event) override;

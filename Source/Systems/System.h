@@ -15,6 +15,12 @@ enum class Event
 	ENTITY_RIGHT,			//	Go right
 	STOP_ENTITY_LEFT,		//	Stop left movement
 	STOP_ENTITY_RIGHT,		//	Stop right movement
+
+	COLLISION_RIGHT,		//	Collision to the right of object
+	COLLISION_LEFT,			//	Collision to the left   -- || --
+	COLLISION_BOTTOM,		//	Collision on the bottom -- || --
+	COLLISION_TOP,			//	Collision on the top	-- || --
+	COLLISION_FAULT,		//	Collision was miscalculated
 };
 
 class System : sf::NonCopyable

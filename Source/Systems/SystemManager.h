@@ -5,6 +5,7 @@
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "ControllerSystem.h"
+#include "CollisionSystem.h"
 #include <memory>
 
 enum class SystemEvent
