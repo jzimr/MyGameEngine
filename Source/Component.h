@@ -28,6 +28,11 @@ struct Collider : BaseComponent		//	Collides with other objects
 	bool isTrigger = false;			//	If true, this collider works as a trigger instead
 };
 
+struct Player : BaseComponent		//	Using this as a tag for now
+{
+
+};
+
 ///	Requires : MovementComponent
 struct Controller : BaseComponent	
 {

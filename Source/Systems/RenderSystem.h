@@ -7,15 +7,20 @@
 class RenderSystem : public System
 {
 public:
-								RenderSystem();
+								RenderSystem(/*sf::RenderWindow& window*/);
 
 	//void						init() override;
 	void						update(float dt) override;
+	void						end() override;
 	void						onEntityUpdate(const Entity* ent) override;
 
 	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);
 
 private:
+	//sf::RenderWindow& mWindow;
+	sf::View camera;
+	const Entity* player;			//	Gotten in onEntityUpdate()
+
 	struct EntComponents
 	{
 		Sprite2D* spriteComp;			//	Required
@@ -27,4 +32,5 @@ private:
 		}
 	};
 	std::map<int, std::unique_ptr<EntComponents>> entities;
+
 };

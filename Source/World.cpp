@@ -10,7 +10,7 @@ World::World(sf::RenderWindow& window)
 	//, mSceneLayers{}
 	, textureHolder{}
 	, uniqueEntID{ 0 }
-	, systemManager{ new SystemManager() }
+	, systemManager{ new SystemManager(/*window*/) }
 	, factory{ this }
 {
 	loadTextures();
@@ -85,7 +85,8 @@ void World::buildScene()
 {
 	terrain = new Terrain(1, this);
 	terrain->createChunk();
-	Entity* player = addEntity("Player", sf::Vector2f(216, 250));
+
+	player = addEntity("Player", sf::Vector2f(216, 250));
 	Entity* ground = addEntity("Ground", sf::Vector2f(0, 400));
 	////for(int i = 0; i < 1000; i++)
 	//Entity* wood = addEntity("Wood", sf::Vector2f(300, 370));

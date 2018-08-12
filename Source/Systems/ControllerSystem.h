@@ -25,6 +25,7 @@ public:
 	//void				onNotify(int entity, Event event) override;
 
 	//	Called before everything else
+	//	Maybe move the logic into update()?
 	void						handleInput(std::queue<sf::Event>& events); 
 
 private:

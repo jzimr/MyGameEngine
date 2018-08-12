@@ -20,7 +20,7 @@ public:
 	typedef std::unique_ptr<System> SysPtr;
 
 public:
-								SystemManager(/*sf::RenderWindow& window*/);
+								SystemManager();
 
 	void						init();
 	void						begin();
@@ -36,6 +36,13 @@ public:
 		systems.push_back(std::move(newSys));
 		return dynamic_cast<T*>(systems.back().get());
 	}
+	//	When a system has constructors with parameters
+	//template<typename T, typename P> T*	addSystem(P& param)
+	//{
+	//	SysPtr newSys(new T(param));
+	//	systems.push_back(std::move(newSys));
+	//	return dynamic_cast<T*>(systems.back().get());
+	//}
 
 	template<typename T> T& getSystem() const
 	{
@@ -53,6 +60,6 @@ public:
 	}
 
 private:
-	//sf::RenderWindow& window;
+	//sf::RenderWindow& mWindow;
 	std::vector<std::unique_ptr<System>> systems;
 };

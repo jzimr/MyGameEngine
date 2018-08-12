@@ -2,12 +2,15 @@
 #include "RenderSystem.h"
 #include "World.h"
 
+using namespace Settings;
+
 ////////////////////////////////////////////////////////////
 /// TODO: Divide the world into chunks, and load them whenever
 ///			the player is inside them instead.
 ////////////////////////////////////////////////////////////
 
-RenderSystem::RenderSystem()
+RenderSystem::RenderSystem(/*sf::RenderWindow& window*/)
+	//: mWindow{ window }
 {
 }
 
@@ -15,6 +18,29 @@ void RenderSystem::update(float dt)
 {
 	//	Create updates for some shit. E.g. That you do not need
 	//	to draw all sprites unless inside the FOV of the client?
+
+	camera.setCenter(player->getComponent<Transform>().transform.getPosition());
+}
+
+void RenderSystem::end()		//	Fix the camera view, etc.
+{
+	camera.setSize(WINDOW_X, WINDOW_Y + 200);
+	camera.zoom(2.0f);
+}
+
+void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
+{
+	target.setView(camera);
+
+	//	Draw all sprites
+	for (auto& entity : entities)
+	{
+		EntComponents* reqComp = entity.second.get();
+		reqComp->spriteComp->sprite.setPosition(reqComp->transformComp->transform.getPosition());
+		target.draw(entity.second->spriteComp->sprite);
+	}
+
+	//std::cout << target.getView().getSize().y << " ";
 }
 
 void RenderSystem::onEntityUpdate(const Entity* entity)
@@ -23,6 +49,10 @@ void RenderSystem::onEntityUpdate(const Entity* entity)
 	bool hasRequirements = entity->hasComponent<Sprite2D>()
 		&& entity->hasComponent<Transform>();		//	0 or 1
 	auto foundInMap = entities.find(entityID);
+	
+	//	Get the player (For camera)
+	if (entity->hasComponent<Player>())
+		player = entity;
 
 	//	False in Entity			
 	if (!hasRequirements)
@@ -49,16 +79,5 @@ void RenderSystem::onEntityUpdate(const Entity* entity)
 		//	Found in our list		=	Calibrate component adress
 		else if (foundInMap != entities.end())
 			foundInMap->second = std::move(newInsert);
-	}
-}
-
-void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
-{
-	//	Draw all sprites
-	for (auto& entity : entities)
-	{
-		EntComponents* reqComp = entity.second.get();
-		reqComp->spriteComp->sprite.setPosition(reqComp->transformComp->transform.getPosition());
-		target.draw(entity.second->spriteComp->sprite);
 	}
 }

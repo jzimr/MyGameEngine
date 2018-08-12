@@ -4,7 +4,7 @@
 
 SystemManager::SystemManager(/*sf::RenderWindow& window*/)
 	: systems{}
-	//, window{ window }
+	//, mWindow{ window }
 {
 	init();
 }

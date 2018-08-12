@@ -43,6 +43,7 @@ private:
 
 	//	Temporary
 	Terrain* terrain;
+	Entity* player;
 	
 
 private:

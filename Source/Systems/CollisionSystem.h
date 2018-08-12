@@ -31,5 +31,7 @@ private:
 		{
 		}
 	};
+
+
 	std::map<int, std::unique_ptr<EntComponents>> entities;
 };

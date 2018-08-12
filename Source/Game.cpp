@@ -72,11 +72,10 @@ void Game::render()
 	mWindow.clear();
 	mWorld.draw();
 
-	sf::View view = mWindow.getDefaultView();
-	//view.zoom(5.0f);
-	//view.setCenter(3000, 500);
 
+	sf::View view = mWindow.getDefaultView();
 	mWindow.setView(view);
+
 	mWindow.draw(mFrameRate);
 	mWindow.draw(mStatistics);
 	mWindow.display();
