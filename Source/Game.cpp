@@ -26,6 +26,7 @@ Game::Game()		//	640, 360
 
 void Game::run()
 {
+	//std::cout << "hi";
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	while (mWindow.isOpen())
@@ -48,7 +49,7 @@ void Game::run()
 void Game::processInput()
 {
 	sf::Event event;
-	
+
 	while (mWindow.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
@@ -72,6 +73,13 @@ void Game::render()
 	mWindow.clear();
 	mWorld.draw();
 
+	//	Temporary
+	{
+		sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
+		sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
+		mStatistics.setString("\n\nMouse position = x: " +
+			std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
+	}
 
 	sf::View view = mWindow.getDefaultView();
 	mWindow.setView(view);
@@ -95,6 +103,11 @@ void Game::updateStatistics(sf::Time elapsedTime)
 		mFrameRateUpdateTime -= sf::seconds(1.0f);
 		mFrameRateNumFrames = 0;
 	}
-	if(mFrameRateUpdateTime >= sf::seconds(0.1f))
-		mStatistics.setString("\n\nMouse position = x: " + std::to_string(sf::Mouse::getPosition(mWindow).x) + ", y: " + std::to_string(sf::Mouse::getPosition(mWindow).y));
+	if (mFrameRateUpdateTime >= sf::seconds(0.1f))
+	{
+		//sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
+		//sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
+		//mStatistics.setString("\n\nMouse position = x: " + 
+		//	std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
+	}
 }

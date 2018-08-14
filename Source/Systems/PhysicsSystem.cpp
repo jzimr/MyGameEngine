@@ -11,9 +11,6 @@ void PhysicsSystem::update(float dt)
 	Physics* physics;
 	Movement* movement;
 
-	Collision collision;
-
-
 	for (auto& entity : entities)
 	{
 		transform = entity.second.get()->transformComp;

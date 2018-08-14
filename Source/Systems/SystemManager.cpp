@@ -11,16 +11,19 @@ SystemManager::SystemManager(/*sf::RenderWindow& window*/)
 
 void SystemManager::init()
 {
-	//	Initialize all systems
-	ControllerSystem* controller = addSystem<ControllerSystem>();
+	//	Initialize all systems (THE ORDER MATTERS!)
+	ControllerSystem* controller = addSystem<ControllerSystem>();	//	Must come first
+	//	Maybe put TerrainSystem here?
 	PhysicsSystem* physics = addSystem<PhysicsSystem>();
 	CollisionSystem* collision = addSystem<CollisionSystem>();
-	RenderSystem* render = addSystem<RenderSystem>();	//	Must come last
+	TerrainSystem* terrain = addSystem<TerrainSystem>();
+	RenderSystem* render = addSystem<RenderSystem>();				//	Must come last
 
 
 	//	Add observers
 	controller->addObserver(physics);
 	collision->addObserver(physics);
+	terrain->addObserver(collision);
 	
 
 	for (auto& system : systems)		//	Update all systems

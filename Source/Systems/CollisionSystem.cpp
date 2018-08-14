@@ -15,6 +15,7 @@ void CollisionSystem::update(float dt)
 {
 	Transform* transform;
 	Collider* collider;
+	Physics* physics;
 
 	Event collision;
 
@@ -22,41 +23,30 @@ void CollisionSystem::update(float dt)
 	{
 		transform = entity.second.get()->transformComp;
 		collider = entity.second.get()->colliderComp;
+		physics = entity.second.get()->physicsComp;
+
+		if (!physics)		//	No point in checking for collision on static object
+			continue;
 
 		//	Update collider box position from the physicsSystem
 		collider->colliderBox.left = transform->transform.getPosition().x;
 		collider->colliderBox.top = transform->transform.getPosition().y;
 
 		sf::Vector2f fixPos(0, 0);	//	In case of overlap (Look further down)
-		sf::Rect<float> thisRect = collider->colliderBox;
+		sf::Rect<float>* thisRect = &collider->colliderBox;
 		sf::Rect<float> otherRect;
 
+		//	For each entity collider
 		for (auto& otherEntity : entities)
 		{
 			otherRect = otherEntity.second.get()->colliderComp->colliderBox;
 
 			//	Check if otherEntity intersects and is not this entity
-			if (thisRect.intersects(otherRect) && entity != otherEntity)
+			if (thisRect->intersects(otherRect) && entity != otherEntity)
 			{
-				collision = checkCollision(thisRect, otherRect);
+				collision = checkCollision(*thisRect, otherRect);			//	Get collision direction
+				fixPos = fixPositionOnCollide(collision, *thisRect, otherRect);		//	Fix position when colliding
 
-				switch (collision)
-				{
-				case Event::COLLISION_BOTTOM:
-					fixPos = sf::Vector2f(thisRect.left, otherRect.top - thisRect.height);
-					break;
-				case Event::COLLISION_RIGHT:
-					fixPos = sf::Vector2f(otherRect.left - thisRect.width, thisRect.top);
-					break;
-				case Event::COLLISION_LEFT:
-					fixPos = sf::Vector2f(otherRect.left + otherRect.width, thisRect.top);
-					break;
-				case Event::COLLISION_TOP:
-					fixPos = sf::Vector2f(thisRect.left, otherRect.top + otherRect.height);
-					break;
-				case Event::COLLISION_FAULT:
-					break;
-				}
 				notify(entity.first, collision);	//	Notify all observers about the collision
 
 				transform->transform.setPosition(fixPos);
@@ -64,6 +54,76 @@ void CollisionSystem::update(float dt)
 				collider->colliderBox.top = transform->transform.getPosition().y;
 			}
 		}
+
+		//	For each  terrain collider
+		for (auto& terrainCollider : terrainColliders)
+		{
+			otherRect = terrainCollider.colliderBox;
+
+			//	Check if otherEntity intersects and is not this entity
+			if (thisRect->intersects(otherRect))
+			{
+				collision = checkCollision(*thisRect, otherRect);			//	Get collision direction
+				fixPos = fixPositionOnCollide(collision, *thisRect, otherRect);		//	Fix position when colliding
+
+				notify(entity.first, collision);	//	Notify all observers about the collision
+
+				transform->transform.setPosition(fixPos);
+				collider->colliderBox.left = transform->transform.getPosition().x;
+				collider->colliderBox.top = transform->transform.getPosition().y;
+
+			}
+		}
+		//std::cout << "collision amount: " << i << '\n';
+	}
+}
+
+void CollisionSystem::updateChunks()
+{
+	terrainColliders.clear();			//	Clear list (Implement a more effective way without needing to delete all chunks)
+
+	for (const auto& chunkElem : playerComp->loadedChunks)
+	{
+		Chunk* chunk = chunkElem.get();
+		Collider collider;
+		collider.colliderBox = sf::FloatRect(0, 0, 0, 0);
+
+		std::vector<sf::Sprite>::iterator it = chunk->topBlocks.begin();
+
+		while (it != chunk->topBlocks.end())
+		{
+			//	Set startposition of collider to the first sprite
+			if (collider.colliderBox == sf::FloatRect(0, 0, 0, 0))
+			{
+				collider.colliderBox = it->getGlobalBounds();
+				++it;
+			}
+
+			//	Block is part of cluster
+			else if (it->getGlobalBounds().top == collider.colliderBox.top)
+			{
+				collider.colliderBox.width += it->getGlobalBounds().width;
+				++it;
+			}
+
+			//	End of cluster
+			else
+			{
+				terrainColliders.push_back(collider);
+				collider.colliderBox = sf::FloatRect(0, 0, 0, 0);
+			}
+		}
+
+		terrainColliders.push_back(collider);		//	For the last cluster
+	}
+}
+
+void CollisionSystem::onNotify(int entity, Event event)
+{
+	switch (event)
+	{
+	case Event::CHUNK_UPDATE:
+		updateChunks();
 	}
 }
 
@@ -112,12 +172,46 @@ Event CollisionSystem::checkCollision(const sf::Rect<float>& rect, const sf::Rec
 	}
 }
 
+sf::Vector2f CollisionSystem::fixPositionOnCollide(Event collDirection, const sf::Rect<float>& rect, const sf::Rect<float>& otherRect)
+{
+	sf::Vector2f fixedPos(0, 0);
+
+	switch (collDirection)
+	{
+	case Event::COLLISION_BOTTOM:
+	{
+		//std::cout << "bottom\n";
+		return sf::Vector2f(rect.left, otherRect.top - rect.height);
+	}
+	case Event::COLLISION_RIGHT:
+	{
+		//std::cout << "right\n";
+		return sf::Vector2f(otherRect.left - rect.width, rect.top);
+	}
+	case Event::COLLISION_LEFT:
+	{
+		//std::cout << otherRect.left + otherRect.width << ", " << rect.top << '\n';
+		return sf::Vector2f(otherRect.left + otherRect.width, rect.top);
+	}
+	case Event::COLLISION_TOP:
+		return sf::Vector2f(rect.left, otherRect.top + otherRect.height);
+	case Event::COLLISION_FAULT:
+		return sf::Vector2f(rect.left, rect.top);
+	}
+
+	return fixedPos;
+}
+
 void CollisionSystem::onEntityUpdate(const Entity * entity)
 {
 	int entityID = entity->getID();
 	bool hasRequirements = entity->hasComponent<Transform>() &&
 		entity->hasComponent<Collider>();
 	auto foundInMap = entities.find(entityID);
+
+	//	Get the player (For chunks)
+	if (entity->hasComponent<Player>())
+		playerComp = &entity->getComponent<Player>();
 
 	//	False in entity
 	if (!hasRequirements)
@@ -134,16 +228,17 @@ void CollisionSystem::onEntityUpdate(const Entity * entity)
 	else if (hasRequirements)
 	{
 		Transform* playerTrans = &entity->getComponent<Transform>();
-		Collider* playerColl = entity->hasComponent<Collider>() ?
-			&entity->getComponent<Collider>() : NULL;
+		Collider* playerColl = &entity->getComponent<Collider>();
+		Physics* playerPhys = entity->hasComponent<Physics>() ?
+			&entity->getComponent<Physics>() : NULL;
 
-		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerTrans, playerColl) };
+		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerTrans, playerColl, playerPhys) };
 
 		//	Not found in our list	=	Add to list
 		if (foundInMap == entities.end())
 			entities.insert(std::make_pair(entity->getID(), std::move(newInsert)));	//	Add to list
 
-																					//	Found in our list		=	Calibrate component adress (just in case)
+		//	Found in our list		=	Calibrate component adress (just in case)
 		else if (foundInMap != entities.end())
 			foundInMap->second = std::move(newInsert);
 	}

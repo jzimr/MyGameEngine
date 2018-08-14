@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "TerrainSystem.h"
 #include "System.h"
 #include <vector>
 #include "RenderSystem.h"

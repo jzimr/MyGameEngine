@@ -21,6 +21,8 @@ enum class Event
 	COLLISION_BOTTOM,		//	Collision on the bottom -- || --
 	COLLISION_TOP,			//	Collision on the top	-- || --
 	COLLISION_FAULT,		//	Collision was miscalculated
+
+	CHUNK_UPDATE,			//	List with loaded chunks has been updated
 };
 
 class System : sf::NonCopyable

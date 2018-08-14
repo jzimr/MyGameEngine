@@ -3,11 +3,11 @@
 #include <vector>
 #include "World.h"
 
-const int TABLE_SIZE = 256;
 //	Using perlin noise to generate 1D terrain
 class Terrain
 {
 public:
+	const static int TABLE_SIZE = 256;
 
 public:
 	Terrain(int s, const World* world);		//	s: seed
@@ -22,7 +22,7 @@ private:
 	struct Chunk		//	When implementing into ECS, maybe make it a Component?
 						//	^^	Makes it easier to implement into Renderer & physics system
 	{
-		const static int width = 200;	//	Width of chunk (in blocks)
+		const static int width = 100;	//	Width of chunk (in blocks)
 		//int maxHeight = 30;		//	Max height of chunk (in blocks)
 		float startPosX = 10;	//	Start on x axis
 		//float startPosY = 400;

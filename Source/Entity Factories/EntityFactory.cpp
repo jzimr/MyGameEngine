@@ -28,7 +28,8 @@ void EntityFactory::getEntitiesPath()
 		entityName.erase(std::remove(entityName.begin(), entityName.end(), '"'), entityName.end());		//	now = Player																										//	Get the path
 
 		///	Store in map
-		entities.insert(std::pair(entityName, path));
+		//entities.insert(std::pair(entityName, path));
+		entities.insert(std::make_pair(entityName, path));
 	}
 }
 
@@ -99,6 +100,7 @@ std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID,
 			}
 		}
 	}
+	std::cout << "Factory: " << entity->getComponent<Transform>().transform.getPosition().y << '\n';
 	return std::move(entity);
 }
 

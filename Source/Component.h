@@ -1,6 +1,11 @@
 #pragma once
 #include "stdafx.h"
 #include <cassert>
+#include "Constants.h"
+#include <memory>
+#include "Chunk.h"
+
+using namespace Settings;
 
 struct BaseComponent
 {
@@ -25,12 +30,15 @@ struct Physics : BaseComponent		//	Making an object fall
 struct Collider : BaseComponent		//	Collides with other objects
 {
 	sf::Rect<float> colliderBox;	//	Simply a box around the entity sprite
-	bool isTrigger = false;			//	If true, this collider works as a trigger instead
+	//	 VVVVVVVVV -> TODO
+	//bool isTrigger = false;			//	If true, this collider works as a trigger instead (E.g. death)
 };
 
-struct Player : BaseComponent		//	Using this as a tag for now
+struct Player : BaseComponent		//	Can only be applied to one entity at a time
 {
-
+	//	Maybe move VVVV into custom component?
+	std::vector<std::unique_ptr<Chunk>> loadedChunks;		//	List with chunks that are currently active
+	//	Maybe add sf::View object here too so we can better load chunks?
 };
 
 ///	Requires : MovementComponent

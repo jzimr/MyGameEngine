@@ -42,7 +42,7 @@ private:
 	EntityFactory factory;
 
 	//	Temporary
-	Terrain* terrain;
+	//Terrain* terrain;
 	Entity* player;
 	
 

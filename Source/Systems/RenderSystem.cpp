@@ -24,16 +24,33 @@ void RenderSystem::update(float dt)
 
 void RenderSystem::end()		//	Fix the camera view, etc.
 {
-	camera.setSize(WINDOW_X, WINDOW_Y + 200);
-	camera.zoom(2.0f);
+	camera.setSize(WINDOW_X, WINDOW_Y /*+ 200*/);
+	//camera.zoom(4.0f);
 }
 
 void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 {
 	target.setView(camera);
 
-	//	Draw all sprites
-	for (auto& entity : entities)
+	Player* playerComp = &player->getComponent<Player>();
+	sf::FloatRect viewBounds = getViewBounds(target.getView());
+
+	//	Draw terrain sprites (As of now we simply loop through all chunks (Needs to be improved though!))
+	for (const auto& lChunk : playerComp->loadedChunks)
+	{
+		Chunk* chunk = lChunk.get();
+		for (const auto& sprite : chunk->topBlocks)
+		{
+			target.draw(sprite);
+		}
+		for (const auto& sprite : chunk->underBlocks)
+		{
+			target.draw(sprite);
+		}
+	}	
+
+	//	Draw entity sprites (This as well (look above))
+	for (const auto& entity : entities)
 	{
 		EntComponents* reqComp = entity.second.get();
 		reqComp->spriteComp->sprite.setPosition(reqComp->transformComp->transform.getPosition());
@@ -41,6 +58,16 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 	}
 
 	//std::cout << target.getView().getSize().y << " ";
+}
+
+sf::FloatRect RenderSystem::getViewBounds(const sf::View view)
+{
+	sf::FloatRect rect;
+	rect.left = view.getCenter().x - view.getSize().x / 2.0f;
+	rect.top = view.getCenter().y - view.getSize().y / 2.0f;
+	rect.width = view.getSize().x;
+	rect.height = view.getSize().y;
+	return rect;
 }
 
 void RenderSystem::onEntityUpdate(const Entity* entity)

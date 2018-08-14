@@ -10,8 +10,8 @@ World::World(sf::RenderWindow& window)
 	//, mSceneLayers{}
 	, textureHolder{}
 	, uniqueEntID{ 0 }
-	, systemManager{ new SystemManager(/*window*/) }
 	, factory{ this }
+	, systemManager{ new SystemManager(/*window*/) }
 {
 	loadTextures();
 	buildScene();
@@ -57,7 +57,7 @@ void World::draw()
 	//	Temporary
 	systemManager->getSystem<RenderSystem>().draw(mWindow);
 	//	Temporary
-	terrain->draw(mWindow);
+	//terrain->draw(mWindow);
 }
 
 sf::Texture World::getTexture(std::string name) const
@@ -76,18 +76,20 @@ void World::loadTextures()
 	textureHolder.load("Ground", "Media/Textures/Ground.png");
 	textureHolder.load("Wood", "Media/Textures/Wood.png");
 	textureHolder.load("RedPixel", "Media/Textures/RedPixel.png");
-	textureHolder.load("Grass", "Media/Textures/Grass.png");
-	textureHolder.load("Dirt", "Media/Textures/Dirt.png");
 	textureHolder.load("Player", "Media/Textures/Player.png");
 }
 
 void World::buildScene()
 {
-	terrain = new Terrain(1, this);
-	terrain->createChunk();
+	//terrain = new Terrain(1, this);
+	//terrain->createChunk();
 
 	player = addEntity("Player", sf::Vector2f(216, 250));
 	Entity* ground = addEntity("Ground", sf::Vector2f(0, 400));
+	Entity* ground2 = addEntity("Ground", sf::Vector2f(200, 350));
+
+	//std::cout << ground->getComponent<Transform>().transform.getPosition().y << '\n';
+	//std::cout << ground2->getComponent<Transform>().transform.getPosition().y << '\n';
 	////for(int i = 0; i < 1000; i++)
 	//Entity* wood = addEntity("Wood", sf::Vector2f(300, 370));
 

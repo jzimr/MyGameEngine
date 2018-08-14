@@ -17,9 +17,12 @@ public:
 	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);
 
 private:
+	sf::FloatRect getViewBounds(const sf::View view);
+
+private:
 	//sf::RenderWindow& mWindow;
 	sf::View camera;
-	const Entity* player;			//	Gotten in onEntityUpdate()
+	const Entity* player;			//	Aquired in onEntityUpdate()
 
 	struct EntComponents
 	{
