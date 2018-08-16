@@ -13,7 +13,7 @@ void SystemManager::init()
 {
 	//	Initialize all systems (THE ORDER MATTERS!)
 	ControllerSystem* controller = addSystem<ControllerSystem>();	//	Must come first
-	//	Maybe put TerrainSystem here?
+	AnimationSystem* animation = addSystem<AnimationSystem>();
 	PhysicsSystem* physics = addSystem<PhysicsSystem>();
 	CollisionSystem* collision = addSystem<CollisionSystem>();
 	TerrainSystem* terrain = addSystem<TerrainSystem>();
@@ -21,9 +21,10 @@ void SystemManager::init()
 
 
 	//	Add observers
-	controller->addObserver(physics);
-	collision->addObserver(physics);
-	terrain->addObserver(collision);
+	controller->addObserver(animation);			//	To change animation frame
+	controller->addObserver(physics);			//	To change e.g. velocity
+	collision->addObserver(physics);			//	To stop velocity if collision happened
+	terrain->addObserver(collision);			//	To add colliders to terrain
 	
 
 	for (auto& system : systems)		//	Update all systems

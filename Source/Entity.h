@@ -16,9 +16,13 @@ public:
 public:
 	Entity(int id);
 	int						getID() const;
+	void					attachChild(Entity* child);
+	void					detachChild(Entity* child);
 
 private:
 	int						uniqueID;
+	Entity*					parent;
+	Entity*					child;
 
 	////////////////////////////////////////////////////////////
 	/// Component System
@@ -60,7 +64,16 @@ public:
 		return false;
 	}
 
-	template<typename T> T&	removeComponent();		//	TODO (Also disable possibility of removing transform component)
+	template<typename T> void removeComponent()
+	{
+		T* it = NULL;
+		for (size_t i = 0; i < components.size(); i++)
+		{
+			it = dynamic_cast<T*> (components[i].get());
+			if (it != NULL)
+				break;
+		}
+	}
 
 private:
 	std::vector<CompPtr>	components;		//	Components attached to this entity

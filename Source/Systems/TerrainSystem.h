@@ -32,9 +32,6 @@ private:
 	ChunkPtr						createChunk(int ID);
 	void						loadTextures();
 
-	//Chunk*						getChunk(int ID);			//	NULL if chunk does not exist
-	bool						chunkSorter(const Chunk& c1, const Chunk& c2);
-
 	////////////////////////////////////////////////////////////
 	/// Methods for Perlin noise
 	///	

@@ -38,14 +38,19 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 	//	Draw terrain sprites (As of now we simply loop through all chunks (Needs to be improved though!))
 	for (const auto& lChunk : playerComp->loadedChunks)
 	{
+		sf::FloatRect sBounds;
 		Chunk* chunk = lChunk.get();
 		for (const auto& sprite : chunk->topBlocks)
 		{
-			target.draw(sprite);
+			sBounds = sprite.getGlobalBounds();
+			if (sBounds.intersects(viewBounds))
+				target.draw(sprite);
 		}
 		for (const auto& sprite : chunk->underBlocks)
 		{
-			target.draw(sprite);
+			sBounds = sprite.getGlobalBounds();
+			if (sBounds.intersects(viewBounds))
+				target.draw(sprite);
 		}
 	}	
 

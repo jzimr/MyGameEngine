@@ -12,6 +12,7 @@ Game::Game()		//	640, 360
 	//, mPlayer()
 	, mFont()
 	, mFrameRate()
+	, mStatistics()
 	, mFrameRateUpdateTime()
 	, mFrameRateNumFrames(0)
 {
@@ -21,7 +22,11 @@ Game::Game()		//	640, 360
 	mFrameRate.setFont(mFont);
 	mFrameRate.setPosition(5.f, 5.f);
 	mFrameRate.setCharacterSize(10);
-	mStatistics = mFrameRate;
+	
+	//mStatistics = mFrameRate;
+	mStatistics.setFont(mFont);
+	mStatistics.setPosition(5.f, 6.f);
+	mStatistics.setCharacterSize(10);
 }
 
 void Game::run()

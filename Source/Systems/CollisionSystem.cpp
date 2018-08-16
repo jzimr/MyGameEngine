@@ -99,14 +99,14 @@ void CollisionSystem::updateChunks()
 				++it;
 			}
 
-			//	Block is part of cluster
+			//	Block is part of collider
 			else if (it->getGlobalBounds().top == collider.colliderBox.top)
 			{
 				collider.colliderBox.width += it->getGlobalBounds().width;
 				++it;
 			}
 
-			//	End of cluster
+			//	End of collider
 			else
 			{
 				terrainColliders.push_back(collider);

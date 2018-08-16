@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include <memory>
 #include "Chunk.h"
+#include "AnimatedSprite.hpp"
 
 using namespace Settings;
 
@@ -52,7 +53,23 @@ struct Movement : BaseComponent		//	Can be applied to NPC's as well
 {
 	float horizontalSpeed = 200;
 	//float runSpeed = 50;
-	float jumpForce = 400;
+	float jumpForce = 270;
+};
+
+
+
+struct Anim : BaseComponent					//	Must have either Anim or Sprite2D, not both!
+{
+	enum Layer
+	{
+		LAYER_BACK,
+		LAYER_FRONT,
+		LAYER_SIZE
+	};
+
+	Layer layer;
+
+	AnimatedSprite spriteAnimation;			
 };
 
 struct Sprite2D : BaseComponent

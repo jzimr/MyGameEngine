@@ -55,7 +55,10 @@ void TerrainSystem::update(float dt)
 void TerrainSystem::updateChunks()		//	A bit messy, needs to be cleaned up
 {
 	float playerPosX = transformComp->transform.getPosition().x;
-	int playerChunkPos = (int)playerPosX / (CHUNK_WIDTH * WORLD_UNIT);	//	Get chunk ID position where player is currently
+	//	Get chunk ID position where player is currently
+	int playerChunkPos = (int)playerPosX / (CHUNK_WIDTH * WORLD_UNIT) 
+		- (playerPosX < 0 && playerPosX != (int)playerPosX);	//	Fix rounding for negative numbers
+	std::cout << playerChunkPos << '\n';
 	std::vector<int> chunksToBeCreated;
 	bool chunkUpdate = false;
 
@@ -180,11 +183,6 @@ void TerrainSystem::loadTextures()
 {
 	textureHolder.load("Grass", "Media/Textures/Grass.png");
 	textureHolder.load("Dirt", "Media/Textures/Dirt.png");
-}
-
-bool TerrainSystem::chunkSorter(const Chunk& c1, const Chunk& c2)
-{
-	return c1.chunkID < c2.chunkID;
 }
 
 float TerrainSystem::octaveNoise(float x, int octaves, float persistence, float frequency,

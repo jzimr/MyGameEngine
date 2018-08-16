@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AnimatedSprite.cpp" />
+    <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Entity Factories\EntityFactory.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\Game.cpp" />
@@ -63,7 +65,9 @@
     <ClCompile Include="Source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Systems\AnimationSystem.cpp" />
     <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Systems\CombatSystem.cpp" />
     <ClCompile Include="Source\Systems\ControllerSystem.cpp" />
     <ClCompile Include="Source\Systems\MessageChannel.cpp" />
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
@@ -75,6 +79,8 @@
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AnimatedSprite.hpp" />
+    <ClInclude Include="Source\Animation.hpp" />
     <ClInclude Include="Source\Chunk.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\Constants.h" />
@@ -123,7 +129,9 @@
     </ClInclude>
     <ClInclude Include="Source\SceneNode.h" />
     <ClInclude Include="Source\stdafx.h" />
+    <ClInclude Include="Source\Systems\AnimationSystem.h" />
     <ClInclude Include="Source\Systems\CollisionSystem.h" />
+    <ClInclude Include="Source\Systems\CombatSystem.h" />
     <ClInclude Include="Source\Systems\ControllerSystem.h" />
     <ClInclude Include="Source\Systems\MessageChannel.h" />
     <ClInclude Include="Source\Systems\PhysicsSystem.h" />
