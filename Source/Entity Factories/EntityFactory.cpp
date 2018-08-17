@@ -1,13 +1,16 @@
 #include "stdafx.h"
 #include "EntityFactory.h"
-#include "World.h"
+#include "EntityManager.h"
+//#include "World.h"
 
 using namespace Settings;
 
-EntityFactory::EntityFactory(World * world)
-	: mWorld{ world }
+EntityFactory::EntityFactory(/*World * world*/)
+	//: mWorld{ world }
+	: textureHolder{}
 {
 	getEntitiesPath();		//	Automatically load all entities from folder
+	loadTextures();
 }
 
 void EntityFactory::getEntitiesPath()
@@ -33,7 +36,7 @@ void EntityFactory::getEntitiesPath()
 	}
 }
 
-std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID, sf::Vector2f position)
+EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f position)
 {
 	///	Find path from list
 	assert(!entities.empty());			//	If there are no entities to spawn at all
@@ -53,6 +56,8 @@ std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID,
 		//	Mandatory component
 		entity->addComponent<Transform>();	
 		entity->getComponent<Transform>().transform.setPosition(position);
+
+		//std::cout << entity->getComponent<Transform>().transform.getPosition().x << '\n';
 
 		while (std::getline(file, line, '\n'))
 		{
@@ -83,7 +88,7 @@ std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID,
 			{
 				Sprite2D* spriteComp = &entity->getComponent<Sprite2D>();
 				Transform* transform = &entity->getComponent<Transform>();
-				spriteComp->texture = mWorld->getTexture(words[1]);	//	Get texture from world
+				spriteComp->texture = textureHolder.get(words[1]);	//	Get texture from world
 				spriteComp->sprite = sf::Sprite(spriteComp->texture);
 				spriteComp->sprite.setPosition(transform->transform.getPosition());
 				spriteComp->sprite.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
@@ -103,6 +108,16 @@ std::unique_ptr<Entity> EntityFactory::spawnEntity(std::string ID, int uniqueID,
 	std::cout << "Factory: " << entity->getComponent<Transform>().transform.getPosition().y << '\n';
 	return std::move(entity);
 }
+
+void EntityFactory::loadTextures()
+{
+	textureHolder.load("Raptor", "Media/Textures/Raptor.png");
+	textureHolder.load("Ground", "Media/Textures/Ground.png");
+	textureHolder.load("Wood", "Media/Textures/Wood.png");
+	textureHolder.load("RedPixel", "Media/Textures/RedPixel.png");
+	textureHolder.load("Player", "Media/Textures/Player.png");
+}
+
 
 //void EntityFactory::linkLineTypes()
 //{

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "System.h"
 #include "Chunk.h"
+#include "TextureHolder.h"
 
 using namespace Settings;
 const int TABLE_SIZE = 256;
@@ -25,7 +26,6 @@ public:
 	void						init() override;
 	void						begin() override;
 	void						update(float dt) override;
-	void						onEntityUpdate(const Entity* entity) override;
 
 private:
 	void						updateChunks();
@@ -52,24 +52,11 @@ private:
 	int seed;
 	float table[TABLE_SIZE];
 	float d2_counter;
-	//unsigned int uniqueChunkID;		//	Only positive IDs
-
-	//const World* mWorld;			//	To get the textures 
 
 
 
 private:
-	//struct EntComponents
-	//{
-	//	Transform* transformComp;		//	Required
-	//	Player* playerComp;			//	Required 
-
-	//	EntComponents(Transform* trans, Player* play)
-	//		: transformComp{ trans }, playerComp{ play }
-	//	{
-	//	}
-	//};
-	//std::map<int, std::unique_ptr<EntComponents>> entities;		//	Only player here :(
+	EntityManager entMan;
 
 	Transform* transformComp;
 	Player* playerComp;

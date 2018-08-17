@@ -2,6 +2,7 @@
 #include "CollisionSystem.h"
 
 CollisionSystem::CollisionSystem()
+	: entMan{}
 {
 }
 
@@ -13,17 +14,23 @@ CollisionSystem::CollisionSystem()
 
 void CollisionSystem::update(float dt)
 {
-	Transform* transform;
-	Collider* collider;
-	Physics* physics;
+	entities = entMan.getEntWithComps<Transform, Collider>();
+
+	Transform * transform;		//	Required
+	Collider* collider;			//	Required
+	Physics* physics;			//	Not required
 
 	Event collision;
 
 	for (auto& entity : entities)
 	{
-		transform = entity.second.get()->transformComp;
-		collider = entity.second.get()->colliderComp;
-		physics = entity.second.get()->physicsComp;
+		if (entity->hasComponent<Player>())
+			playerComp = &entity->getComponent<Player>();
+
+
+		transform = &entity->getComponent<Transform>();
+		collider = &entity->getComponent<Collider>();
+		physics = entity->hasComponent<Physics>() ? &entity->getComponent<Physics>() : NULL;
 
 		if (!physics)		//	No point in checking for collision on static object
 			continue;
@@ -39,7 +46,7 @@ void CollisionSystem::update(float dt)
 		//	For each entity collider
 		for (auto& otherEntity : entities)
 		{
-			otherRect = otherEntity.second.get()->colliderComp->colliderBox;
+			otherRect = otherEntity->getComponent<Collider>().colliderBox;
 
 			//	Check if otherEntity intersects and is not this entity
 			if (thisRect->intersects(otherRect) && entity != otherEntity)
@@ -47,7 +54,7 @@ void CollisionSystem::update(float dt)
 				collision = checkCollision(*thisRect, otherRect);			//	Get collision direction
 				fixPos = fixPositionOnCollide(collision, *thisRect, otherRect);		//	Fix position when colliding
 
-				notify(entity.first, collision);	//	Notify all observers about the collision
+				notify(entity->getID(), collision);	//	Notify all observers about the collision
 
 				transform->transform.setPosition(fixPos);
 				collider->colliderBox.left = transform->transform.getPosition().x;
@@ -66,7 +73,7 @@ void CollisionSystem::update(float dt)
 				collision = checkCollision(*thisRect, otherRect);			//	Get collision direction
 				fixPos = fixPositionOnCollide(collision, *thisRect, otherRect);		//	Fix position when colliding
 
-				notify(entity.first, collision);	//	Notify all observers about the collision
+				notify(entity->getID(), collision);	//	Notify all observers about the collision
 
 				transform->transform.setPosition(fixPos);
 				collider->colliderBox.left = transform->transform.getPosition().x;
@@ -200,46 +207,4 @@ sf::Vector2f CollisionSystem::fixPositionOnCollide(Event collDirection, const sf
 	}
 
 	return fixedPos;
-}
-
-void CollisionSystem::onEntityUpdate(const Entity * entity)
-{
-	int entityID = entity->getID();
-	bool hasRequirements = entity->hasComponent<Transform>() &&
-		entity->hasComponent<Collider>();
-	auto foundInMap = entities.find(entityID);
-
-	//	Get the player (For chunks)
-	if (entity->hasComponent<Player>())
-		playerComp = &entity->getComponent<Player>();
-
-	//	False in entity
-	if (!hasRequirements)
-	{
-		//	Not found in our list	=	No action
-		if (foundInMap == entities.end())
-			return;
-
-		//	Found in our list		=	Remove from list
-		else if (foundInMap != entities.end())
-			entities.erase(entityID);
-	}
-	//	True in Entity
-	else if (hasRequirements)
-	{
-		Transform* playerTrans = &entity->getComponent<Transform>();
-		Collider* playerColl = &entity->getComponent<Collider>();
-		Physics* playerPhys = entity->hasComponent<Physics>() ?
-			&entity->getComponent<Physics>() : NULL;
-
-		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerTrans, playerColl, playerPhys) };
-
-		//	Not found in our list	=	Add to list
-		if (foundInMap == entities.end())
-			entities.insert(std::make_pair(entity->getID(), std::move(newInsert)));	//	Add to list
-
-		//	Found in our list		=	Calibrate component adress (just in case)
-		else if (foundInMap != entities.end())
-			foundInMap->second = std::move(newInsert);
-	}
 }

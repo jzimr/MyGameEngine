@@ -22,10 +22,6 @@ void System::end()
 {
 }
 
-void System::onEntityUpdate(const Entity * ent)
-{
-}
-
 void System::onNotify(int entity, std::function<void()> command)
 {
 	//	Execute task in derived class

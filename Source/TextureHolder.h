@@ -3,6 +3,7 @@
 #include <map>
 #include <cassert>
 #include <utility>
+#include <memory>
 
 template<typename Identifier>
 class TextureHolder

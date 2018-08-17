@@ -1,11 +1,11 @@
 #pragma once
 #include "stdafx.h"
-//#include "SceneNode.h"
-//class Component;
 #include <vector>
 #include <bitset>
 #include <cassert>
 #include "Component.h"
+
+using namespace Settings;
 
 class Entity : public sf::NonCopyable
 {
@@ -16,30 +16,39 @@ public:
 public:
 	Entity(int id);
 	int						getID() const;
-	void					attachChild(Entity* child);
-	void					detachChild(Entity* child);
+	//void					attachChild(Entity* child);
+	//void					detachChild(Entity* child);
 
 private:
+	std::vector<CompPtr>	components;		//	Components attached to this entity
+	std::bitset<MAX_COMPS>	compFlags;	//	So we can quickly lookup an entity's components instead of looping through the whole list
+
 	int						uniqueID;
-	Entity*					parent;
-	Entity*					child;
+	//Entity*					parent;
+	//Entity*					child;
 
 	////////////////////////////////////////////////////////////
 	/// Component System
 	///	TODO: Implement own system that handles this
 	////////////////////////////////////////////////////////////
 public:
-	template<typename T> T*	addComponent()
+
+	template<class T> T&	addComponent()
 	{
+		T comp;
+		compFlags.set(comp.type);
+
+
 		CompPtr newComp(new T());
 		components.push_back(std::move(newComp));
 
-		return dynamic_cast<T*>(components.back().get());
+		return *dynamic_cast<T*>(components.back().get());
 	}
 
-	template<typename T> T& getComponent() const
+	template<class T> T& getComponent() const
 	{
 		T* it = NULL;
+
 		for (size_t i = 0; i < components.size(); i++)
 		{
 			it = dynamic_cast<T*> (components[i].get());
@@ -52,29 +61,42 @@ public:
 		return *it;
 	}
 
-	template<typename T> bool hasComponent() const
+	template<class T> bool hasComponent() const
 	{
-		T* it = NULL;
-		for (size_t i = 0; i < components.size(); i++)
+		T comp;
+
+		return compFlags.test(comp.type) ? true : false;
+	}
+
+	//	For recusion of hasComponents if in total only 1 argument left
+	template<class T> bool hasComponents() const
+	{
+		return hasComponent<T>();
+	}
+
+	template<class T, class S, class... Params> bool hasComponents() const
+	{
+		if (hasComponent<T>())
 		{
-			it = dynamic_cast<T*> (components[i].get());
-			if (it != NULL)
-				return true;
+			return (true && this->hasComponents<S, Params...>());
 		}
+
 		return false;
 	}
 
-	template<typename T> void removeComponent()
+	template<class T> void removeComponent()
 	{
+		T comp;
 		T* it = NULL;
+
 		for (size_t i = 0; i < components.size(); i++)
 		{
 			it = dynamic_cast<T*> (components[i].get());
 			if (it != NULL)
-				break;
+			{
+				components.erase(components.begin() + i);
+				compFlags.reset(comp.type);
+			}
 		}
 	}
-
-private:
-	std::vector<CompPtr>	components;		//	Components attached to this entity
 };

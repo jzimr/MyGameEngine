@@ -63,6 +63,5 @@ public:
 	}
 
 private:
-	//sf::RenderWindow& mWindow;
 	std::vector<std::unique_ptr<System>> systems;
 };

@@ -14,10 +14,20 @@ RenderSystem::RenderSystem(/*sf::RenderWindow& window*/)
 {
 }
 
+void RenderSystem::init()
+{
+	//entities = entMan.getEntWithComps<Transform, Sprite2D>();
+	//std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
+	//player = p[0];
+}
+
 void RenderSystem::update(float dt)
 {
 	//	Create updates for some shit. E.g. That you do not need
 	//	to draw all sprites unless inside the FOV of the client?
+	entities = entMan.getEntWithComps<Transform, Sprite2D>();
+	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
+	player = p[0];
 
 	camera.setCenter(player->getComponent<Transform>().transform.getPosition());
 }
@@ -31,6 +41,9 @@ void RenderSystem::end()		//	Fix the camera view, etc.
 void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 {
 	target.setView(camera);
+
+	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Temp
+	player = p[0];
 
 	Player* playerComp = &player->getComponent<Player>();
 	sf::FloatRect viewBounds = getViewBounds(target.getView());
@@ -57,9 +70,12 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 	//	Draw entity sprites (This as well (look above))
 	for (const auto& entity : entities)
 	{
-		EntComponents* reqComp = entity.second.get();
-		reqComp->spriteComp->sprite.setPosition(reqComp->transformComp->transform.getPosition());
-		target.draw(entity.second->spriteComp->sprite);
+		Sprite2D* reqComp = &entity->getComponent<Sprite2D>();
+		Transform* transComp = &entity->getComponent<Transform>();
+
+		reqComp->sprite.setPosition(transComp->transform.getPosition());
+		//std::cout << transComp->transform.getPosition().x << '\n';
+		target.draw(entity->getComponent<Sprite2D>().sprite);
 	}
 
 	//std::cout << target.getView().getSize().y << " ";
@@ -73,43 +89,4 @@ sf::FloatRect RenderSystem::getViewBounds(const sf::View view)
 	rect.width = view.getSize().x;
 	rect.height = view.getSize().y;
 	return rect;
-}
-
-void RenderSystem::onEntityUpdate(const Entity* entity)
-{
-	int entityID = entity->getID();
-	bool hasRequirements = entity->hasComponent<Sprite2D>()
-		&& entity->hasComponent<Transform>();		//	0 or 1
-	auto foundInMap = entities.find(entityID);
-	
-	//	Get the player (For camera)
-	if (entity->hasComponent<Player>())
-		player = entity;
-
-	//	False in Entity			
-	if (!hasRequirements)
-	{
-		//	Not found in our list	=	No action
-		if (foundInMap == entities.end())
-			return;
-
-		//	Found in our list		=	Remove from list
-		else if (foundInMap != entities.end())
-			entities.erase(entityID);
-	}
-	//	True in Entity
-	else if (hasRequirements)
-	{
-		Sprite2D* playerSprite = &entity->getComponent<Sprite2D>();
-		Transform* playerTrans = &entity->getComponent<Transform>();
-		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerSprite, playerTrans) };
-
-		//	Not found in our list	=	Add to list
-		if (foundInMap == entities.end())
-			entities.insert(std::make_pair(entityID, std::move(newInsert)));	//	Add to list
-
-		//	Found in our list		=	Calibrate component adress
-		else if (foundInMap != entities.end())
-			foundInMap->second = std::move(newInsert);
-	}
 }

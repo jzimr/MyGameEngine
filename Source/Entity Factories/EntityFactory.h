@@ -5,11 +5,16 @@
 #include <filesystem>
 #include <map>
 #include <sstream>
-class World;
+#include "TextureHolder.h"
+//class World;
 class Entity;
+class EntityManager;
 
 class EntityFactory
 {
+public:
+	typedef std::shared_ptr<Entity> EntPtr;
+
 private:
 	enum LineType
 	{
@@ -17,10 +22,8 @@ private:
 	};
 
 public:
-	EntityFactory(World* world);
-	//void						createPlayer();
-	//void						createGround();
-	//void						createBlock();
+	EntityFactory();
+
 
 
 
@@ -28,19 +31,18 @@ public:
 
 
 
-	std::unique_ptr<Entity>		spawnEntity(std::string ID, int uniqueID, sf::Vector2f position = sf::Vector2f(0, 0));
+	std::shared_ptr<Entity>		spawnEntity(int uniqueID, std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
 
 private:
 	void						getEntitiesPath();
-	//void						linkLineTypes();
+	void						loadTextures();		//	Temporary
 
 private:
-	World * mWorld;
+	//World * mWorld;
 	//	Better to store path as it makes it easier to modify entities at
 	//	runtime for testing purposes.
 	//	First = Entity name, Second = path to entity file
-	std::map<std::string, std::string> entities;	
+	std::map<std::string, std::string> entities;
+	TextureHolder<std::string> textureHolder;
 
-
-	//std::map<std::string, LineType> lineTypes;
 };

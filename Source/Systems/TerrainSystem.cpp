@@ -39,6 +39,12 @@ void TerrainSystem::begin()
 //	Only check for chunk updates every 1 second
 void TerrainSystem::update(float dt)
 {
+	entities = entMan.getEntWithComps<Transform, Sprite2D>();
+	std::vector<EntPtr> p = entMan.getEntWithComps<Player>();
+
+	transformComp = &p[0]->getComponent<Transform>();
+	playerComp = &p[0]->getComponent<Player>();
+
 	d2_counter += dt;
 
 	if (d2_counter > 1.0f)
@@ -57,8 +63,8 @@ void TerrainSystem::updateChunks()		//	A bit messy, needs to be cleaned up
 	float playerPosX = transformComp->transform.getPosition().x;
 	//	Get chunk ID position where player is currently
 	int playerChunkPos = (int)playerPosX / (CHUNK_WIDTH * WORLD_UNIT) 
-		- (playerPosX < 0 && playerPosX != (int)playerPosX);	//	Fix rounding for negative numbers
-	std::cout << playerChunkPos << '\n';
+		- (playerPosX < 0 /*&& playerPosX != (int)playerPosX*/);	//	Fix rounding for negative numbers
+	//std::cout << playerChunkPos << " " << playerPosX << " " << (int) playerPosX << '\n';
 	std::vector<int> chunksToBeCreated;
 	bool chunkUpdate = false;
 
@@ -232,18 +238,5 @@ void TerrainSystem::generateTable()
 	for (int i = 0; i < TABLE_SIZE; i++)
 	{
 		table[i] = gen_rnd(mt_engine);
-	}
-}
-
-void TerrainSystem::onEntityUpdate(const Entity* entity)
-{
-	int entityID = entity->getID();
-	bool hasRequirements = entity->hasComponent<Transform>()
-		&& entity->hasComponent<Player>();		//	0 or 1
-
-	if (hasRequirements)
-	{
-		transformComp = &entity->getComponent<Transform>();
-		playerComp = &entity->getComponent<Player>();
 	}
 }

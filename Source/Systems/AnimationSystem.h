@@ -14,23 +14,12 @@ class AnimationSystem : public System
 
 
 public:
-	AnimationSystem();
+	//AnimationSystem();
 
 	//void						init() override;
-	void						update(float dt) override;
-	void						onEntityUpdate(const Entity* ent) override;
+	//void						update(float dt) override;
 
 private:
 
-	struct EntComponents
-	{
-		Anim* animComp;			//	Required
-
-		EntComponents(Anim* anim)
-			: animComp{ anim }
-		{
-		}
-	};
-	std::map<int, std::unique_ptr<EntComponents>> entities;
 
 };

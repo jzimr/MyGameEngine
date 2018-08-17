@@ -7,6 +7,9 @@ TextureHolder<Identifier>::TextureHolder()
 template<typename Identifier>
 void TextureHolder<Identifier>::load(const Identifier identifier, const std::string fileName)
 {
+	sf::Texture* hi = new sf::Texture();
+
+
 	std::unique_ptr<sf::Texture> texture(new sf::Texture());
 	assert(texture->loadFromFile(fileName));	//	Load file and check if path is valid
 

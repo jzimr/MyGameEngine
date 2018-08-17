@@ -6,7 +6,7 @@
 #include <vector>
 #include <cassert>
 #include <functional>
-#include "World.h"
+#include "EntityManager.h"
 
 enum class Event
 {
@@ -28,6 +28,9 @@ enum class Event
 class System : sf::NonCopyable
 {
 public:
+	typedef std::shared_ptr<Entity> EntPtr;
+
+public:
 								System();
 
 	virtual void				init();				//	At initialization of system
@@ -37,7 +40,7 @@ public:
 	virtual void				end();				//	After update()
 
 	//	Called when an entity has changed its components
-	virtual void				onEntityUpdate(const Entity* ent) = 0;
+	//virtual void				onEntityUpdate(const Entity* ent) = 0;
 
 	////////////////////////////////////////////////////////////
 	/// Handle events between systems
@@ -55,4 +58,5 @@ protected:
 
 protected:
 	std::vector<System*> observers;			//	List of subscribers
+	std::vector<EntPtr> entities;			//	List of entities for the system
 };

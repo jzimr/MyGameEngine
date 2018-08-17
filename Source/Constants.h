@@ -2,6 +2,7 @@
 
 namespace Settings
 {
+	const int MAX_COMPS = 32;
 	constexpr int WINDOW_X = 1280;
 	constexpr int WINDOW_Y = 720;
 	const int RESOLUTION_X = 640;

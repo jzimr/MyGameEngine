@@ -19,7 +19,6 @@ public:
 
 	//void						init() override;
 	void						update(float dt) override;
-	void						onEntityUpdate(const Entity* entity) override;
 
 	//	Get notified from subscriptions
 	void				onNotify(int entity, Event event) override;
@@ -29,8 +28,6 @@ public:
 	///	
 	////////////////////////////////////////////////////////////
 private:
-	//	Check collision on an entity
-	Collision			checkCollision(const sf::Rect<float>& collider, const sf::Rect<float>& otherCollider, const sf::Vector2f velocity) const;
 
 	enum Collision
 	{
@@ -42,19 +39,6 @@ private:
 	};
 
 private:
-	struct EntComponents
-	{
-		Transform* transformComp;		//	Required
-		Physics* physicsComp;			//	This or/and
-		Collider* colliderComp;			//	this 
-		Movement* movementComp;			//	physicsComp required
 
-		EntComponents(Transform* trans, Physics* phys,
-			Collider* coll, Movement* move)
-			: transformComp{ trans }, physicsComp{ phys }, colliderComp{coll},
-			movementComp{ move }
-		{ 
-		}
-	};
-	std::map<int, std::unique_ptr<EntComponents>> entities;
+	EntityManager entMan;
 };

@@ -9,6 +9,7 @@
 #include <queue>
 #include "Entity Factories/EntityFactory.h"
 #include "Constants.h"
+#include "EntityManager.h"
 class Terrain;
 class SystemManager;
 
@@ -16,6 +17,7 @@ class World : sf::NonCopyable
 {
 public:
 	typedef std::unique_ptr<BaseComponent> CompPtr;
+	typedef std::shared_ptr<Entity> EntPtr;
 
 public:
 								World(sf::RenderWindow& window);
@@ -23,32 +25,33 @@ public:
 	void						draw();
 	void						handleInput();
 
-	Entity*						addEntity(std::string entityName, sf::Vector2f position = sf::Vector2f(0,0));
+	//Entity*						addEntity(std::string entityName, sf::Vector2f position = sf::Vector2f(0,0));
 	void						entityUpdated();
 	//Entity*					removeEntity();		//	REMEMBER TO NOTIFY SYSTEMS ABOUT ENTITY CHANGE
 
-	sf::Texture getTexture(std::string name) const;
+	//sf::Texture getTexture(std::string name) const;
 
 	std::queue<sf::Event>& getEventQueue();
 
 private:
-	void						loadTextures();		//	Load all textures you want to use
+	//void						loadTextures();		//	Load all textures you want to use
 	void						buildScene();
 	
-	std::vector<std::unique_ptr<Entity>> entities;		//	List of all entities
-	int							getUniqueID();
+	//std::vector<std::unique_ptr<Entity>> entities;		//	List of all entities
+	//int							getUniqueID();
 
 	std::queue<sf::Event> eventQueue;
-	EntityFactory factory;
+	EntityManager entMan;
+	//EntityFactory factory;
 
 	//	Temporary
 	//Terrain* terrain;
-	Entity* player;
+	EntPtr player;
 	
 
 private:
 
-	TextureHolder<std::string> textureHolder;		//	String can later be changed to an enum
+	//TextureHolder<std::string> textureHolder;		//	String can later be changed to an enum
 	sf::RenderWindow&			mWindow;
 	//	Entity						mSceneGraph;
 	//	Each Entity here is an empty node that stores all children inside and draws them after the layer

@@ -7,15 +7,17 @@ PhysicsSystem::PhysicsSystem()
 
 void PhysicsSystem::update(float dt)
 {
+	entities = entMan.getEntWithComps<Transform, Physics>();
+
 	Transform* transform;
 	Physics* physics;
 	Movement* movement;
 
 	for (auto& entity : entities)
 	{
-		transform = entity.second.get()->transformComp;
-		physics = entity.second.get()->physicsComp;
-		movement = entity.second.get()->movementComp;
+		transform = &entity->getComponent<Transform>();
+		physics = &entity->getComponent<Physics>();
+		movement = entity->hasComponent<Movement>() ? &entity->getComponent<Movement>() : NULL;
 
 		//	Temporary physics system
 		if (physics)
@@ -45,16 +47,13 @@ void PhysicsSystem::onNotify(int entity, Event event)
 	Movement* movement = NULL;
 
 	//	Find the entity
-	auto found = entities.find(entity);
-	if (found != entities.end())
+	for (size_t i = 0; i < entities.size(); i++)
 	{
-		physics = found->second.get()->physicsComp;
-		movement = found->second.get()->movementComp;
-	}
-	else
-	{
-		std::cout << "Entity not found in notification system (Physics)\n";
-		return;
+		if (entities[i]->getID() == entity)
+		{
+			physics = &entities[i]->getComponent<Physics>();
+			movement = &entities[i]->getComponent<Movement>();
+		}
 	}
 
 	switch (event)
@@ -105,45 +104,3 @@ void PhysicsSystem::onNotify(int entity, Event event)
 /// END
 ///	
 ////////////////////////////////////////////////////////////
-
-void PhysicsSystem::onEntityUpdate(const Entity* entity)
-{
-	int entityID = entity->getID();
-	bool hasRequirements = entity->hasComponent<Transform>() &&
-		(entity->hasComponent<Physics>() || entity->hasComponent<Collider>()
-			|| entity->hasComponent<Movement>());
-	auto foundInMap = entities.find(entityID);
-
-	//	False in entity
-	if (!hasRequirements)
-	{
-		//	Not found in our list	=	No action
-		if (foundInMap == entities.end())
-			return;
-
-		//	Found in our list		=	Remove from list
-		else if (foundInMap != entities.end())
-			entities.erase(entityID);
-	}
-	//	True in Entity
-	else if (hasRequirements)
-	{
-		Transform* playerTrans = &entity->getComponent<Transform>();
-		Physics* playerPhys = entity->hasComponent<Physics>() ?
-			&entity->getComponent<Physics>() : NULL;
-		Collider* playerColl = entity->hasComponent<Collider>() ?
-			&entity->getComponent<Collider>() : NULL;
-		Movement* playerMove = entity->hasComponent<Movement>() ?
-			&entity->getComponent<Movement>() : NULL;
-
-		std::unique_ptr<EntComponents> newInsert{ new EntComponents(playerTrans, playerPhys, playerColl, playerMove) };
-
-		//	Not found in our list	=	Add to list
-		if (foundInMap == entities.end())
-			entities.insert(std::make_pair(entity->getID(), std::move(newInsert)));	//	Add to list
-
-		//	Found in our list		=	Calibrate component adress (just in case)
-		else if (foundInMap != entities.end())
-			foundInMap->second = std::move(newInsert);
-	}
-}

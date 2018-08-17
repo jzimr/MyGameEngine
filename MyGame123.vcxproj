@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Entity Factories\EntityFactory.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Old Code\Components\Component.cpp">
@@ -75,7 +76,6 @@
     <ClCompile Include="Source\Systems\System.cpp" />
     <ClCompile Include="Source\Systems\SystemManager.cpp" />
     <ClCompile Include="Source\Systems\TerrainSystem.cpp" />
-    <ClCompile Include="Source\Terrain.cpp" />
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +86,7 @@
     <ClInclude Include="Source\Constants.h" />
     <ClInclude Include="Source\Entity Factories\EntityFactory.h" />
     <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Old Code\Components\Commands\Command.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -140,7 +141,6 @@
     <ClInclude Include="Source\Systems\SystemManager.h" />
     <ClInclude Include="Source\Systems\TerrainSystem.h" />
     <ClInclude Include="Source\targetver.h" />
-    <ClInclude Include="Source\Terrain.h" />
     <ClInclude Include="Source\TextureHolder.h" />
     <ClInclude Include="Source\World.h" />
   </ItemGroup>

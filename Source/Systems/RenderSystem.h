@@ -9,10 +9,9 @@ class RenderSystem : public System
 public:
 								RenderSystem(/*sf::RenderWindow& window*/);
 
-	//void						init() override;
+	void						init() override;
 	void						update(float dt) override;
 	void						end() override;
-	void						onEntityUpdate(const Entity* ent) override;
 
 	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);
 
@@ -20,20 +19,9 @@ private:
 	sf::FloatRect getViewBounds(const sf::View view);
 
 private:
-	//sf::RenderWindow& mWindow;
 	sf::View camera;
-	const Entity* player;			//	Aquired in onEntityUpdate()
+	std::shared_ptr<Entity> player;			//	Aquired in onEntityUpdate()
 
-	struct EntComponents
-	{
-		Sprite2D* spriteComp;			//	Required
-		Transform* transformComp;		//	Required
-
-		EntComponents(Sprite2D* sprite, Transform* trans)
-			: spriteComp{ sprite }, transformComp{ trans }
-		{
-		}
-	};
-	std::map<int, std::unique_ptr<EntComponents>> entities;
+	EntityManager entMan;
 
 };

@@ -38,12 +38,14 @@ void Game::run()
 	{
 		sf::Time elapsedTime = clock.restart();
 		timeSinceLastUpdate += elapsedTime;
+
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
 
 			processInput();
 			update(TimePerFrame);
+			//std::cout << elapsedTime.asSeconds() << '\n';
 		}
 
 		updateStatistics(elapsedTime);
@@ -78,7 +80,7 @@ void Game::render()
 	mWindow.clear();
 	mWorld.draw();
 
-	//	Temporary
+	//	Temporary	(DOES NOT WORK FOR RELEASE MODE FOR SOME REASON D:)
 	{
 		sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
 		sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());

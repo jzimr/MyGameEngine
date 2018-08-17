@@ -25,7 +25,7 @@ void SystemManager::init()
 	controller->addObserver(physics);			//	To change e.g. velocity
 	collision->addObserver(physics);			//	To stop velocity if collision happened
 	terrain->addObserver(collision);			//	To add colliders to terrain
-	
+
 
 	for (auto& system : systems)		//	Update all systems
 		system->init();
@@ -66,12 +66,11 @@ void SystemManager::end()
 
 void SystemManager::notify(Entity * entity, SystemEvent event)
 {
-	switch (event)
+	for (auto& system : systems)
 	{
-	case SystemEvent::ENTITY_UPDATE:
-		for (auto& system : systems)
+		switch (event)
 		{
-			system->onEntityUpdate(entity);
+		case SystemEvent::ENTITY_UPDATE:	break;		//	Not in use anymore
 		}
 	}
 }
