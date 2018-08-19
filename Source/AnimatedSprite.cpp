@@ -19,13 +19,15 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
+//	Comment from user:
+//	SOURCE FILE HAS BEEN CHANGED A BIT, BUT STILL USES MOST OF THE ORIGINAL CODE!
 ////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "AnimatedSprite.hpp"
 
-AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
-	m_animation(NULL), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
+AnimatedSprite::AnimatedSprite(bool paused, bool looped) :
+	m_animation(NULL), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped), m_texture(NULL)
 {
 
 }
@@ -36,11 +38,6 @@ void AnimatedSprite::setAnimation(const Animation& animation)
 	m_texture = m_animation->getSpriteSheet();
 	m_currentFrame = 0;
 	setFrame(m_currentFrame);
-}
-
-void AnimatedSprite::setFrameTime(sf::Time time)
-{
-	m_frameTime = time;
 }
 
 void AnimatedSprite::play()
@@ -111,11 +108,6 @@ bool AnimatedSprite::isPlaying() const
 	return !m_isPaused;
 }
 
-sf::Time AnimatedSprite::getFrameTime() const
-{
-	return m_frameTime;
-}
-
 void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
 {
 	if (m_animation)
@@ -148,14 +140,15 @@ void AnimatedSprite::update(sf::Time deltaTime)
 	// if not paused and we have a valid animation
 	if (!m_isPaused && m_animation)
 	{
+		//std::cout << "first checked\n";
 		// add delta time
 		m_currentTime += deltaTime;
 
 		// if current time is bigger then the frame time advance one frame
-		if (m_currentTime >= m_frameTime)
+		if (m_currentTime >= m_animation->getFrameTime())
 		{
 			// reset time, but keep the remainder
-			m_currentTime = sf::microseconds(m_currentTime.asMicroseconds() % m_frameTime.asMicroseconds());
+			m_currentTime = sf::microseconds(m_currentTime.asMicroseconds() % m_animation->getFrameTime().asMicroseconds());
 
 			// get next Frame index
 			if (m_currentFrame + 1 < m_animation->getSize())

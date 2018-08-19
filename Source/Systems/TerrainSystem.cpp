@@ -167,7 +167,7 @@ TerrainSystem::ChunkPtr TerrainSystem::createChunk(int ID)
 														///	Create new sprite and resize it fitted to our resolution
 		sf::Sprite newBlock;
 		newBlock.setTexture(chunk->grassTex);
-		newBlock.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
+		//newBlock.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 		newBlock.setPosition(x * WORLD_UNIT, y * WORLD_UNIT);
 		chunk->topBlocks.push_back(newBlock);
 

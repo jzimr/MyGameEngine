@@ -5,6 +5,7 @@
 #include <memory>
 #include "Chunk.h"
 #include "AnimatedSprite.hpp"
+#include "Events.h"
 
 using namespace Settings;
 
@@ -64,9 +65,9 @@ struct Player : BaseComponent		//	Can only be applied to one entity at a time
 };
 
 ///	Requires : MovementComponent
-struct Controller : BaseComponent	
+struct Controller : BaseComponent
 {
-	
+
 	COMP_TYPE type = CONTROLLER_COMP;
 };
 
@@ -80,7 +81,7 @@ struct Movement : BaseComponent		//	Can be applied to NPC's as well
 	COMP_TYPE type = MOVEMENT_COMP;
 };
 
-struct Anim : BaseComponent					//	Must have either Anim or Sprite2D, not both!
+struct Anim : BaseComponent
 {
 	enum Layer
 	{
@@ -88,10 +89,17 @@ struct Anim : BaseComponent					//	Must have either Anim or Sprite2D, not both!
 		LAYER_FRONT,
 		LAYER_SIZE
 	};
+	enum Action
+	{
+		MOVING = 0,		//	DON'T CHANGE ORDER!!!
+		JUMPING = 1,
+		STANDING = 2,
+	};
 
 	Layer layer;
 
-	AnimatedSprite spriteAnimation;	
+	std::map<Action, Animation> animationMap;			//	All possible animations with their triggers
+	AnimatedSprite activeAnim;
 
 	COMP_TYPE type = ANIM_COMP;
 };

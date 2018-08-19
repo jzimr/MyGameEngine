@@ -7,23 +7,7 @@
 #include <cassert>
 #include <functional>
 #include "EntityManager.h"
-
-enum class Event
-{
-	ENTITY_JUMP,			//	Trigger a jump event
-	ENTITY_LEFT,			//	Go left
-	ENTITY_RIGHT,			//	Go right
-	STOP_ENTITY_LEFT,		//	Stop left movement
-	STOP_ENTITY_RIGHT,		//	Stop right movement
-
-	COLLISION_RIGHT,		//	Collision to the right of object
-	COLLISION_LEFT,			//	Collision to the left   -- || --
-	COLLISION_BOTTOM,		//	Collision on the bottom -- || --
-	COLLISION_TOP,			//	Collision on the top	-- || --
-	COLLISION_FAULT,		//	Collision was miscalculated
-
-	CHUNK_UPDATE,			//	List with loaded chunks has been updated
-};
+#include "Events.h"
 
 class System : sf::NonCopyable
 {

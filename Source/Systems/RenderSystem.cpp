@@ -25,7 +25,15 @@ void RenderSystem::update(float dt)
 {
 	//	Create updates for some shit. E.g. That you do not need
 	//	to draw all sprites unless inside the FOV of the client?
-	entities = entMan.getEntWithComps<Transform, Sprite2D>();
+
+	entities.clear();
+	///	Get all entities that have either Sprite2D or Anim Component
+	std::vector<EntPtr> entSprites = entMan.getEntWithComp<Sprite2D>();
+	std::vector<EntPtr> entAnims = entMan.getEntWithComp<Anim>();
+	entities.reserve(entSprites.size() + entAnims.size());
+	entities.insert(entities.end(), entSprites.begin(), entSprites.end());
+	entities.insert(entities.end(), entAnims.begin(), entAnims.end());
+
 	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
 	player = p[0];
 
@@ -34,7 +42,7 @@ void RenderSystem::update(float dt)
 
 void RenderSystem::end()		//	Fix the camera view, etc.
 {
-	camera.setSize(WINDOW_X, WINDOW_Y /*+ 200*/);
+	camera.setSize(RESOLUTION_X, RESOLUTION_Y /*+ 200*/);
 	//camera.zoom(4.0f);
 }
 
@@ -70,12 +78,22 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 	//	Draw entity sprites (This as well (look above))
 	for (const auto& entity : entities)
 	{
-		Sprite2D* reqComp = &entity->getComponent<Sprite2D>();
+		//	If entity has both Sprite2D and Anim component, the Sprite2D will always be in favour
+		bool isSprite2D = entity->hasComponent<Sprite2D>();
+
+		sf::Drawable* drawableItem = isSprite2D ? (sf::Drawable*)&entity->getComponent<Sprite2D>().sprite :
+			(sf::Drawable*)&entity->getComponent<Anim>().activeAnim;
+		sf::Transformable* transItem = isSprite2D ? (sf::Transformable*) &entity->getComponent<Sprite2D>().sprite :
+			(sf::Transformable*)&entity->getComponent<Anim>().activeAnim;
+
 		Transform* transComp = &entity->getComponent<Transform>();
 
-		reqComp->sprite.setPosition(transComp->transform.getPosition());
+		transItem->setPosition(transComp->transform.getPosition());
 		//std::cout << transComp->transform.getPosition().x << '\n';
-		target.draw(entity->getComponent<Sprite2D>().sprite);
+		target.draw(*drawableItem);
+
+		//if (entity->hasComponent<Anim>())
+		//	target.draw(entity->getComponent<Anim>().activeAnim);
 	}
 
 	//std::cout << target.getView().getSize().y << " ";

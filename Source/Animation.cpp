@@ -19,12 +19,16 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
+//	Comment from user:
+//	SOURCE FILE HAS BEEN CHANGED A BIT, BUT STILL USES MOST OF THE ORIGINAL CODE!
 ////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "Animation.hpp"
 
-Animation::Animation() : m_texture(NULL)
+Animation::Animation(sf::Time frameTime)
+	//: m_texture(NULL)
+	: m_frameTime(frameTime)
 {
 
 }
@@ -52,4 +56,13 @@ std::size_t Animation::getSize() const
 const sf::IntRect& Animation::getFrame(std::size_t n) const
 {
 	return m_frames[n];
+}
+
+void Animation::setFrameTime(sf::Time time)
+{
+	m_frameTime = time;
+}
+sf::Time Animation::getFrameTime() const
+{
+	return m_frameTime;
 }

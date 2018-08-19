@@ -13,10 +13,10 @@ void SystemManager::init()
 {
 	//	Initialize all systems (THE ORDER MATTERS!)
 	ControllerSystem* controller = addSystem<ControllerSystem>();	//	Must come first
-	AnimationSystem* animation = addSystem<AnimationSystem>();
 	PhysicsSystem* physics = addSystem<PhysicsSystem>();
 	CollisionSystem* collision = addSystem<CollisionSystem>();
 	TerrainSystem* terrain = addSystem<TerrainSystem>();
+	AnimationSystem* animation = addSystem<AnimationSystem>();		//	Right before rendering (Not required, but more clean (I guess?))
 	RenderSystem* render = addSystem<RenderSystem>();				//	Must come last
 
 

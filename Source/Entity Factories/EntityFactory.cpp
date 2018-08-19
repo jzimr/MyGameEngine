@@ -6,34 +6,12 @@
 using namespace Settings;
 
 EntityFactory::EntityFactory(/*World * world*/)
-	//: mWorld{ world }
+//: mWorld{ world }
 	: textureHolder{}
 {
-	getEntitiesPath();		//	Automatically load all entities from folder
+	entities = getAllFilesFromFolder<std::string>("\Entities");		//	Automatically load all entities from folder
+
 	loadTextures();
-}
-
-void EntityFactory::getEntitiesPath()
-{
-	std::string path = "\Entities";
-
-	//	For each file in folder
-	for (auto & p : std::filesystem::directory_iterator(path))
-	{
-		if (!p.is_regular_file())		//	Check if directory, stream, etc.
-			continue;
-
-		///	Get the entity name
-		std::string entityName = p.path().filename().string();		//	E.g. "Player.txt", "Player.dat"
-		std::string path = p.path().string();		//	E.g. "Player.txt"
-		auto checkIfFType = entityName.find_first_of('.');
-		entityName.erase(checkIfFType);							//	now = "Player"
-		entityName.erase(std::remove(entityName.begin(), entityName.end(), '"'), entityName.end());		//	now = Player																										//	Get the path
-
-		///	Store in map
-		//entities.insert(std::pair(entityName, path));
-		entities.insert(std::make_pair(entityName, path));
-	}
 }
 
 EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f position)
@@ -54,7 +32,7 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 		entity = std::unique_ptr<Entity>(new Entity(uniqueID));
 
 		//	Mandatory component
-		entity->addComponent<Transform>();	
+		entity->addComponent<Transform>();
 		entity->getComponent<Transform>().transform.setPosition(position);
 
 		//std::cout << entity->getComponent<Transform>().transform.getPosition().x << '\n';
@@ -83,6 +61,8 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 					entity->addComponent<Sprite2D>();
 				else if (words[1] == "Player")
 					entity->addComponent<Player>();
+				else if (words[1] == "Anim")
+					entity->addComponent<Anim>();
 			}
 			else if (words[0] == "Texture")
 			{
@@ -91,35 +71,87 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 				spriteComp->texture = textureHolder.get(words[1]);	//	Get texture from world
 				spriteComp->sprite = sf::Sprite(spriteComp->texture);
 				spriteComp->sprite.setPosition(transform->transform.getPosition());
-				spriteComp->sprite.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
+				//spriteComp->sprite.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 			}
-			else if (words[0] == "ColliderBox")
+			else if (words[0] == "SpriteSheet")			//	REMEMBER TO SET SCALE!!
 			{
+				///	Get all relevant info from file
+				Anim* anim = &entity->getComponent<Anim>();
+				Animation newAnim(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
+
+				sf::Texture* sprite = new sf::Texture(spriteSheetHolder.get(words[1]));
+
+
+
+				newAnim.setSpriteSheet(*sprite);
+				sf::Vector2u size = newAnim.getSpriteSheet()->getSize();
+				int rows = std::stoi(words[2]);			//	Rows in sprite sheet
+				int columns = std::stoi(words[3]);		//	Columns in sprite sheet
+
+				std::cout << sf::milliseconds(std::stoi(words[5])).asMilliseconds() << '\n';
+				
+				///	Get all frames in the spritesheet and add them to the animation object
+				for(int y = 0; y < size.y; y += size.y / rows)	
+					for (int x = 0; x < size.x; x += size.x / columns)
+					{
+						newAnim.addFrame(sf::IntRect(x, y, size.x / columns, size.y / rows));
+						//std::cout << x << ", " << y << " | " << size.x / columns << ", " << size.y / rows << '\n';
+					}
+
+				//	Convert integer from file to Action type
+				Anim::Action action = static_cast<Anim::Action>(std::stoi(words[4]));
+				
+				///	Insert into map and add
+				anim->animationMap.insert(std::make_pair(action, newAnim));
+
+				anim->activeAnim.setAnimation(anim->animationMap.find(action)->second);
+				//anim->activeAnim.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
+
+				///	Set config of spriteAnimation object
+				anim->activeAnim.setLooped(true);
+				anim->activeAnim.stop();
+			}
+			else if (words[0] == "ColliderBox") //	Hi!
+			{
+				Collider* collider = &entity->getComponent<Collider>();
+
 				if (words[1] == "default")
 				{
-					Collider* collider = &entity->getComponent<Collider>();
-					Sprite2D* sprite2D = &entity->getComponent<Sprite2D>();
+					if (entity->hasComponent<Anim>())
+					{
+						Anim* anim = &entity->getComponent<Anim>();
+						collider->colliderBox = anim->activeAnim.getGlobalBounds();
+					}
+					else if (entity->hasComponent<Sprite2D>())
+					{
+						Sprite2D* sprite2D = &entity->getComponent<Sprite2D>();
+						collider->colliderBox = sprite2D->sprite.getGlobalBounds();
+					}
+				}
+				//	For custom collider boxes (NOT TESTED YET!!! NOR SHOULD IT BE USED)
+				else if (std::stoi(words[1]) || std::stoi(words[1]) == 0)
+				{
+					int width = std::stoi(words[1]), height = std::stoi(words[2]);
 
-					collider->colliderBox = sprite2D->sprite.getGlobalBounds();
+					collider->colliderBox.width = width;
+					collider->colliderBox.height = height;
 				}
 			}
 		}
 	}
-	std::cout << "Factory: " << entity->getComponent<Transform>().transform.getPosition().y << '\n';
+	//std::cout << "Factory: " << entity->getComponent<Transform>().transform.getPosition().y << '\n';
 	return std::move(entity);
 }
 
-void EntityFactory::loadTextures()
+void EntityFactory::loadTextures()	//	Load all textures and sprite sheets from folders
 {
-	textureHolder.load("Raptor", "Media/Textures/Raptor.png");
-	textureHolder.load("Ground", "Media/Textures/Ground.png");
-	textureHolder.load("Wood", "Media/Textures/Wood.png");
-	textureHolder.load("RedPixel", "Media/Textures/RedPixel.png");
-	textureHolder.load("Player", "Media/Textures/Player.png");
+	std::map<std::string, std::string> files = getAllFilesFromFolder<std::string>("Media/Textures");
+
+	for (const auto& file : files)
+		textureHolder.load(file.first, file.second);
+
+	files = getAllFilesFromFolder<std::string>("Media/SpriteSheets");
+
+	for (const auto& file : files)
+		spriteSheetHolder.load(file.first, file.second);
 }
-
-
-//void EntityFactory::linkLineTypes()
-//{
-//	lineTypes.insert(std::make_pair("Component", COMPONENT));
-//}

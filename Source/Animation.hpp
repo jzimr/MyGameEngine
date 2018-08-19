@@ -19,6 +19,8 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
+//	Comment from user:
+//	SOURCE FILE HAS BEEN CHANGED A BIT, BUT STILL USES MOST OF THE ORIGINAL CODE!
 ////////////////////////////////////////////////////////////
 
 #pragma once
@@ -29,15 +31,20 @@
 class Animation
 {
 public:
-	Animation();
+	Animation(sf::Time frameTime = sf::seconds(0.2f));
 
-	void addFrame(sf::IntRect rect);
-	void setSpriteSheet(const sf::Texture& texture);
-	const sf::Texture* getSpriteSheet() const;
-	std::size_t getSize() const;
-	const sf::IntRect& getFrame(std::size_t n) const;
+	void						addFrame(sf::IntRect rect);
+	//	If problems arise, the parameter was originally sent as reference
+	void						setSpriteSheet(const sf::Texture& texture);	
+	const sf::Texture*			getSpriteSheet() const;
+	std::size_t					getSize() const;
+	const sf::IntRect&			getFrame(std::size_t n) const;
+
+	void						setFrameTime(sf::Time time);
+	sf::Time					getFrameTime() const;
 
 private:
-	std::vector<sf::IntRect> m_frames;
-	const sf::Texture* m_texture;
+	std::vector<sf::IntRect>	m_frames;
+	sf::Time					m_frameTime;
+	const sf::Texture*			m_texture;
 };

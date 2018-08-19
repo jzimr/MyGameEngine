@@ -19,7 +19,6 @@ void PhysicsSystem::update(float dt)
 		physics = &entity->getComponent<Physics>();
 		movement = entity->hasComponent<Movement>() ? &entity->getComponent<Movement>() : NULL;
 
-		//	Temporary physics system
 		if (physics)
 		{
 			///	Do physics
@@ -53,6 +52,7 @@ void PhysicsSystem::onNotify(int entity, Event event)
 		{
 			physics = &entities[i]->getComponent<Physics>();
 			movement = &entities[i]->getComponent<Movement>();
+			break;
 		}
 	}
 

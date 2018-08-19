@@ -11,7 +11,6 @@ class Entity : public sf::NonCopyable
 {
 public:
 	typedef std::unique_ptr<BaseComponent> CompPtr;
-	//typedef std::unique_ptr<Entity> EntPtr;
 
 public:
 	Entity(int id);
@@ -29,7 +28,7 @@ private:
 
 	////////////////////////////////////////////////////////////
 	/// Component System
-	///	TODO: Implement own system that handles this
+	///
 	////////////////////////////////////////////////////////////
 public:
 
@@ -68,7 +67,7 @@ public:
 		return compFlags.test(comp.type) ? true : false;
 	}
 
-	//	For recusion of hasComponents if in total only 1 argument left
+	//	For recusion of hasComponents() if in total only 1 argument left
 	template<class T> bool hasComponents() const
 	{
 		return hasComponent<T>();

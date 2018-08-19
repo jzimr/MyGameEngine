@@ -29,7 +29,7 @@ public:
 
 private:
 	void						updateChunks();
-	ChunkPtr						createChunk(int ID);
+	ChunkPtr					createChunk(int ID);
 	void						loadTextures();
 
 	////////////////////////////////////////////////////////////

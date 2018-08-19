@@ -19,6 +19,8 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
+//	Comment from user:
+//	SOURCE FILE HAS BEEN CHANGED A BIT, BUT STILL USES MOST OF THE ORIGINAL CODE!
 ////////////////////////////////////////////////////////////
 #pragma once
 
@@ -29,11 +31,10 @@
 class AnimatedSprite : public sf::Drawable, public sf::Transformable
 {
 public:
-	explicit AnimatedSprite(sf::Time frameTime = sf::seconds(0.2f), bool paused = false, bool looped = true);
+	explicit AnimatedSprite(bool paused = false, bool looped = true);
 
 	void update(sf::Time deltaTime);
 	void setAnimation(const Animation& animation);
-	void setFrameTime(sf::Time time);
 	void play();
 	void play(const Animation& animation);
 	void pause();
@@ -45,12 +46,10 @@ public:
 	sf::FloatRect getGlobalBounds() const;
 	bool isLooped() const;
 	bool isPlaying() const;
-	sf::Time getFrameTime() const;
 	void setFrame(std::size_t newFrame, bool resetTime = true);
 
 private:
 	const Animation* m_animation;
-	sf::Time m_frameTime;
 	sf::Time m_currentTime;
 	std::size_t m_currentFrame;
 	bool m_isPaused;

@@ -87,6 +87,7 @@
     <ClInclude Include="Source\Entity Factories\EntityFactory.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityManager.h" />
+    <ClInclude Include="Source\Events.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Old Code\Components\Commands\Command.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

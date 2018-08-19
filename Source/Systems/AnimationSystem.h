@@ -14,12 +14,18 @@ class AnimationSystem : public System
 
 
 public:
-	//AnimationSystem();
+								AnimationSystem();
 
 	//void						init() override;
-	//void						update(float dt) override;
+	void						update(float dt) override;
+
+	//	Get notified from subscriptions
+	void						onNotify(int entity, Event event) override;
 
 private:
+	//Animation*					getAnimationFromTrigger()
 
+private:
+	EntityManager				entMan;
 
 };
