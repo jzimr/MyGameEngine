@@ -98,7 +98,9 @@ struct Anim : BaseComponent
 
 	Layer layer;
 
-	std::map<Action, Animation> animationMap;			//	All possible animations with their triggers
+	std::map<Action, Animation> rightAnimations;			//	All possible animations with their triggers
+	std::map<Action, Animation> leftAnimations;
+	std::map<Action, sf::Texture> textures;
 	AnimatedSprite activeAnim;
 
 	COMP_TYPE type = ANIM_COMP;

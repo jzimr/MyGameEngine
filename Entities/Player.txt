@@ -1,6 +1,6 @@
 Component Anim
 	SpriteSheet PlayerStanding 1 2 2 500			//	SpriteSheet fileName rows columns actionID frameTime
-	SpriteSheet PlayerWalking 2 3 0 70
+	SpriteSheet PlayerWalkingRight 2 3 0 70
 Component Physics
 Component Collider
 	ColliderBox default

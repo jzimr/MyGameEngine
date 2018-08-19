@@ -180,3 +180,8 @@ void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) con
 		target.draw(m_vertices, 4, sf::Quads, states);
 	}
 }
+
+void AnimatedSprite::flipSprite()
+{
+	
+}

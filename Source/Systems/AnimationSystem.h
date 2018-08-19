@@ -24,6 +24,7 @@ public:
 
 private:
 	//Animation*					getAnimationFromTrigger()
+	void						flipTexture(sf::Texture& texture);
 
 private:
 	EntityManager				entMan;

@@ -47,6 +47,7 @@ public:
 	bool isLooped() const;
 	bool isPlaying() const;
 	void setFrame(std::size_t newFrame, bool resetTime = true);
+	void flipSprite();
 
 private:
 	const Animation* m_animation;

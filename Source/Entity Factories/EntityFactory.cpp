@@ -77,34 +77,37 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 			{
 				///	Get all relevant info from file
 				Anim* anim = &entity->getComponent<Anim>();
-				Animation newAnim(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
+				Animation newAnimRight(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
+				Animation newAnimLeft(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
+				//	Convert integer from file to Action type
+				Anim::Action action = static_cast<Anim::Action>(std::stoi(words[4]));
 
-				sf::Texture* sprite = new sf::Texture(spriteSheetHolder.get(words[1]));
+				anim->textures.insert(std::make_pair(action, sf::Texture(spriteSheetHolder.get(words[1]))));
 
+				sf::Texture* sprite = &anim->textures.find(action)->second;
 
-
-				newAnim.setSpriteSheet(*sprite);
-				sf::Vector2u size = newAnim.getSpriteSheet()->getSize();
+				newAnimRight.setSpriteSheet(*sprite);
+				newAnimLeft.setSpriteSheet(*sprite);
+				sf::Vector2u size = newAnimRight.getSpriteSheet()->getSize();		
 				int rows = std::stoi(words[2]);			//	Rows in sprite sheet
 				int columns = std::stoi(words[3]);		//	Columns in sprite sheet
 
 				std::cout << sf::milliseconds(std::stoi(words[5])).asMilliseconds() << '\n';
 				
-				///	Get all frames in the spritesheet and add them to the animation object
+				///	Get all frames in the spritesheet and add them to the animataion object
 				for(int y = 0; y < size.y; y += size.y / rows)	
 					for (int x = 0; x < size.x; x += size.x / columns)
 					{
-						newAnim.addFrame(sf::IntRect(x, y, size.x / columns, size.y / rows));
+						newAnimRight.addFrame(sf::IntRect(x, y, size.x / columns, size.y / rows));
+						newAnimLeft.addFrame(sf::IntRect(x + (size.x / columns), y, -1.0f * (size.x / columns), size.y / rows));
 						//std::cout << x << ", " << y << " | " << size.x / columns << ", " << size.y / rows << '\n';
 					}
 
-				//	Convert integer from file to Action type
-				Anim::Action action = static_cast<Anim::Action>(std::stoi(words[4]));
-				
 				///	Insert into map and add
-				anim->animationMap.insert(std::make_pair(action, newAnim));
+				anim->rightAnimations.insert(std::make_pair(action, newAnimRight));
+				anim->leftAnimations.insert(std::make_pair(action, newAnimLeft));
 
-				anim->activeAnim.setAnimation(anim->animationMap.find(action)->second);
+				anim->activeAnim.setAnimation(anim->rightAnimations.find(action)->second);
 				//anim->activeAnim.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 
 				///	Set config of spriteAnimation object

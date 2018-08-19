@@ -39,21 +39,30 @@ void AnimationSystem::onNotify(int entity, Event event)
 	{
 	case Event::ENTITY_RIGHT:
 		//animComp->activeAnim.setAnimation(animComp->animationMap.find(Anim::MOVING)->second);
-		animComp->activeAnim.play(animComp->animationMap.find(Anim::MOVING)->second);
+		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::MOVING)->second);
 		animComp->activeAnim.setScale(1.0f, 1.0f);
 		break;
 	case Event::STOP_ENTITY_RIGHT:
-		animComp->activeAnim.play(animComp->animationMap.find(Anim::STANDING)->second);
+		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::STANDING)->second);
 		animComp->activeAnim.setScale(1.0f, 1.0f);
 		break;
 	case Event::ENTITY_LEFT:
-		animComp->activeAnim.play(animComp->animationMap.find(Anim::MOVING)->second);
+		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::MOVING)->second);
+		//sf::IntRect lol = animComp->activeAnim.getAnimation()->getFrame(2);
+		//lol.
 		animComp->activeAnim.setScale(-1.0f, 1.0f);
 		break;
 	case Event::STOP_ENTITY_LEFT:
-		animComp->activeAnim.play(animComp->animationMap.find(Anim::STANDING)->second);
+		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::STANDING)->second);
 		animComp->activeAnim.setScale(-1.0f, 1.0f);
 		break;
 	}
 }
+
+void AnimationSystem::flipTexture(sf::Texture& texture)
+{
+	
+}
+
+
 
