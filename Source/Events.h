@@ -33,7 +33,7 @@ struct Event
 
 struct Message : public Event
 {
-	enum M
+	enum M 
 	{
 		CHUNK_UPDATE,			//	List with loaded chunks has been updated
 	};
