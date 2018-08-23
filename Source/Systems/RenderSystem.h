@@ -9,8 +9,8 @@ class RenderSystem : public System
 public:
 								RenderSystem(/*sf::RenderWindow& window*/);
 
-	void						init() override;
-	void						update(float dt) override;
+	void						configure(EventManager& events) override;
+	void						update(float dt, EventManager& events) override;
 	void						end() override;
 
 	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);

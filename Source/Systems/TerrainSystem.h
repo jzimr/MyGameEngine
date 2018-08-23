@@ -23,12 +23,12 @@ public:
 public:
 	TerrainSystem();			//	TODO: Add ability to add custom seed
 
-	void						init() override;
+	void						configure(EventManager& events) override;
 	void						begin() override;
-	void						update(float dt) override;
+	void						update(float dt, EventManager& events) override;
 
 private:
-	void						updateChunks();
+	void						updateChunks(EventManager& events);
 	ChunkPtr					createChunk(int ID);
 	void						loadTextures();
 

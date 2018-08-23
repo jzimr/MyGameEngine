@@ -1,15 +1,16 @@
 #include "stdafx.h"
 #include "SystemManager.h"
 #include "World.h"
+#include "EventManager.h"
 
 SystemManager::SystemManager(/*sf::RenderWindow& window*/)
-	: systems{}
-	//, mWindow{ window }
+	: m_systems{}
+	, m_eventManager{}
 {
-	init();
+	configure();
 }
 
-void SystemManager::init()
+void SystemManager::configure()
 {
 	//	Initialize all systems (THE ORDER MATTERS!)
 	ControllerSystem* controller = addSystem<ControllerSystem>();	//	Must come first
@@ -27,8 +28,8 @@ void SystemManager::init()
 	terrain->addObserver(collision);			//	To add colliders to terrain
 
 
-	for (auto& system : systems)		//	Update all systems
-		system->init();
+	for (auto& system : m_systems)		//	Update all systems
+		system->configure(m_eventManager);
 }
 
 void SystemManager::begin()
@@ -37,7 +38,7 @@ void SystemManager::begin()
 	//	Check for new entities added
 		//	If yes, add them to the systems
 
-	for (auto& system : systems)
+	for (auto& system : m_systems)
 		system->begin();
 }
 
@@ -47,8 +48,8 @@ void SystemManager::update(float dt)
 
 	begin();				//	Might be wrong because of time etc.
 
-	for (auto& system : systems)		//	For each system
-		system->update(dt);
+	for (auto& system : m_systems)		//	For each system
+		system->update(dt, m_eventManager);
 
 	end();					//	Might also be wrong because of deltatime
 }
@@ -60,13 +61,13 @@ void SystemManager::end()
 	//	specific order. E.g. First controls, then physics
 	//	, ...., and at end rendering
 
-	for (auto& system : systems)
+	for (auto& system : m_systems)
 		system->end();
 }
 
 void SystemManager::notify(Entity * entity, SystemEvent event)
 {
-	for (auto& system : systems)
+	for (auto& system : m_systems)
 	{
 		switch (event)
 		{

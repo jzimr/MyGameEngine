@@ -6,7 +6,7 @@ System::System()
 	
 }
 
-void System::init()
+void System::configure(EventManager& events)
 {
 }
 
@@ -14,7 +14,7 @@ void System::begin()
 {
 }
 
-void System::update(float dt)
+void System::update(float dt, EventManager& events)
 {
 }
 
@@ -27,7 +27,7 @@ void System::onNotify(int entity, std::function<void()> command)
 	//	Execute task in derived class
 }
 
-void System::onNotify(int entity, Event event)
+void System::onNotify(int entity, EventID event)
 {
 	//	Switch through Events in derived class
 }
@@ -57,7 +57,7 @@ void System::notify(int entity, std::function<void()> command)
 		observer->onNotify(entity, command);
 }
 
-void System::notify(int entity, Event event)
+void System::notify(int entity, EventID event)
 {
 	//	Notify all observers
 	for (auto& observer : observers)

@@ -10,6 +10,7 @@
 #include "AnimationSystem.h"
 #include "CombatSystem.h"
 #include <memory>
+class EventManager;
 
 enum class SystemEvent
 {
@@ -25,7 +26,7 @@ public:
 public:
 								SystemManager();
 
-	void						init();
+	void						configure();
 	void						begin();
 	void						update(float dt);
 	void						end();
@@ -33,25 +34,18 @@ public:
 	void						notify(Entity* entity, SystemEvent event);
 
 public:
-	template<typename T> T*	addSystem()
+	template<class T> T*	addSystem()
 	{
 		SysPtr newSys(new T());
-		systems.push_back(std::move(newSys));
-		return dynamic_cast<T*>(systems.back().get());
+		m_systems.push_back(std::move(newSys));
+		return dynamic_cast<T*>(m_systems.back().get());
 	}
-	//	When a system has constructors with parameters
-	//template<typename T, typename P> T*	addSystem(P& param)
-	//{
-	//	SysPtr newSys(new T(param));
-	//	systems.push_back(std::move(newSys));
-	//	return dynamic_cast<T*>(systems.back().get());
-	//}
 
-	template<typename T> T& getSystem() const
+	template<class T> T& getSystem() const
 	{
 		T* it = NULL;
 
-		for (auto& system : systems)
+		for (auto& system : m_systems)
 		{
 			it = dynamic_cast<T*>(system.get());
 			if (it != NULL)
@@ -63,5 +57,7 @@ public:
 	}
 
 private:
-	std::vector<std::unique_ptr<System>> systems;
+	std::vector<std::unique_ptr<System>> m_systems;
+	EventManager m_eventManager;
+
 };

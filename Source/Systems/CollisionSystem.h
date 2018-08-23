@@ -13,17 +13,19 @@ class CollisionSystem : public System
 public:
 	CollisionSystem();
 
-	//void						init() override;
-	void						update(float dt) override;
+	void						configure(EventManager& events) override;
+	void						update(float dt, EventManager& events) override;
 
 	//	Get notified from subscriptions
-	void				onNotify(int entity, Event event) override;
+	void				onNotify(int entity, EventID event) override;
+
+	void				receive(Message* message);		//	Add const and by reference
 
 private:
 	void						updateChunks();		//	Update collider on existing or new chunks
 	//	Check collision on an entity
-	Event						checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect) const;
-	sf::Vector2f				fixPositionOnCollide(Event collDirection, const sf::Rect<float>& rect, const sf::Rect<float>& otherRect);
+	EventID						checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect) const;
+	sf::Vector2f				fixPositionOnCollide(EventID collDirection, const sf::Rect<float>& rect, const sf::Rect<float>& otherRect);
 
 private:
 	EntityManager entMan;

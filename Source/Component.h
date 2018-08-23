@@ -20,6 +20,7 @@ enum COMP_TYPE
 	MOVEMENT_COMP,
 	ANIM_COMP,
 	SPRITE2D_COMP,
+	GRABBABLE_COMP,
 };
 
 struct BaseComponent
@@ -31,6 +32,7 @@ struct BaseComponent
 struct Transform : BaseComponent	//	Position, rotation, scale
 {
 	sf::Transformable transform;
+	
 
 	COMP_TYPE type = TRANSFORM_COMP;
 };
@@ -120,4 +122,11 @@ struct Sprite2D : BaseComponent
 	sf::Sprite sprite;
 
 	COMP_TYPE type = SPRITE2D_COMP;
+};
+
+struct Grabbable : BaseComponent
+{
+
+
+	COMP_TYPE type = GRABBABLE_COMP;
 };

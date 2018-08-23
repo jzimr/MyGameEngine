@@ -17,7 +17,7 @@ public:
 	ControllerSystem();
 
 	//void						init() override;
-	void						update(float dt) override;
+	void						update(float dt, EventManager& events) override;
 
 	//	Get notified from subscriptions
 	//	TODO: Maybe do some message handling with commands from event system in SFML?

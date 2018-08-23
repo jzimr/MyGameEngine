@@ -14,14 +14,14 @@ RenderSystem::RenderSystem(/*sf::RenderWindow& window*/)
 {
 }
 
-void RenderSystem::init()
+void RenderSystem::configure(EventManager& events)
 {
 	//entities = entMan.getEntWithComps<Transform, Sprite2D>();
 	//std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
 	//player = p[0];
 }
 
-void RenderSystem::update(float dt)
+void RenderSystem::update(float dt, EventManager& events)
 {
 	//	Create updates for some shit. E.g. That you do not need
 	//	to draw all sprites unless inside the FOV of the client?

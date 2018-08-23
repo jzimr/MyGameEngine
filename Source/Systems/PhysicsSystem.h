@@ -18,10 +18,10 @@ public:
 								PhysicsSystem();
 
 	//void						init() override;
-	void						update(float dt) override;
+	void						update(float dt, EventManager& events) override;
 
 	//	Get notified from subscriptions
-	void				onNotify(int entity, Event event) override;
+	void				onNotify(int entity, EventID event) override;
 
 	////////////////////////////////////////////////////////////
 	/// Methods for physics stuff

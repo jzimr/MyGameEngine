@@ -21,7 +21,7 @@ TerrainSystem::TerrainSystem()
 {
 }
 
-void TerrainSystem::init()
+void TerrainSystem::configure(EventManager& events)
 {
 	loadTextures();
 	generateTable();
@@ -37,7 +37,7 @@ void TerrainSystem::begin()
 }
 
 //	Only check for chunk updates every 1 second
-void TerrainSystem::update(float dt)
+void TerrainSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Transform, Sprite2D>();
 	std::vector<EntPtr> p = entMan.getEntWithComps<Player>();
@@ -49,7 +49,7 @@ void TerrainSystem::update(float dt)
 
 	if (d2_counter > 1.0f)
 	{
-		updateChunks();
+		updateChunks(events);
 
 		d2_counter = 0.0f;
 	}
@@ -58,7 +58,7 @@ void TerrainSystem::update(float dt)
 }
 
 //	Currently only 3 chunks are loaded at once
-void TerrainSystem::updateChunks()		//	A bit messy, needs to be cleaned up
+void TerrainSystem::updateChunks(EventManager& events)		//	A bit messy, needs to be cleaned up
 {
 	float playerPosX = transformComp->transform.getPosition().x;
 	//	Get chunk ID position where player is currently
@@ -130,7 +130,10 @@ void TerrainSystem::updateChunks()		//	A bit messy, needs to be cleaned up
 	}
 
 	if (chunkUpdate)
-		notify(0, Event::CHUNK_UPDATE);		//	Entity ID does not matter here
+	{
+		Message chunkUp(Message::CHUNK_UPDATE);
+		events.emit(chunkUp);		//	Entity ID does not matter here
+	}
 
 	///	Pseudocode for this function
 

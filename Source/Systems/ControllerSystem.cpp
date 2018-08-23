@@ -5,7 +5,7 @@ ControllerSystem::ControllerSystem()
 {
 }
 
-void ControllerSystem::update(float dt)
+void ControllerSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Controller>();
 }
@@ -22,18 +22,18 @@ void ControllerSystem::handleInput(std::queue<sf::Event>& events)
 			if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Space)
-					notify(entity->getID(), Event::ENTITY_JUMP);
+					notify(entity->getID(), EventID::ENTITY_JUMP);
 				else if (event.key.code == sf::Keyboard::A)
-					notify(entity->getID(), Event::ENTITY_LEFT);
+					notify(entity->getID(), EventID::ENTITY_LEFT);
 				else if (event.key.code == sf::Keyboard::D)
-					notify(entity->getID(), Event::ENTITY_RIGHT);
+					notify(entity->getID(), EventID::ENTITY_RIGHT);
 			}
 			else if (event.type == sf::Event::KeyReleased)
 			{
 				if (event.key.code == sf::Keyboard::A)
-					notify(entity->getID(), Event::STOP_ENTITY_LEFT);
+					notify(entity->getID(), EventID::STOP_ENTITY_LEFT);
 				else if (event.key.code == sf::Keyboard::D)
-					notify(entity->getID(), Event::STOP_ENTITY_RIGHT);
+					notify(entity->getID(), EventID::STOP_ENTITY_RIGHT);
 			}
 		}
 		events.pop();		//	Remove event from queue

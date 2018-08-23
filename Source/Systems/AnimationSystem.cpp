@@ -6,7 +6,7 @@ AnimationSystem::AnimationSystem()
 
 }
 
-void AnimationSystem::update(float dt)
+void AnimationSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComp<Anim>();
 	sf::Time time = sf::seconds(dt);			//	Convert deltatime to sf::Time
@@ -21,7 +21,7 @@ void AnimationSystem::update(float dt)
 	}
 }
 
-void AnimationSystem::onNotify(int entity, Event event)
+void AnimationSystem::onNotify(int entity, EventID event)
 {
 	Anim* animComp = NULL;
 
@@ -37,22 +37,19 @@ void AnimationSystem::onNotify(int entity, Event event)
 
 	switch (event)
 	{
-	case Event::ENTITY_RIGHT:
-		//animComp->activeAnim.setAnimation(animComp->animationMap.find(Anim::MOVING)->second);
+	case EventID::ENTITY_RIGHT:
 		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::MOVING)->second);
 		animComp->activeAnim.setScale(1.0f, 1.0f);
 		break;
-	case Event::STOP_ENTITY_RIGHT:
+	case EventID::STOP_ENTITY_RIGHT:
 		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::STANDING)->second);
 		animComp->activeAnim.setScale(1.0f, 1.0f);
 		break;
-	case Event::ENTITY_LEFT:
+	case EventID::ENTITY_LEFT:
 		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::MOVING)->second);
-		//sf::IntRect lol = animComp->activeAnim.getAnimation()->getFrame(2);
-		//lol.
 		animComp->activeAnim.setScale(-1.0f, 1.0f);
 		break;
-	case Event::STOP_ENTITY_LEFT:
+	case EventID::STOP_ENTITY_LEFT:
 		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::STANDING)->second);
 		animComp->activeAnim.setScale(-1.0f, 1.0f);
 		break;
@@ -63,6 +60,3 @@ void AnimationSystem::flipTexture(sf::Texture& texture)
 {
 	
 }
-
-
-

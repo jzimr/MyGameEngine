@@ -7,7 +7,8 @@
 #include <cassert>
 #include <functional>
 #include "EntityManager.h"
-#include "Events.h"
+//#include "Events.h"
+#include "EventManager.h"
 
 class System : sf::NonCopyable
 {
@@ -17,10 +18,10 @@ public:
 public:
 								System();
 
-	virtual void				init();				//	At initialization of system
+	virtual void				configure(EventManager& events);		//	At initialization of system
 	
 	virtual void				begin();			//	Before update()
-	virtual void				update(float dt);	//	Each game tick
+	virtual void				update(float dt, EventManager& events);	//	Each game tick
 	virtual void				end();				//	After update()
 
 	//	Called when an entity has changed its components
@@ -32,13 +33,13 @@ public:
 	///		   have instances of it instead?
 	////////////////////////////////////////////////////////////
 	virtual void				onNotify(int entity, std::function<void()> command);
-	virtual void				onNotify(int entity, Event event);//	Get notified from subscriptions
+	virtual void				onNotify(int entity, EventID event);//	Get notified from subscriptions
 	void						addObserver(System* observer);	//	Subscribe observers to this
 	void						removeObserver(System* observer);	//	Remove them
 
 protected:
 	void						notify(int entity, std::function<void()> command);
-	void						notify(int entity, Event event);		//	Notify subscribers
+	void						notify(int entity, EventID event);		//	Notify subscribers
 
 protected:
 	std::vector<System*> observers;			//	List of subscribers

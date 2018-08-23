@@ -6,13 +6,20 @@ CollisionSystem::CollisionSystem()
 {
 }
 
+void CollisionSystem::configure(EventManager& events)
+{
+	events.subscribe<Message>(this, &CollisionSystem::receive);		//	If it doesn't work, change function so you directly
+											//	send the function pointer as parameter to EventManager
+	//	Read about std::bind
+}
+
 ////////////////////////////////////////////////////////////
 /// OPTIMIZATION IDEAS:
 ///	- Implement Grid Collision Checks for optimization.
 ///	- If velocity is too high and FPS too low, it might skip the collision detection
 ////////////////////////////////////////////////////////////
 
-void CollisionSystem::update(float dt)
+void CollisionSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Transform, Collider>();
 
@@ -20,7 +27,7 @@ void CollisionSystem::update(float dt)
 	Collider* collider;			//	Required
 	Physics* physics;			//	Not required
 
-	Event collision;
+	EventID collision;
 
 	for (auto& entity : entities)
 	{
@@ -125,16 +132,38 @@ void CollisionSystem::updateChunks()
 	}
 }
 
-void CollisionSystem::onNotify(int entity, Event event)
+//template<typename T>
+//void RegisterEventHandler(const std::string& type, void (T::*handler)(Event*), T* obj)
+//{
+//	mCallbackList[type].push_back(boost::bind(handler, obj, _1));
+//}
+//
+//template<typename T1, typename T2>
+//void RegisterEventHandler(const String& type, T1 handler, T2* obj)
+//{
+//	void (T2::*evtHandler)(Event*) = (void (T2::*)(Event*)) (handler);
+//	mCallbackList[type].push_back(boost::bind(evtHandler, obj, _1));
+//}
+
+
+void CollisionSystem::receive(Message* message)
 {
-	switch (event)
+	if (*message == Message::CHUNK_UPDATE)
 	{
-	case Event::CHUNK_UPDATE:
 		updateChunks();
 	}
 }
 
-Event CollisionSystem::checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect) const
+void CollisionSystem::onNotify(int entity, EventID event)
+{
+	//switch (event)
+	//{
+	//case EventID::CHUNK_UPDATE:
+	//	updateChunks();
+	//}
+}
+
+EventID CollisionSystem::checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect) const
 {
 	float left = rect.left, top = rect.top,
 		width = rect.width, height = rect.height;
@@ -155,54 +184,54 @@ Event CollisionSystem::checkCollision(const sf::Rect<float>& rect, const sf::Rec
 	//	Collision beneath main object
 	if (t_collision < b_collision && t_collision < l_collision /*+ 1*/ && t_collision < r_collision /*- 1*/)
 	{
-		return Event::COLLISION_BOTTOM;
+		return EventID::COLLISION_BOTTOM;
 	}
 	// Collision over main object
 	else if (b_collision < t_collision && b_collision < l_collision /*+ 1*/ && b_collision < r_collision /*- 1*/)
 	{
-		return Event::COLLISION_TOP;
+		return EventID::COLLISION_TOP;
 	}
 	//	Collision to the right of main object
 	else if (l_collision < r_collision && l_collision < t_collision /*+ 1*/ && l_collision < b_collision /*- 1*/)
 	{
-		return Event::COLLISION_RIGHT;
+		return EventID::COLLISION_RIGHT;
 	}
 	//	Collision to the left of main object
 	else if (r_collision < l_collision && r_collision < t_collision /*+ 1*/ && r_collision < b_collision /*- 1*/)
 	{
-		return Event::COLLISION_LEFT;
+		return EventID::COLLISION_LEFT;
 	}
 	//	If nothing collided after all (Probably because of corner of otherEntity)
 	else
 	{
-		return Event::COLLISION_FAULT;
+		return EventID::COLLISION_FAULT;
 	}
 }
 
-sf::Vector2f CollisionSystem::fixPositionOnCollide(Event collDirection, const sf::Rect<float>& rect, const sf::Rect<float>& otherRect)
+sf::Vector2f CollisionSystem::fixPositionOnCollide(EventID collDirection, const sf::Rect<float>& rect, const sf::Rect<float>& otherRect)
 {
 	sf::Vector2f fixedPos(0, 0);
 
 	switch (collDirection)
 	{
-	case Event::COLLISION_BOTTOM:
+	case EventID::COLLISION_BOTTOM:
 	{
 		//std::cout << "bottom\n";
 		return sf::Vector2f(rect.left, otherRect.top - rect.height);
 	}
-	case Event::COLLISION_RIGHT:
+	case EventID::COLLISION_RIGHT:
 	{
 		//std::cout << "right\n";
 		return sf::Vector2f(otherRect.left - rect.width, rect.top);
 	}
-	case Event::COLLISION_LEFT:
+	case EventID::COLLISION_LEFT:
 	{
 		//std::cout << otherRect.left + otherRect.width << ", " << rect.top << '\n';
 		return sf::Vector2f(otherRect.left + otherRect.width, rect.top);
 	}
-	case Event::COLLISION_TOP:
+	case EventID::COLLISION_TOP:
 		return sf::Vector2f(rect.left, otherRect.top + otherRect.height);
-	case Event::COLLISION_FAULT:
+	case EventID::COLLISION_FAULT:
 		return sf::Vector2f(rect.left, rect.top);
 	}
 

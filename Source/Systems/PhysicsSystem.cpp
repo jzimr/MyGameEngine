@@ -5,7 +5,7 @@ PhysicsSystem::PhysicsSystem()
 {
 }
 
-void PhysicsSystem::update(float dt)
+void PhysicsSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Transform, Physics>();
 
@@ -40,7 +40,7 @@ void PhysicsSystem::update(float dt)
 ///	
 ////////////////////////////////////////////////////////////
 
-void PhysicsSystem::onNotify(int entity, Event event)
+void PhysicsSystem::onNotify(int entity, EventID event)
 {
 	Physics* physics = NULL;
 	Movement* movement = NULL;
@@ -51,45 +51,46 @@ void PhysicsSystem::onNotify(int entity, Event event)
 		if (entities[i]->getID() == entity)
 		{
 			physics = &entities[i]->getComponent<Physics>();
-			movement = &entities[i]->getComponent<Movement>();
+			if(entities[i]->hasComponent<Movement>())
+				movement = &entities[i]->getComponent<Movement>();
 			break;
 		}
 	}
 
 	switch (event)
 	{
-	case Event::COLLISION_BOTTOM:	//	CollisionSystem
+	case EventID::COLLISION_BOTTOM:	//	CollisionSystem
 		if (physics->velocity.y > 0)
 			physics->velocity.y = 0;
 		break;
-	case Event::COLLISION_RIGHT:	//	CollisionSystem
+	case EventID::COLLISION_RIGHT:	//	CollisionSystem
 		if (physics->velocity.x > 0)
 			physics->velocity.x = 0;
 		break;
-	case Event::COLLISION_LEFT:		//	CollisionSystem
+	case EventID::COLLISION_LEFT:		//	CollisionSystem
 		if (physics->velocity.x < 0)
 			physics->velocity.x = 0;
 		break;
-	case Event::COLLISION_TOP:		//	CollisionSystem
+	case EventID::COLLISION_TOP:		//	CollisionSystem
 		if (physics->velocity.y < 0)
 			physics->velocity.y = 0;
 		break;
-	case Event::COLLISION_FAULT:	//	CollisionSystem
+	case EventID::COLLISION_FAULT:	//	CollisionSystem
 		break;
 
-	case Event::ENTITY_JUMP:		//	ControllerSystem
+	case EventID::ENTITY_JUMP:		//	ControllerSystem
 		physics->velocity.y = movement->jumpForce * -1;
 		break;
-	case Event::ENTITY_LEFT:		//	ControllerSystem
+	case EventID::ENTITY_LEFT:		//	ControllerSystem
 		physics->horizontalVelocity -= movement->horizontalSpeed;
 		break;
-	case Event::ENTITY_RIGHT:		//	ControllerSystem
+	case EventID::ENTITY_RIGHT:		//	ControllerSystem
 		physics->horizontalVelocity += movement->horizontalSpeed;
 		break;
-	case Event::STOP_ENTITY_LEFT:	//	ControllerSystem
+	case EventID::STOP_ENTITY_LEFT:	//	ControllerSystem
 		physics->horizontalVelocity += movement->horizontalSpeed;
 		break;
-	case Event::STOP_ENTITY_RIGHT:	//	ControllerSystem
+	case EventID::STOP_ENTITY_RIGHT:	//	ControllerSystem
 		physics->horizontalVelocity -= movement->horizontalSpeed;
 	}
 }

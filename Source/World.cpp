@@ -90,6 +90,7 @@ void World::buildScene()
 	player = entMan.createEntity("Player", sf::Vector2f(216, 250));
 	EntPtr ground = entMan.createEntity("Ground", sf::Vector2f(0, 400));
 	EntPtr ground2 = entMan.createEntity("Ground", sf::Vector2f(200, 350));
+	entMan.createEntity("Block", sf::Vector2f(250, 330));
 
 	//std::cout << ground->getComponent<Transform>().transform.getPosition().y << '\n';
 	//std::cout << ground2->getComponent<Transform>().transform.getPosition().y << '\n';

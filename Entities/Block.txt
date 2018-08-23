@@ -1,0 +1,5 @@
+Component Sprite2D
+	Texture Block
+Component Physics
+Component Collider
+	ColliderBox default
