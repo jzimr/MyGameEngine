@@ -20,7 +20,7 @@ namespace Settings
 
 //////////////////////////////////////////////
 //
-//	Put these enums in own header file!!
+//	TODO: Put these enums in own header file!!
 //
 //////////////////////////////////////////////
 
@@ -31,15 +31,4 @@ const enum EventID
 	MESSAGE,
 	COLLISION,
 	ACTION,
-	//ENTITY_MOVING,			//	The entity is moving (velocity != 0)
-	//ENTITY_STOPPED_MOVING,	//	An entity has stopped moving (velocity == 0)
 };
-
-//const enum CollisionDirection
-//{
-//	COLLISION_TOP,
-//	COLLISION_BOTTOM,
-//	COLLISION_RIGHT,
-//	COLLISION_LEFT,
-//	COLLISION_FAULT
-//};

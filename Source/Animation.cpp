@@ -27,7 +27,6 @@
 #include "Animation.hpp"
 
 Animation::Animation(sf::Time frameTime)
-	//: m_texture(NULL)
 	: m_frameTime(frameTime)
 {
 

@@ -61,7 +61,6 @@ void TerrainSystem::updateChunks(EventManager& events)		//	A bit messy, needs to
 	//	Get chunk ID position where player is currently
 	int playerChunkPos = (int)playerPosX / (CHUNK_WIDTH * WORLD_UNIT) 
 		- (playerPosX < 0 /*&& playerPosX != (int)playerPosX*/);	//	Fix rounding for negative numbers
-	//std::cout << playerChunkPos << " " << playerPosX << " " << (int) playerPosX << '\n';
 	std::vector<int> chunksToBeCreated;
 	bool chunkUpdate = false;
 
@@ -77,15 +76,12 @@ void TerrainSystem::updateChunks(EventManager& events)		//	A bit messy, needs to
 	{
 		Chunk* chunk = it->get();
 
-		//std::cout << chunk->chunkID << " " << playerChunkPos << '\n';
-
 		//	If chunk is inside range
 		if (chunk->chunkID >= playerChunkPos - 1 && playerChunkPos + 1 >= chunk->chunkID)
 		{
 			//	Remove chunkID from list
 			chunksToBeCreated.erase(std::remove(chunksToBeCreated.begin(), chunksToBeCreated.end(),
 				chunk->chunkID), chunksToBeCreated.end());
-			//std::remove(chunksToBeCreated.begin(), chunksToBeCreated.end(), [&](const int& id) { return id == chunk->chunkID; });
 
 			//	Move chunk to loaded
 			playerComp->loadedChunks.push_back(std::move(*it));	//	This might be error prone
@@ -167,7 +163,6 @@ TerrainSystem::ChunkPtr TerrainSystem::createChunk(int ID)
 														///	Create new sprite and resize it fitted to our resolution
 		sf::Sprite newBlock;
 		newBlock.setTexture(chunk->grassTex);
-		//newBlock.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 		newBlock.setPosition(x * WORLD_UNIT, y * WORLD_UNIT);
 		chunk->topBlocks.push_back(newBlock);
 

@@ -38,5 +38,4 @@ bool EntityManager::removeEntity(unsigned int entID)
 //	Initialize static variables
 
 std::vector<EntPtr> EntityManager::entities{};
-//EntityFactory EntityManager::entityFactory{};
 unsigned int EntityManager::uniqueID{ 0 };

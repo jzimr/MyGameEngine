@@ -20,17 +20,10 @@ public:
 	void						configure(EventManager& events) override;
 	void						update(float dt, EventManager& events) override;
 
+			//	Get notified from subscriptions
 	void						receiveC(Collision* collision);
 	void						receiveA(Action* action);
 
-	//	Get notified from subscriptions
-	//void				onNotify(int entity, EventID event) override;
-
-	////////////////////////////////////////////////////////////
-	/// Methods for physics stuff
-	///	
-	////////////////////////////////////////////////////////////
 private:
-
 	EntityManager entMan;
 };

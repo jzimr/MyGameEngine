@@ -52,41 +52,6 @@ void AnimationSystem::receiver(Action* action)
 	}
 }
 
-void AnimationSystem::onNotify(int entity, EventID event)
-{
-	Anim* animComp = NULL;
-
-	//	Find the entity
-	for (const auto& ent : entities)
-	{
-		if (ent->getID() == entity)
-		{
-			animComp = &ent->getComponent<Anim>();
-			break;
-		}
-	}
-
-	switch (event)
-	{
-	case EntAction::ENTITY_RIGHT:
-		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::MOVING)->second);
-		animComp->activeAnim.setScale(1.0f, 1.0f);
-		break;
-	case EntAction::STOP_ENTITY_RIGHT:
-		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::STANDING)->second);
-		animComp->activeAnim.setScale(1.0f, 1.0f);
-		break;
-	case EntAction::ENTITY_LEFT:
-		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::MOVING)->second);
-		animComp->activeAnim.setScale(-1.0f, 1.0f);
-		break;
-	case EntAction::STOP_ENTITY_LEFT:
-		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::STANDING)->second);
-		animComp->activeAnim.setScale(-1.0f, 1.0f);
-		break;
-	}
-}
-
 void AnimationSystem::flipTexture(sf::Texture& texture)
 {
 	

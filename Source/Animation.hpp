@@ -34,7 +34,7 @@ public:
 	Animation(sf::Time frameTime = sf::seconds(0.2f));
 
 	void						addFrame(sf::IntRect rect);
-	//	If problems arise, the parameter was originally sent as reference
+
 	void						setSpriteSheet(const sf::Texture& texture);	
 	const sf::Texture*			getSpriteSheet() const;
 	std::size_t					getSize() const;

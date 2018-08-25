@@ -140,7 +140,6 @@ void AnimatedSprite::update(sf::Time deltaTime)
 	// if not paused and we have a valid animation
 	if (!m_isPaused && m_animation)
 	{
-		//std::cout << "first checked\n";
 		// add delta time
 		m_currentTime += deltaTime;
 

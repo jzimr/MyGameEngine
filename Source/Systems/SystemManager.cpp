@@ -21,11 +21,9 @@ void SystemManager::configure()
 
 
 	//	Add observers
-	controller->addObserver(animation);			//	To change animation frame
-	controller->addObserver(physics);			//	To change e.g. velocity
-	collision->addObserver(physics);			//	To stop velocity if collision happened
-	//terrain->addObserver(collision);			//	To add colliders to terrain
-
+	//controller->addObserver(animation);			//	To change animation frame
+	//controller->addObserver(physics);			//	To change e.g. velocity
+	//collision->addObserver(physics);			//	To stop velocity if collision happened
 
 	for (auto& system : m_systems)		//	Update all systems
 		system->configure(m_eventManager);
@@ -62,15 +60,4 @@ void SystemManager::end()
 
 	for (auto& system : m_systems)
 		system->end();
-}
-
-void SystemManager::notify(Entity * entity, SystemEvent event)
-{
-	for (auto& system : m_systems)
-	{
-		switch (event)
-		{
-		case SystemEvent::ENTITY_UPDATE:	break;		//	Not in use anymore
-		}
-	}
 }

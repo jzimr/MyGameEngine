@@ -5,8 +5,7 @@
 
 using namespace Settings;
 
-EntityFactory::EntityFactory(/*World * world*/)
-//: mWorld{ world }
+EntityFactory::EntityFactory()
 	: textureHolder{}
 {
 	entities = getAllFilesFromFolder<std::string>("\Entities");		//	Automatically load all entities from folder
@@ -34,8 +33,6 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 		//	Mandatory component
 		entity->addComponent<Transform>();
 		entity->getComponent<Transform>().transform.setPosition(position);
-
-		//std::cout << entity->getComponent<Transform>().transform.getPosition().x << '\n';
 
 		while (std::getline(file, line, '\n'))
 		{
@@ -71,7 +68,6 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 				spriteComp->texture = textureHolder.get(words[1]);	//	Get texture from world
 				spriteComp->sprite = sf::Sprite(spriteComp->texture);
 				spriteComp->sprite.setPosition(transform->transform.getPosition());
-				//spriteComp->sprite.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 			}
 			else if (words[0] == "SpriteSheet")			//	REMEMBER TO SET SCALE!!
 			{
@@ -79,6 +75,7 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 				Anim* anim = &entity->getComponent<Anim>();
 				Animation newAnimRight(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
 				Animation newAnimLeft(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
+
 				//	Convert integer from file to Action type
 				Anim::AnimAction action = static_cast<Anim::AnimAction>(std::stoi(words[4]));
 
@@ -100,7 +97,6 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 					{
 						newAnimRight.addFrame(sf::IntRect(x, y, size.x / columns, size.y / rows));
 						newAnimLeft.addFrame(sf::IntRect(x + (size.x / columns), y, -1.0f * (size.x / columns), size.y / rows));
-						//std::cout << x << ", " << y << " | " << size.x / columns << ", " << size.y / rows << '\n';
 					}
 
 				///	Insert into map and add
@@ -108,13 +104,12 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 				anim->leftAnimations.insert(std::make_pair(action, newAnimLeft));
 
 				anim->activeAnim.setAnimation(anim->rightAnimations.find(action)->second);
-				//anim->activeAnim.setScale(SPRITE_SCALE, SPRITE_SCALE);		//	Temporary
 
 				///	Set config of spriteAnimation object
 				anim->activeAnim.setLooped(true);
 				anim->activeAnim.stop();
 			}
-			else if (words[0] == "ColliderBox") //	Hi!
+			else if (words[0] == "ColliderBox")
 			{
 				Collider* collider = &entity->getComponent<Collider>();
 
@@ -142,7 +137,6 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 			}
 		}
 	}
-	//std::cout << "Factory: " << entity->getComponent<Transform>().transform.getPosition().y << '\n';
 	return std::move(entity);
 }
 

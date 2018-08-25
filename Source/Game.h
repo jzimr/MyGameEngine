@@ -32,8 +32,6 @@ private:
 	sf::Text				mStatistics;
 	sf::Time				mFrameRateUpdateTime;
 	std::size_t				mFrameRateNumFrames;
-
-	//std::queue<std::unique_ptr<Command*>>	commands;
 };
 
-#endif // BOOK_GAME_HPP
+#endif

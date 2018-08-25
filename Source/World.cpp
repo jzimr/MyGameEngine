@@ -18,27 +18,11 @@ World::World(sf::RenderWindow& window)
 	//systemManager->update(0);
 }
 
-//Entity* World::addEntity(std::string entityName, sf::Vector2f position)
-//{
-//	std::unique_ptr<Entity> newEntity = factory.spawnEntity(entityName, getUniqueID(), position);
-//	entities.push_back(std::move(newEntity));	//	Add to list
-//	Entity* entPtr = entities.back().get();
-//
-//	//	Notify the system about changes
-//	systemManager->notify(entPtr, SystemEvent::ENTITY_UPDATE);
-//
-//	return entPtr;
-//}
-
 void World::entityUpdated()
 {
 
 }
 
-//int World::getUniqueID()
-//{
-//	return uniqueEntID++;
-//}
 
 void World::update(float dt)
 {
@@ -70,15 +54,6 @@ std::queue<sf::Event>& World::getEventQueue()
 {
 	return eventQueue;
 }
-
-//void World::loadTextures()
-//{
-//	textureHolder.load("Raptor", "Media/Textures/Raptor.png");
-//	textureHolder.load("Ground", "Media/Textures/Ground.png");
-//	textureHolder.load("Wood", "Media/Textures/Wood.png");
-//	textureHolder.load("RedPixel", "Media/Textures/RedPixel.png");
-//	textureHolder.load("Player", "Media/Textures/Player.png");
-//}
 
 void World::buildScene()
 {

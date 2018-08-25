@@ -27,7 +27,7 @@ public:
 
 private:
 	static std::vector<EntPtr> entities;
-	/*static */EntityFactory entityFactory;
+	EntityFactory entityFactory;
 	static unsigned int uniqueID;
 };
 

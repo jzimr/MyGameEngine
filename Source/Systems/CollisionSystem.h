@@ -19,8 +19,6 @@ public:
 	void						update(float dt, EventManager& events) override;
 
 	//	Get notified from subscriptions
-	//void				onNotify(int entity, EventID event) override;
-
 	void				receive(Message* message);		//	Add const and by reference
 
 private:

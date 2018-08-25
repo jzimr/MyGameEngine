@@ -45,7 +45,6 @@ void Game::run()
 
 			processInput();
 			update(TimePerFrame);
-			//std::cout << elapsedTime.asSeconds() << '\n';
 		}
 
 		updateStatistics(elapsedTime);

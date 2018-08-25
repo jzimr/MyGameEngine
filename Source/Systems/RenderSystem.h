@@ -7,7 +7,7 @@
 class RenderSystem : public System
 {
 public:
-								RenderSystem(/*sf::RenderWindow& window*/);
+								RenderSystem();
 
 	void						configure(EventManager& events) override;
 	void						update(float dt, EventManager& events) override;

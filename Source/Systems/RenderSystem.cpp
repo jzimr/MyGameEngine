@@ -9,16 +9,12 @@ using namespace Settings;
 ///			the player is inside them instead.
 ////////////////////////////////////////////////////////////
 
-RenderSystem::RenderSystem(/*sf::RenderWindow& window*/)
-	//: mWindow{ window }
+RenderSystem::RenderSystem()
 {
 }
 
 void RenderSystem::configure(EventManager& events)
 {
-	//entities = entMan.getEntWithComps<Transform, Sprite2D>();
-	//std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
-	//player = p[0];
 }
 
 void RenderSystem::update(float dt, EventManager& events)
@@ -89,14 +85,8 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 		Transform* transComp = &entity->getComponent<Transform>();
 
 		transItem->setPosition(transComp->transform.getPosition());
-		//std::cout << transComp->transform.getPosition().x << '\n';
 		target.draw(*drawableItem);
-
-		//if (entity->hasComponent<Anim>())
-		//	target.draw(entity->getComponent<Anim>().activeAnim);
 	}
-
-	//std::cout << target.getView().getSize().y << " ";
 }
 
 sf::FloatRect RenderSystem::getViewBounds(const sf::View view)

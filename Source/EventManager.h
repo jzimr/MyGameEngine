@@ -41,7 +41,7 @@ public:
 			}
 		}
 
-		//	VVVVVVVVV	Means you probably have not subscribed to an event in configure() in system
+		//	VVVVVVVVV	Means you probably have not applied the EventID to the derived Event struct
 		assert(found != BASE_EVENT);				//	Throw error if not found
 
 		///	Find all systems that are subscribed to that event
