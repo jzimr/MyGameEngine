@@ -12,32 +12,24 @@ class PhysicsSystem : public System
 {
 private:
 	struct EntComponents;
-	enum Collision : int;
+	//enum Collision : int;
 
 public:
 								PhysicsSystem();
 
-	//void						init() override;
+	void						configure(EventManager& events) override;
 	void						update(float dt, EventManager& events) override;
 
+	void						receiveC(Collision* collision);
+	void						receiveA(Action* action);
+
 	//	Get notified from subscriptions
-	void				onNotify(int entity, EventID event) override;
+	//void				onNotify(int entity, EventID event) override;
 
 	////////////////////////////////////////////////////////////
 	/// Methods for physics stuff
 	///	
 	////////////////////////////////////////////////////////////
-private:
-
-	enum Collision
-	{
-		COLLISION_RIGHT,
-		COLLISION_LEFT,
-		COLLISION_BOTTOM,
-		COLLISION_TOP,
-		COLLISION_FAULT
-	};
-
 private:
 
 	EntityManager entMan;

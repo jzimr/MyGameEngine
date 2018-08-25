@@ -7,7 +7,6 @@
 #include <cassert>
 #include <functional>
 #include "EntityManager.h"
-//#include "Events.h"
 #include "EventManager.h"
 
 class System : sf::NonCopyable

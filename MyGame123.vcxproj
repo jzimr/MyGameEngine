@@ -78,6 +78,7 @@
     <ClCompile Include="Source\Systems\SystemManager.cpp" />
     <ClCompile Include="Source\Systems\TerrainSystem.cpp" />
     <ClCompile Include="Source\World.cpp" />
+    <ClCompile Include="TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AnimatedSprite.hpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Source\targetver.h" />
     <ClInclude Include="Source\TextureHolder.h" />
     <ClInclude Include="Source\World.h" />
+    <ClInclude Include="TransformSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TextureHolder.inl" />

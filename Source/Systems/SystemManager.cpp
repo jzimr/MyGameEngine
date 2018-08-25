@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "SystemManager.h"
 #include "World.h"
-#include "EventManager.h"
 
 SystemManager::SystemManager(/*sf::RenderWindow& window*/)
 	: m_systems{}
@@ -25,7 +24,7 @@ void SystemManager::configure()
 	controller->addObserver(animation);			//	To change animation frame
 	controller->addObserver(physics);			//	To change e.g. velocity
 	collision->addObserver(physics);			//	To stop velocity if collision happened
-	terrain->addObserver(collision);			//	To add colliders to terrain
+	//terrain->addObserver(collision);			//	To add colliders to terrain
 
 
 	for (auto& system : m_systems)		//	Update all systems

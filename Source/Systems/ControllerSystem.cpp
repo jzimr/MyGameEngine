@@ -1,41 +1,52 @@
 #include "stdafx.h"
 #include "ControllerSystem.h"
 
+typedef Action::EntAction EntAction;
+
 ControllerSystem::ControllerSystem()
+	: m_eventQueue{}
 {
 }
 
 void ControllerSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Controller>();
-}
 
-void ControllerSystem::handleInput(std::queue<sf::Event>& events)
-{
 	sf::Event event;
-	while (!events.empty())
+
+	while (!m_eventQueue->empty())
 	{
-		event = events.front();
+		event = m_eventQueue->front();
 
 		for (auto& entity : entities)
 		{
+			Action entAction(entity);
+
 			if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Space)
-					notify(entity->getID(), EventID::ENTITY_JUMP);
+					entAction.m_action = EntAction::ENTITY_JUMP;
 				else if (event.key.code == sf::Keyboard::A)
-					notify(entity->getID(), EventID::ENTITY_LEFT);
+					entAction.m_action = EntAction::ENTITY_LEFT;
 				else if (event.key.code == sf::Keyboard::D)
-					notify(entity->getID(), EventID::ENTITY_RIGHT);
+					entAction.m_action = EntAction::ENTITY_RIGHT;
 			}
 			else if (event.type == sf::Event::KeyReleased)
 			{
 				if (event.key.code == sf::Keyboard::A)
-					notify(entity->getID(), EventID::STOP_ENTITY_LEFT);
+					entAction.m_action = EntAction::STOP_ENTITY_LEFT;
 				else if (event.key.code == sf::Keyboard::D)
-					notify(entity->getID(), EventID::STOP_ENTITY_RIGHT);
+					entAction.m_action = EntAction::STOP_ENTITY_RIGHT;
 			}
+
+			events.emit<Action>(entAction);
 		}
-		events.pop();		//	Remove event from queue
+		m_eventQueue->pop();		//	Remove event from queue
 	}
+}
+
+//	Spaghetti?
+void ControllerSystem::handleInput(std::queue<sf::Event>& events)
+{
+	m_eventQueue = &events;		//	Copy the queue to this system so we can use it in update()
 }

@@ -80,7 +80,7 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 				Animation newAnimRight(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
 				Animation newAnimLeft(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
 				//	Convert integer from file to Action type
-				Anim::Action action = static_cast<Anim::Action>(std::stoi(words[4]));
+				Anim::AnimAction action = static_cast<Anim::AnimAction>(std::stoi(words[4]));
 
 				anim->textures.insert(std::make_pair(action, sf::Texture(spriteSheetHolder.get(words[1]))));
 

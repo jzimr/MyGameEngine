@@ -2,8 +2,6 @@
 #include "Entity.h"
 #include "World.h"
 #include "Systems/SystemManager.h"
-#include "Entity Factories/EntityFactory.h"
-#include "SFML/System/Time.hpp"
 
 World::World(sf::RenderWindow& window)
 	: mWindow{ window }
@@ -13,7 +11,7 @@ World::World(sf::RenderWindow& window)
 	//, textureHolder{}
 	, uniqueEntID{ 0 }
 	//, factory{ this }
-	, systemManager{ new SystemManager(/*window*/) }
+	, systemManager{ new SystemManager() }
 {
 	//loadTextures();
 	buildScene();

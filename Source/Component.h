@@ -5,7 +5,6 @@
 #include <memory>
 #include "Chunk.h"
 #include "AnimatedSprite.hpp"
-#include "Events.h"
 
 using namespace Settings;
 
@@ -91,7 +90,7 @@ struct Anim : BaseComponent
 		LAYER_FRONT,
 		LAYER_SIZE
 	};
-	enum Action
+	enum AnimAction
 	{
 		MOVING = 0,		//	DON'T CHANGE ORDER!!!
 		JUMPING = 1,
@@ -100,9 +99,9 @@ struct Anim : BaseComponent
 
 	Layer layer;
 
-	std::map<Action, Animation> rightAnimations;			//	All possible animations with their triggers
-	std::map<Action, Animation> leftAnimations;
-	std::map<Action, sf::Texture> textures;
+	std::map<AnimAction, Animation> rightAnimations;			//	All possible animations with their triggers
+	std::map<AnimAction, Animation> leftAnimations;				//	For both left and right
+	std::map<AnimAction, sf::Texture> textures;
 	AnimatedSprite activeAnim;
 
 	COMP_TYPE type = ANIM_COMP;

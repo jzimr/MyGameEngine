@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "System.h"
+#include "Constants.h"
 #include <queue>
 
 ////////////////////////////////////////////////////////////
@@ -16,7 +17,6 @@ private:
 public:
 	ControllerSystem();
 
-	//void						init() override;
 	void						update(float dt, EventManager& events) override;
 
 	//	Get notified from subscriptions
@@ -28,6 +28,6 @@ public:
 	void						handleInput(std::queue<sf::Event>& events); 
 
 private:
-
 	EntityManager entMan;
+	std::queue<sf::Event>* m_eventQueue;
 };

@@ -123,6 +123,9 @@
     <ClCompile Include="Source\EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TransformSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Entity.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="Source\EventManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

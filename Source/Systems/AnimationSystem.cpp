@@ -1,9 +1,15 @@
 #include "stdafx.h"
 #include "AnimationSystem.h"
 
+typedef Action::EntAction EntAction;
+
 AnimationSystem::AnimationSystem()
 {
+}
 
+void AnimationSystem::configure(EventManager& events)
+{
+	events.subscribe<Action>(this, &AnimationSystem::receiver);
 }
 
 void AnimationSystem::update(float dt, EventManager& events)
@@ -18,6 +24,31 @@ void AnimationSystem::update(float dt, EventManager& events)
 
 
 
+	}
+}
+
+void AnimationSystem::receiver(Action* action)
+{
+	Anim* animComp = &action->m_entity->getComponent<Anim>();
+
+	switch (action->m_action)
+	{
+	case EntAction::ENTITY_RIGHT:
+		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::MOVING)->second);
+		animComp->activeAnim.setScale(1.0f, 1.0f);
+		break;
+	case EntAction::STOP_ENTITY_RIGHT:
+		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::STANDING)->second);
+		animComp->activeAnim.setScale(1.0f, 1.0f);
+		break;
+	case EntAction::ENTITY_LEFT:
+		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::MOVING)->second);
+		animComp->activeAnim.setScale(-1.0f, 1.0f);
+		break;
+	case EntAction::STOP_ENTITY_LEFT:
+		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::STANDING)->second);
+		animComp->activeAnim.setScale(-1.0f, 1.0f);
+		break;
 	}
 }
 
@@ -37,19 +68,19 @@ void AnimationSystem::onNotify(int entity, EventID event)
 
 	switch (event)
 	{
-	case EventID::ENTITY_RIGHT:
+	case EntAction::ENTITY_RIGHT:
 		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::MOVING)->second);
 		animComp->activeAnim.setScale(1.0f, 1.0f);
 		break;
-	case EventID::STOP_ENTITY_RIGHT:
+	case EntAction::STOP_ENTITY_RIGHT:
 		animComp->activeAnim.play(animComp->rightAnimations.find(Anim::STANDING)->second);
 		animComp->activeAnim.setScale(1.0f, 1.0f);
 		break;
-	case EventID::ENTITY_LEFT:
+	case EntAction::ENTITY_LEFT:
 		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::MOVING)->second);
 		animComp->activeAnim.setScale(-1.0f, 1.0f);
 		break;
-	case EventID::STOP_ENTITY_LEFT:
+	case EntAction::STOP_ENTITY_LEFT:
 		animComp->activeAnim.play(animComp->leftAnimations.find(Anim::STANDING)->second);
 		animComp->activeAnim.setScale(-1.0f, 1.0f);
 		break;

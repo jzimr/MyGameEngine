@@ -16,9 +16,10 @@ class AnimationSystem : public System
 public:
 								AnimationSystem();
 
-	//void						init() override;
+	void						configure(EventManager& events) override;
 	void						update(float dt, EventManager& events) override;
 
+	void						receiver(Action* action);
 	//	Get notified from subscriptions
 	void						onNotify(int entity, EventID event) override;
 

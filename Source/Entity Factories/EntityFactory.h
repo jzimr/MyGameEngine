@@ -6,7 +6,6 @@
 #include <map>
 #include <sstream>
 #include "TextureHolder.h"
-#include "Events.h"
 class Entity;
 class EntityManager;
 

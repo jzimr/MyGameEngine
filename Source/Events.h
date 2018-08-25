@@ -1,26 +1,7 @@
 #pragma once
 #include <string>
-
-enum EventID
-{
-	BASE_EVENT,
-	ENTITY_JUMP,			//	Trigger a jump event
-	ENTITY_LEFT,			//	Go left
-	ENTITY_RIGHT,			//	Go right
-	STOP_ENTITY_LEFT,		//	Stop left movement
-	STOP_ENTITY_RIGHT,		//	Stop right movement
-
-	COLLISION_RIGHT,		//	Collision to the right of object
-	COLLISION_LEFT,			//	Collision to the left   -- || --
-	COLLISION_BOTTOM,		//	Collision on the bottom -- || --
-	COLLISION_TOP,			//	Collision on the top	-- || --
-	COLLISION_FAULT,		//	Collision was miscalculated
-
-	EXPLOSION,
-	MESSAGE,
-	//ENTITY_MOVING,			//	The entity is moving (velocity != 0)
-	//ENTITY_STOPPED_MOVING,	//	An entity has stopped moving (velocity == 0)
-};
+#include "stdafx.h"
+class Entity;
 
 
 struct Event
@@ -31,7 +12,57 @@ struct Event
 	const EventID eventID = BASE_EVENT;
 };
 
-struct Message : public Event
+struct Collision : public Event
+{
+	enum CollisionDirection
+	{
+		COLLISION_TOP,
+		COLLISION_BOTTOM,
+		COLLISION_RIGHT,
+		COLLISION_LEFT,
+		COLLISION_FAULT
+	};
+
+	Collision() {}
+	Collision(CollisionDirection dir, sf::Vector2f newPos, std::shared_ptr<Entity> ent)
+		: direction{ dir }, newEntPos{ newPos }, entity{ ent }
+	{
+
+	}
+
+	CollisionDirection direction;			//	Direction of collision
+	sf::Vector2f newEntPos;
+	std::shared_ptr<Entity> entity;			//	Entity that collided
+
+	const EventID eventID = COLLISION;
+};
+
+struct Action : public Event				//	An action that the entity performed
+{
+	const enum EntAction
+	{
+		NOTHING,
+		ENTITY_JUMP,			//	Trigger a jump event
+		ENTITY_LEFT,			//	Go left
+		ENTITY_RIGHT,			//	Go right
+		STOP_ENTITY_LEFT,		//	Stop left movement
+		STOP_ENTITY_RIGHT,		//	Stop right movement
+	};
+
+	Action() {}
+	Action(std::shared_ptr<Entity> entity/*, EntAction action = NOTHING*/)
+		: m_entity{ entity }/*, m_action{ action }*/
+	{
+		 //
+	}
+
+	EntAction m_action = NOTHING;						//	Action the entity performed
+	std::shared_ptr<Entity> m_entity;			
+
+	const EventID eventID = ACTION;
+};
+
+struct Message : public Event			//	Messages that don't require an Entity
 {
 	enum M 
 	{

@@ -25,9 +25,6 @@ void TerrainSystem::configure(EventManager& events)
 {
 	loadTextures();
 	generateTable();
-	//ChunkPtr newChunk(createChunk(0));					//	Preload the first chunk
-	//availableChunks.push_back(std::move(newChunk));
-	//std::cout << "At init(): " << availableChunks.size() << '\n';
 }
 
 void TerrainSystem::begin()

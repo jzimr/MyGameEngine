@@ -16,3 +16,30 @@ namespace Settings
 
 	//const int SPRITE_SHEET_COLUMNS = 3;		//	Rows for the sprite sheet
 }
+
+
+//////////////////////////////////////////////
+//
+//	Put these enums in own header file!!
+//
+//////////////////////////////////////////////
+
+const enum EventID
+{
+	BASE_EVENT,
+	EXPLOSION,
+	MESSAGE,
+	COLLISION,
+	ACTION,
+	//ENTITY_MOVING,			//	The entity is moving (velocity != 0)
+	//ENTITY_STOPPED_MOVING,	//	An entity has stopped moving (velocity == 0)
+};
+
+//const enum CollisionDirection
+//{
+//	COLLISION_TOP,
+//	COLLISION_BOTTOM,
+//	COLLISION_RIGHT,
+//	COLLISION_LEFT,
+//	COLLISION_FAULT
+//};

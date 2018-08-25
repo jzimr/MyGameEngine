@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
+#include "EventManager.h"
 #include "TerrainSystem.h"
-#include "System.h"
 #include <vector>
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
@@ -10,7 +10,6 @@
 #include "AnimationSystem.h"
 #include "CombatSystem.h"
 #include <memory>
-class EventManager;
 
 enum class SystemEvent
 {
