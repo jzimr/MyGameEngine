@@ -14,6 +14,8 @@ namespace Settings
 	//	Maybe move below into Chunk struct?
 	const int CHUNK_WIDTH = 16;			//	Chunk width in blocks
 
+	const int GrabbableDistance = 80;		//	Minimum distance to be able to grab an object
+
 	//const int SPRITE_SHEET_COLUMNS = 3;		//	Rows for the sprite sheet
 }
 
@@ -31,4 +33,5 @@ const enum EventID
 	MESSAGE,
 	COLLISION,
 	ACTION,
+	MOVETOPOS,
 };

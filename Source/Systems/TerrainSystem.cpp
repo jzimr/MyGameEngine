@@ -57,7 +57,7 @@ void TerrainSystem::update(float dt, EventManager& events)
 //	Currently only 3 chunks are loaded at once
 void TerrainSystem::updateChunks(EventManager& events)		//	A bit messy, needs to be cleaned up
 {
-	float playerPosX = transformComp->transform.getPosition().x;
+	float playerPosX = transformComp->globalTransform.getPosition().x;
 	//	Get chunk ID position where player is currently
 	int playerChunkPos = (int)playerPosX / (CHUNK_WIDTH * WORLD_UNIT) 
 		- (playerPosX < 0 /*&& playerPosX != (int)playerPosX*/);	//	Fix rounding for negative numbers

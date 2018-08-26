@@ -7,10 +7,14 @@
 
 typedef std::shared_ptr<Entity> EntPtr;
 
+//////////////////////	
+//
+//	TODO: Add a "pendingUpdate()" which checks if a new entity has been created
+//		  or that an entity has gotten a new component. This is to reduce calls
+//		  to the "getEntWithComps()" for each update();
+
 class EntityManager
 {
-public:
-
 public:
 	EntityManager();
 

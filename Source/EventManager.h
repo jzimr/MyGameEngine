@@ -14,11 +14,11 @@ public:
 	EventManager();
 
 	//	Event to subscribe to and Receiver (function) that will be used for receiving events
-	template<typename Ev, typename Receiver, typename FuncPtr>		
+	template<typename Ev, typename Receiver, typename FuncPtr>
 	void subscribe(Receiver *receiver, FuncPtr handler)
 	{
 		Ev event;		//	Create dummy object
-		void(Receiver::*r)(Event*) = (void (Receiver::*)(Event*)) (handler);	
+		void(Receiver::*r)(Event*) = (void (Receiver::*)(Event*)) (handler);
 
 		auto subscription = std::make_pair(event.eventID, std::bind(r, receiver, std::placeholders::_1));
 
@@ -29,7 +29,7 @@ public:
 	void emit(E &event)
 	{
 		///	Find the event in our multimap
-		EventID found = BASE_EVENT;		
+		EventID found = BASE_EVENT;
 		std::multimap<EventID, EventFuncPtr>::iterator it;
 
 		for (it = m_receivers.begin(); it != m_receivers.end(); it++)
@@ -50,7 +50,7 @@ public:
 		for (auto it2 = receiversElems.first; it2 != receiversElems.second; it2++)
 		{
 			EventFuncPtr receiver = (it2->second);
-			
+
 			receiver(&event);								//	Call the function of subscribed system with the wished element
 		}
 	}

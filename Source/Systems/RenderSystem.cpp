@@ -33,7 +33,7 @@ void RenderSystem::update(float dt, EventManager& events)
 	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
 	player = p[0];
 
-	camera.setCenter(player->getComponent<Transform>().transform.getPosition());
+	camera.setCenter(player->getComponent<Transform>().globalTransform.getPosition());
 }
 
 void RenderSystem::end()		//	Fix the camera view, etc.
@@ -83,8 +83,8 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 			(sf::Transformable*)&entity->getComponent<Anim>().activeAnim;
 
 		Transform* transComp = &entity->getComponent<Transform>();
-
-		transItem->setPosition(transComp->transform.getPosition());
+		
+		transItem->setPosition(transComp->globalTransform.getPosition()); 
 		target.draw(*drawableItem);
 	}
 }

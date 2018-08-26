@@ -12,19 +12,22 @@ void PhysicsSystem::configure(EventManager& events)
 {
 	events.subscribe<Collision>(this, &PhysicsSystem::receiveC);
 	events.subscribe<Action>(this, &PhysicsSystem::receiveA);
+	events.subscribe<MoveToPos>(this, &PhysicsSystem::receiveT);	//	Maybe move into own System?
 }
 
 void PhysicsSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Transform, Physics>();
 
-	Transform* transform;
+	Transform* globalTransform;
 	Physics* physics;
 	Movement* movement;
 
+
 	for (auto& entity : entities)
 	{
-		transform = &entity->getComponent<Transform>();
+		MoveToPos moveToPos(entity);
+		globalTransform = &entity->getComponent<Transform>();
 		physics = &entity->getComponent<Physics>();
 		movement = entity->hasComponent<Movement>() ? &entity->getComponent<Movement>() : NULL;
 
@@ -39,7 +42,9 @@ void PhysicsSystem::update(float dt, EventManager& events)
 				physics->velocity.y = physics->maxFallingSpeed;
 
 			//	Move entity
-			transform->transform.move(physics->velocity * dt);
+			moveToPos.m_newEntPos = globalTransform->globalTransform.getPosition() + (physics->velocity * dt);
+			events.emit<MoveToPos>(moveToPos);
+			//transform->transform.move(physics->velocity * dt);		MIGHT THIS SIMPLY BE BETTER?
 		}
 	}
 }
@@ -98,6 +103,29 @@ void PhysicsSystem::receiveA(Action* action)
 		break;
 	case EntAction::STOP_ENTITY_RIGHT:	//	ControllerSystem
 		physics->horizontalVelocity -= movement->horizontalSpeed;
+	}
+}
 
+//	TEMPORARY SOLUTION (NEEDS ALOT OF IMPORVEMENT)
+//	TODO: Implement localmovement with globalmovement
+//	TODO: Find better way to handle movement of children
+void PhysicsSystem::receiveT(MoveToPos* moveToPos)
+{
+	Transform* transform = &moveToPos->m_entity->getComponent<Transform>();
+	Parentable* parentable = moveToPos->m_entity->hasComponent<Parentable>() ?
+		&moveToPos->m_entity->getComponent<Parentable>() : NULL;
+
+	sf::Vector2f distMoved = moveToPos->m_newEntPos - transform->globalTransform.getPosition();
+
+	transform->globalTransform.move(distMoved);
+
+	if (parentable)		//	Then we have to move the children as well
+	{
+		for (auto& child : parentable->children)
+		{
+			Transform* childTransform = &child->getComponent<Transform>();
+
+			childTransform->globalTransform.move(distMoved);
+		}
 	}
 }

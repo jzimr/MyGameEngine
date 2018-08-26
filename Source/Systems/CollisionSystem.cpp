@@ -25,7 +25,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Transform, Collider>();
 
-	Transform * transform;		//	Required
+	Transform * globalTransform;		//	Required
 	Collider* collider;			//	Required
 	Physics* physics;			//	Not required
 
@@ -36,8 +36,8 @@ void CollisionSystem::update(float dt, EventManager& events)
 		if (entity->hasComponent<Player>())
 			playerComp = &entity->getComponent<Player>();
 
-
-		transform = &entity->getComponent<Transform>();
+		MoveToPos moveToPos(entity);
+		globalTransform = &entity->getComponent<Transform>();
 		collider = &entity->getComponent<Collider>();
 		physics = entity->hasComponent<Physics>() ? &entity->getComponent<Physics>() : NULL;
 
@@ -45,8 +45,8 @@ void CollisionSystem::update(float dt, EventManager& events)
 			continue;
 
 		//	Update collider box position from the physicsSystem
-		collider->colliderBox.left = transform->transform.getPosition().x;
-		collider->colliderBox.top = transform->transform.getPosition().y;
+		collider->colliderBox.left = globalTransform->globalTransform.getPosition().x;
+		collider->colliderBox.top = globalTransform->globalTransform.getPosition().y;
 
 		sf::Vector2f fixPos(0, 0);	//	In case of overlap (Look further down)
 		sf::Rect<float>* thisRect = &collider->colliderBox;
@@ -66,9 +66,11 @@ void CollisionSystem::update(float dt, EventManager& events)
 				Collision collision(collisionDir, fixPos, entity);
 				events.emit<Collision>(collision);
 
-				transform->transform.setPosition(fixPos);
-				collider->colliderBox.left = transform->transform.getPosition().x;
-				collider->colliderBox.top = transform->transform.getPosition().y;
+				moveToPos.m_newEntPos = fixPos;
+				events.emit<MoveToPos>(moveToPos);
+				/*globalTransform->globalTransform.setPosition(fixPos);*/
+				collider->colliderBox.left = globalTransform->globalTransform.getPosition().x;
+				collider->colliderBox.top = globalTransform->globalTransform.getPosition().y;
 			}
 		}
 
@@ -86,9 +88,11 @@ void CollisionSystem::update(float dt, EventManager& events)
 				Collision collision(collisionDir, fixPos, entity);
 				events.emit<Collision>(collision);
 
-				transform->transform.setPosition(fixPos);
-				collider->colliderBox.left = transform->transform.getPosition().x;
-				collider->colliderBox.top = transform->transform.getPosition().y;
+				moveToPos.m_newEntPos = fixPos;
+				events.emit<MoveToPos>(moveToPos);
+				/*globalTransform->globalTransform.setPosition(fixPos);*/
+				collider->colliderBox.left = globalTransform->globalTransform.getPosition().x;
+				collider->colliderBox.top = globalTransform->globalTransform.getPosition().y;
 
 			}
 		}

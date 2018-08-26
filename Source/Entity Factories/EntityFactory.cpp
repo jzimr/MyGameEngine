@@ -32,7 +32,7 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 
 		//	Mandatory component
 		entity->addComponent<Transform>();
-		entity->getComponent<Transform>().transform.setPosition(position);
+		entity->getComponent<Transform>().globalTransform.setPosition(position);
 
 		while (std::getline(file, line, '\n'))
 		{
@@ -60,14 +60,18 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 					entity->addComponent<Player>();
 				else if (words[1] == "Anim")
 					entity->addComponent<Anim>();
+				else if (words[1] == "Parentable")
+					entity->addComponent<Parentable>();
+				else if (words[1] == "Grabbable")
+					entity->addComponent<Grabbable>();
 			}
 			else if (words[0] == "Texture")
 			{
 				Sprite2D* spriteComp = &entity->getComponent<Sprite2D>();
-				Transform* transform = &entity->getComponent<Transform>();
+				Transform* globalTransform = &entity->getComponent<Transform>();
 				spriteComp->texture = textureHolder.get(words[1]);	//	Get texture from world
 				spriteComp->sprite = sf::Sprite(spriteComp->texture);
-				spriteComp->sprite.setPosition(transform->transform.getPosition());
+				spriteComp->sprite.setPosition(globalTransform->globalTransform.getPosition());
 			}
 			else if (words[0] == "SpriteSheet")			//	REMEMBER TO SET SCALE!!
 			{

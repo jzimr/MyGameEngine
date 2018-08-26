@@ -15,15 +15,10 @@ void SystemManager::configure()
 	ControllerSystem* controller = addSystem<ControllerSystem>();	//	Must come first
 	PhysicsSystem* physics = addSystem<PhysicsSystem>();
 	CollisionSystem* collision = addSystem<CollisionSystem>();
+	EntityInteractionSystem* entInteraction = addSystem<EntityInteractionSystem>();
 	TerrainSystem* terrain = addSystem<TerrainSystem>();
 	AnimationSystem* animation = addSystem<AnimationSystem>();		//	Right before rendering (Not required, but more clean (I guess?))
 	RenderSystem* render = addSystem<RenderSystem>();				//	Must come last
-
-
-	//	Add observers
-	//controller->addObserver(animation);			//	To change animation frame
-	//controller->addObserver(physics);			//	To change e.g. velocity
-	//collision->addObserver(physics);			//	To stop velocity if collision happened
 
 	for (auto& system : m_systems)		//	Update all systems
 		system->configure(m_eventManager);

@@ -49,10 +49,10 @@ void SceneNode::updateChildren(float dt)
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	// Apply transform of current node
+	// Apply globalTransform of current node
 	states.transform *= getTransform();
 
-	// Draw node and children with changed transform
+	// Draw node and children with changed globalTransform
 	drawCurrent(target, states);
 	drawChildren(target, states);
 }

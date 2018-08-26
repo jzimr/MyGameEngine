@@ -31,6 +31,9 @@
     <Filter Include="Old Code\Commands">
       <UniqueIdentifier>{a013f867-231c-47be-b64e-ee2cd5de3b17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{17882c54-29d2-4a20-898d-a526e7a98e67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Entity.cpp">
@@ -51,19 +54,10 @@
     <ClCompile Include="Source\World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Entity Factories\EntityFactory.cpp">
-      <Filter>Entity Factories</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Systems\System.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Systems\SystemManager.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Systems\MessageChannel.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Systems\RenderSystem.cpp">
@@ -117,20 +111,23 @@
     <ClCompile Include="Source\AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Systems\System.cpp">
+      <Filter>ECS</Filter>
     </ClCompile>
     <ClCompile Include="Source\EventManager.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity Factories\EntityFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TransformSystem.cpp">
+    <ClCompile Include="Source\Systems\EntityInteractionSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,16 +146,10 @@
     <ClInclude Include="Source\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Entity Factories\EntityFactory.h">
-      <Filter>Entity Factories</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Systems\PhysicsSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\RenderSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\System.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\SystemManager.h">
@@ -166,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="Source\Component.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\MessageChannel.h">
-      <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Old Code\Components\Controller.h">
       <Filter>Old Code</Filter>
@@ -227,16 +215,25 @@
     <ClInclude Include="Source\Animation.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
     <ClInclude Include="Source\EntityManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EventManager.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\System.h">
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="Source\Events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EventManager.h">
+    <ClInclude Include="Source\Entity Factories\EntityFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TransformSystem.h">
+    <ClInclude Include="Source\Systems\EntityInteractionSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

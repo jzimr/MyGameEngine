@@ -3,3 +3,4 @@ Component Sprite2D
 Component Physics
 Component Collider
 	ColliderBox default
+Component Grabbable

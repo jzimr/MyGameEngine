@@ -30,6 +30,9 @@ void ControllerSystem::update(float dt, EventManager& events)
 					entAction.m_action = EntAction::ENTITY_LEFT;
 				else if (event.key.code == sf::Keyboard::D)
 					entAction.m_action = EntAction::ENTITY_RIGHT;
+				else if (event.key.code == sf::Keyboard::E)
+					entAction.m_action = EntAction::ENTITY_GRAB;
+
 			}
 			else if (event.type == sf::Event::KeyReleased)
 			{

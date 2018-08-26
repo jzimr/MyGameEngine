@@ -5,6 +5,7 @@
 #include <memory>
 #include "Chunk.h"
 #include "AnimatedSprite.hpp"
+class Entity;
 
 using namespace Settings;
 
@@ -12,6 +13,7 @@ enum COMP_TYPE
 {
 	//BASE_COMP = 0,
 	TRANSFORM_COMP = 0,
+	PARENTABLE_COMP,
 	PHYSICS_COMP,
 	COLLIDER_COMP,
 	PLAYER_COMP,
@@ -30,10 +32,18 @@ struct BaseComponent
 
 struct Transform : BaseComponent	//	Position, rotation, scale
 {
-	sf::Transformable transform;
-	
+	sf::Transformable globalTransform;			//	Global world position/rotation
+	//				  VVVVVVVVVVVVVV	(0,0) if no parent
+	sf::Transformable localTransform;			//	Local -----     ||    -------- relative to parent
 
 	COMP_TYPE type = TRANSFORM_COMP;
+};
+
+struct Parentable : BaseComponent	//	Creates a parent/child relationship between entities
+{
+	std::vector<std::shared_ptr<Entity>> children;
+
+	COMP_TYPE type = PARENTABLE_COMP;
 };
 
 struct Physics : BaseComponent		//	Making an object fall

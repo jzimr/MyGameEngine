@@ -65,8 +65,8 @@ void World::buildScene()
 	EntPtr ground2 = entMan.createEntity("Ground", sf::Vector2f(200, 350));
 	entMan.createEntity("Block", sf::Vector2f(250, 330));
 
-	//std::cout << ground->getComponent<Transform>().transform.getPosition().y << '\n';
-	//std::cout << ground2->getComponent<Transform>().transform.getPosition().y << '\n';
+	//std::cout << ground->getComponent<Transform>().globalTransform.getPosition().y << '\n';
+	//std::cout << ground2->getComponent<Transform>().globalTransform.getPosition().y << '\n';
 	////for(int i = 0; i < 1000; i++)
 	//Entity* wood = addEntity("Wood", sf::Vector2f(300, 370));
 
