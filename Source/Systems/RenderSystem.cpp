@@ -33,7 +33,7 @@ void RenderSystem::update(float dt, EventManager& events)
 	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
 	player = p[0];
 
-	camera.setCenter(player->getComponent<Transform>().globalTransform.getPosition());
+	camera.setCenter(player->getPosition());
 }
 
 void RenderSystem::end()		//	Fix the camera view, etc.
@@ -71,20 +71,18 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 		}
 	}	
 
-	//	Draw entity sprites (This as well (look above))
-	for (const auto& entity : entities)
+	//	Draw m_entity sprites (This as well (look above))
+	for (const auto& m_entity : entities)
 	{
-		//	If entity has both Sprite2D and Anim component, the Sprite2D will always be in favour
-		bool isSprite2D = entity->hasComponent<Sprite2D>();
+		//	If m_entity has both Sprite2D and Anim component, the Sprite2D will always be in favour
+		bool isSprite2D = m_entity->hasComponent<Sprite2D>();
 
-		sf::Drawable* drawableItem = isSprite2D ? (sf::Drawable*)&entity->getComponent<Sprite2D>().sprite :
-			(sf::Drawable*)&entity->getComponent<Anim>().activeAnim;
-		sf::Transformable* transItem = isSprite2D ? (sf::Transformable*) &entity->getComponent<Sprite2D>().sprite :
-			(sf::Transformable*)&entity->getComponent<Anim>().activeAnim;
+		sf::Drawable* drawableItem = isSprite2D ? (sf::Drawable*)&m_entity->getComponent<Sprite2D>().sprite :
+			(sf::Drawable*)&m_entity->getComponent<Anim>().activeAnim;
+		sf::Transformable* transItem = isSprite2D ? (sf::Transformable*) &m_entity->getComponent<Sprite2D>().sprite :
+			(sf::Transformable*)&m_entity->getComponent<Anim>().activeAnim;
 
-		Transform* transComp = &entity->getComponent<Transform>();
-		
-		transItem->setPosition(transComp->globalTransform.getPosition()); 
+		transItem->setPosition(m_entity->getPosition()); 
 		target.draw(*drawableItem);
 	}
 }

@@ -81,17 +81,17 @@ void Game::render()
 
 	//	Temporary	(DOES NOT WORK FOR RELEASE MODE FOR SOME REASON D:)
 	{
-		sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
-		sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
-		mStatistics.setString("\n\nMouse position = x: " +
-			std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
+		//sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
+		//sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
+		//mStatistics.setString("\n\nMouse position = x: " +
+		//	std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
 	}
 
 	sf::View view = mWindow.getDefaultView();
 	mWindow.setView(view);
 
 	mWindow.draw(mFrameRate);
-	mWindow.draw(mStatistics);
+	//mWindow.draw(mStatistics);
 	mWindow.display();
 }
 

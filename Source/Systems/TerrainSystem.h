@@ -58,6 +58,5 @@ private:
 private:
 	EntityManager entMan;
 
-	Transform* transformComp;
-	Player* playerComp;
+	std::shared_ptr<Entity> player;
 };

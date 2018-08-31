@@ -17,10 +17,10 @@ void AnimationSystem::update(float dt, EventManager& events)
 	entities = entMan.getEntWithComp<Anim>();
 	sf::Time time = sf::seconds(dt);			//	Convert deltatime to sf::Time
 
-	for (auto& entity : entities)		//	Update all animations
+	for (auto& m_entity : entities)		//	Update all animations
 	{
-		//entity->getComponent<Anim>().activeAnim.setAnimation(entity->getComponent<Anim>().animationMap.find(Anim::STANDING)->second);
-		entity->getComponent<Anim>().activeAnim.update(time);
+		//m_entity->getComponent<Anim>().activeAnim.setAnimation(m_entity->getComponent<Anim>().animationMap.find(Anim::STANDING)->second);
+		m_entity->getComponent<Anim>().activeAnim.update(time);
 
 
 

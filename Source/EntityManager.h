@@ -9,8 +9,8 @@ typedef std::shared_ptr<Entity> EntPtr;
 
 //////////////////////	
 //
-//	TODO: Add a "pendingUpdate()" which checks if a new entity has been created
-//		  or that an entity has gotten a new component. This is to reduce calls
+//	TODO: Add a "pendingUpdate()" which checks if a new m_entity has been created
+//		  or that an m_entity has gotten a new component. This is to reduce calls
 //		  to the "getEntWithComps()" for each update();
 
 class EntityManager
@@ -18,16 +18,17 @@ class EntityManager
 public:
 	EntityManager();
 
-	// Create a custom entity and add to list
+	// Create a custom m_entity and add to list
 	EntPtr& createEntity(sf::Vector2f position = sf::Vector2f(0,0));
-	//	Create a premade entity (preferred)
+	//	Create a premade m_entity (preferred)
 	EntPtr& createEntity(std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
-	//EntPtr& addEntity(Entity* ent);			//	Add the entity from parameter to list
-	bool removeEntity(unsigned int entID);		//	Delete the entity from the list
-	//EntPtr* getEntity(unsigned int entID);		//	Get entity by ID
+	//EntPtr& addEntity(Entity* ent);			//	Add the m_entity from parameter to list
+	bool removeEntity(unsigned int entID);		//	Delete the m_entity from the list
+	//EntPtr* getEntity(unsigned int entID);		//	Get m_entity by ID
 
-	template<class T> std::vector<EntPtr> getEntWithComp();
+	template<class T> std::vector<EntPtr>	getEntWithComp();
 	template<class T, class... params> std::vector<EntPtr> getEntWithComps();
+	std::vector<EntPtr>						getAllEntities();
 
 private:
 	static std::vector<EntPtr> entities;

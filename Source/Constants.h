@@ -33,5 +33,5 @@ const enum EventID
 	MESSAGE,
 	COLLISION,
 	ACTION,
-	MOVETOPOS,
+	//MOVETOPOS,
 };

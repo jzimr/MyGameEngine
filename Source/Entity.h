@@ -11,20 +11,43 @@ class Entity : public sf::NonCopyable
 {
 public:
 	typedef std::unique_ptr<BaseComponent> CompPtr;
+	typedef std::shared_ptr<Entity> EntPtr;
 
 public:
 	Entity(int id);
 	int						getID() const;
-	//void					attachChild(Entity* child);
-	//void					detachChild(Entity* child);
+
+	////////////////////////////////////////////////////////////
+	/// Parent-child relationship
+	///
+	////////////////////////////////////////////////////////////
+	void					attachChild(EntPtr child);
+	EntPtr					detachChild(EntPtr child);
+	bool					hasChildren() const;
+	bool					hasParent() const;
+	EntPtr					getParent();
+	bool					isChildOf(const EntPtr entity) const;
+
+
+	//	Functions of sf::Transformable
+	void					setPosition(float x, float y);
+	void					setPosition(const sf::Vector2f position);
+	const sf::Vector2f		getPosition() const;
+	void					move(float offsetX, float offsetY);
+	void					move(const sf::Vector2f &offset);
 
 private:
-	std::vector<CompPtr>	components;		//	Components attached to this entity
-	std::bitset<MAX_COMPS>	compFlags;	//	So we can quickly lookup an entity's components instead of looping through the whole list
+	std::vector<CompPtr>	components;		//	Components attached to this m_entity
+	std::bitset<MAX_COMPS>	compFlags;	//	So we can quickly lookup an m_entity's components instead of looping through the whole list
+
+	sf::Transformable transform;
 
 	int						uniqueID;
-	//Entity*					parent;
-	//Entity*					child;
+
+	EntPtr				parent;
+	std::vector<EntPtr>	children;
+
+
 
 	////////////////////////////////////////////////////////////
 	/// Component System

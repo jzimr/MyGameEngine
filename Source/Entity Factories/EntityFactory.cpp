@@ -18,21 +18,21 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 	///	Find path from list
 	assert(!entities.empty());			//	If there are no entities to spawn at all
 	auto it = entities.find(ID);
-	assert(it != entities.end());		//	If the entity was not found in the list
+	assert(it != entities.end());		//	If the m_entity was not found in the list
 	std::string& path = it->second;
 
 	///	Read contents from file
 	std::ifstream file(path);
-	std::unique_ptr<Entity> entity;
+	std::unique_ptr<Entity> m_entity;
 
 	if (file)
 	{
 		std::string line;
-		entity = std::unique_ptr<Entity>(new Entity(uniqueID));
+		m_entity = std::unique_ptr<Entity>(new Entity(uniqueID));
 
 		//	Mandatory component
-		entity->addComponent<Transform>();
-		entity->getComponent<Transform>().globalTransform.setPosition(position);
+		//m_entity->addComponent<Transform>();
+		m_entity->setPosition(position);
 
 		while (std::getline(file, line, '\n'))
 		{
@@ -47,36 +47,36 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 			if (words[0] == "Component")
 			{
 				if (words[1] == "Physics")
-					entity->addComponent<Physics>();
+					m_entity->addComponent<Physics>();
 				else if (words[1] == "Collider")
-					entity->addComponent<Collider>();
+					m_entity->addComponent<Collider>();
 				else if (words[1] == "Controller")
-					entity->addComponent<Controller>();
+					m_entity->addComponent<Controller>();
 				else if (words[1] == "Movement")
-					entity->addComponent<Movement>();
+					m_entity->addComponent<Movement>();
 				else if (words[1] == "Sprite2D")
-					entity->addComponent<Sprite2D>();
+					m_entity->addComponent<Sprite2D>();
 				else if (words[1] == "Player")
-					entity->addComponent<Player>();
+					m_entity->addComponent<Player>();
 				else if (words[1] == "Anim")
-					entity->addComponent<Anim>();
-				else if (words[1] == "Parentable")
-					entity->addComponent<Parentable>();
+					m_entity->addComponent<Anim>();
+				//else if (words[1] == "Parentable")
+				//	m_entity->addComponent<Parentable>();
 				else if (words[1] == "Grabbable")
-					entity->addComponent<Grabbable>();
+					m_entity->addComponent<Grabbable>();
 			}
 			else if (words[0] == "Texture")
 			{
-				Sprite2D* spriteComp = &entity->getComponent<Sprite2D>();
-				Transform* globalTransform = &entity->getComponent<Transform>();
+				Sprite2D* spriteComp = &m_entity->getComponent<Sprite2D>();
+				//Transform* globalTransform = &m_entity->getComponent<Transform>();
 				spriteComp->texture = textureHolder.get(words[1]);	//	Get texture from world
 				spriteComp->sprite = sf::Sprite(spriteComp->texture);
-				spriteComp->sprite.setPosition(globalTransform->globalTransform.getPosition());
+				spriteComp->sprite.setPosition(m_entity->getPosition());
 			}
 			else if (words[0] == "SpriteSheet")			//	REMEMBER TO SET SCALE!!
 			{
 				///	Get all relevant info from file
-				Anim* anim = &entity->getComponent<Anim>();
+				Anim* anim = &m_entity->getComponent<Anim>();
 				Animation newAnimRight(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
 				Animation newAnimLeft(sf::milliseconds(std::stoi(words[5])));		//	New animation with frametime specified in file
 
@@ -115,18 +115,18 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 			}
 			else if (words[0] == "ColliderBox")
 			{
-				Collider* collider = &entity->getComponent<Collider>();
+				Collider* collider = &m_entity->getComponent<Collider>();
 
 				if (words[1] == "default")
 				{
-					if (entity->hasComponent<Anim>())
+					if (m_entity->hasComponent<Anim>())
 					{
-						Anim* anim = &entity->getComponent<Anim>();
+						Anim* anim = &m_entity->getComponent<Anim>();
 						collider->colliderBox = anim->activeAnim.getGlobalBounds();
 					}
-					else if (entity->hasComponent<Sprite2D>())
+					else if (m_entity->hasComponent<Sprite2D>())
 					{
-						Sprite2D* sprite2D = &entity->getComponent<Sprite2D>();
+						Sprite2D* sprite2D = &m_entity->getComponent<Sprite2D>();
 						collider->colliderBox = sprite2D->sprite.getGlobalBounds();
 					}
 				}
@@ -141,7 +141,7 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 			}
 		}
 	}
-	return std::move(entity);
+	return std::move(m_entity);
 }
 
 void EntityFactory::loadTextures()	//	Load all textures and sprite sheets from folders

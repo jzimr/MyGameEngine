@@ -31,7 +31,7 @@ public:
 	void						update(float dt);
 	void						end();
 
-	void						notify(Entity* entity, SystemEvent event);
+	void						notify(Entity* m_entity, SystemEvent event);
 
 public:
 	template<class T> T*	addSystem()

@@ -36,11 +36,10 @@ void TerrainSystem::begin()
 //	Only check for chunk updates every 1 second
 void TerrainSystem::update(float dt, EventManager& events)
 {
-	entities = entMan.getEntWithComps<Transform, Sprite2D>();
-	std::vector<EntPtr> p = entMan.getEntWithComps<Player>();
+	entities = entMan.getEntWithComps<Sprite2D>();
+	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Spaghetti
 
-	transformComp = &p[0]->getComponent<Transform>();
-	playerComp = &p[0]->getComponent<Player>();
+	player = p[0];
 
 	d2_counter += dt;
 
@@ -57,12 +56,13 @@ void TerrainSystem::update(float dt, EventManager& events)
 //	Currently only 3 chunks are loaded at once
 void TerrainSystem::updateChunks(EventManager& events)		//	A bit messy, needs to be cleaned up
 {
-	float playerPosX = transformComp->globalTransform.getPosition().x;
+	float playerPosX = player->getPosition().x;
 	//	Get chunk ID position where player is currently
 	int playerChunkPos = (int)playerPosX / (CHUNK_WIDTH * WORLD_UNIT) 
 		- (playerPosX < 0 /*&& playerPosX != (int)playerPosX*/);	//	Fix rounding for negative numbers
 	std::vector<int> chunksToBeCreated;
 	bool chunkUpdate = false;
+	Player* playerComp = &player->getComponent<Player>();
 
 	//	Fill array so we know what chunks are not in our available & player list
 	for (int i = MAX_CHUNKS_LOADED / 2 * -1; i < MAX_CHUNKS_LOADED - 1; i++)

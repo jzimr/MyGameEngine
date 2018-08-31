@@ -11,21 +11,21 @@
 //
 //void Collider::init()
 //{
-//	//	Set the entity's collision box to its sprite size
-//	if (entity->hasComponent<Sprite2D>())
+//	//	Set the m_entity's collision box to its sprite size
+//	if (m_entity->hasComponent<Sprite2D>())
 //	{
-//		entity->setPosition(300, 300);		// Remove after done testing
-//		sf::Sprite entSprite = entity->getComponent<Sprite2D>().getSprite();
-//		sf::Vector2f entPos = entity->getPosition();
-//		sf::Vector2f entOrigin = entity->getOrigin();
+//		m_entity->setPosition(300, 300);		// Remove after done testing
+//		sf::Sprite entSprite = m_entity->getComponent<Sprite2D>().getSprite();
+//		sf::Vector2f entPos = m_entity->getPosition();
+//		sf::Vector2f entOrigin = m_entity->getOrigin();
 //
 //		collisionBox = entSprite.getGlobalBounds();		//	For size of collision box
 //		collisionBox.left = entPos.x - entOrigin.x;		//	For position of collision box
 //		collisionBox.top = entPos.y - entOrigin.y;
 //
 //		///				FOR TESTING
-//		//std::cout << entity->getOrigin().x << ", " << entity->getOrigin().y << " | "
-//		//	<< entity->getPosition().x << ", " << entity->getPosition().y << '\n';
+//		//std::cout << m_entity->getOrigin().x << ", " << m_entity->getOrigin().y << " | "
+//		//	<< m_entity->getPosition().x << ", " << m_entity->getPosition().y << '\n';
 //		//std::cout << collisionBox.width << ", " << collisionBox.height << " | "
 //		//	<< collisionBox.left << ", " << collisionBox.top << '\n';
 //	}
@@ -36,8 +36,8 @@
 //void Collider::update(float dt)
 //{
 //	//	Update the position of the box
-//	sf::Vector2f entPos = entity->getPosition();
-//	sf::Vector2f entOrigin = entity->getOrigin();
+//	sf::Vector2f entPos = m_entity->getPosition();
+//	sf::Vector2f entOrigin = m_entity->getOrigin();
 //
 //	collisionBox.left = entPos.x - entOrigin.x;		//	For position of collision box
 //	collisionBox.top = entPos.y - entOrigin.y;

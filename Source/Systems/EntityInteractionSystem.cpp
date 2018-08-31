@@ -31,8 +31,8 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 	//	Get all entities that are grabbable
 	std::vector<EntPtr> grabbableEntities = entMan.getEntWithComp<Grabbable>();
 	
-	//	Create the bounding box for our entity
-	sf::Vector2f entPos = action->m_entity->getComponent<Transform>().globalTransform.getPosition();
+	//	Create the bounding box for our m_entity
+	sf::Vector2f entPos = action->m_entity->getPosition();
 	sf::FloatRect entBoundaries = action->m_entity->getComponent<Anim>().activeAnim.getGlobalBounds();
 	entBoundaries.left = entPos.x; entBoundaries.top = entPos.y;
 
@@ -42,13 +42,13 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 
 	for (const auto& grabEntity : grabbableEntities)
 	{
-		grabEntPos = grabEntity->getComponent<Transform>().globalTransform.getPosition();
+		grabEntPos = grabEntity->getPosition();
 		grabEntBoundaries = grabEntity->getComponent<Sprite2D>().sprite.getGlobalBounds();
 		grabEntBoundaries.left = grabEntPos.x; grabEntBoundaries.top = grabEntPos.y;
 
 		if (grabEntBoundaries.left - (entBoundaries.left + entBoundaries.width) <= GrabbableDistance)
 		{
-			action->m_entity->getComponent<Parentable>().children.push_back(grabEntity);
+			action->m_entity->attachChild(grabEntity);
 		}
 	}
 }

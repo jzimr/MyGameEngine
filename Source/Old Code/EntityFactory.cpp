@@ -23,7 +23,7 @@ void EntityFactory::getAllFromDirectory()
 	{
 		if (p.is_regular_file())		//	Check if not directory, stream, etc.
 		{
-			//	Get the entity name
+			//	Get the m_entity name
 			std::string entityName = p.path().filename().string();		//	E.g. "Player"
 			auto checkIfFType = entityName.find_first_of('.');
 			assert(checkIfFType == -1);	//	If the file has a specific filetype (Tip: It shouldn't have!)	
@@ -40,7 +40,7 @@ void EntityFactory::getAllFromDirectory()
 
 EntityFactory::EntPtr EntityFactory::createEntity(std::string entityName)
 {
-	EntityFactory::EntPtr entity(new Entity());
+	EntityFactory::EntPtr m_entity(new Entity());
 
 	auto it = entities.find(entityName);
 	assert(it != entities.end());			//	If name not found in map

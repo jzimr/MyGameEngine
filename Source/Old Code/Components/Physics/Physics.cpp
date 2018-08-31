@@ -12,7 +12,7 @@
 //void Physics::update(float dt)
 //{
 //	updateGravity(dt);
-//	entity->move(dt * velocity);
+//	m_entity->move(dt * velocity);
 //}
 //
 //void Physics::setVelocity(sf::Vector2f vel)
@@ -31,7 +31,7 @@
 //	//	position += velocity * dt;
 //
 //	velocity += (sf::Vector2f(0, gravity * dt));
-//	entity->move(sf::Vector2f(0, velocity.y * dt));
+//	m_entity->move(sf::Vector2f(0, velocity.y * dt));
 //
 //	//std::cout << velocity.y << '\n';
 //

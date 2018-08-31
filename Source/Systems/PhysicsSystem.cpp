@@ -12,24 +12,22 @@ void PhysicsSystem::configure(EventManager& events)
 {
 	events.subscribe<Collision>(this, &PhysicsSystem::receiveC);
 	events.subscribe<Action>(this, &PhysicsSystem::receiveA);
-	events.subscribe<MoveToPos>(this, &PhysicsSystem::receiveT);	//	Maybe move into own System?
+	//events.subscribe<MoveToPos>(this, &PhysicsSystem::receiveT);	//	Maybe move into own System?
 }
 
 void PhysicsSystem::update(float dt, EventManager& events)
 {
-	entities = entMan.getEntWithComps<Transform, Physics>();
+	entities = entMan.getEntWithComp<Physics>();
 
-	Transform* globalTransform;
 	Physics* physics;
 	Movement* movement;
 
 
-	for (auto& entity : entities)
+	for (auto& m_entity : entities)
 	{
-		MoveToPos moveToPos(entity);
-		globalTransform = &entity->getComponent<Transform>();
-		physics = &entity->getComponent<Physics>();
-		movement = entity->hasComponent<Movement>() ? &entity->getComponent<Movement>() : NULL;
+		//MoveToPos moveToPos(m_entity);
+		physics = &m_entity->getComponent<Physics>();
+		movement = m_entity->hasComponent<Movement>() ? &m_entity->getComponent<Movement>() : NULL;
 
 		if (physics)
 		{
@@ -41,9 +39,10 @@ void PhysicsSystem::update(float dt, EventManager& events)
 			if (physics->velocity.y >= physics->maxFallingSpeed)
 				physics->velocity.y = physics->maxFallingSpeed;
 
-			//	Move entity
-			moveToPos.m_newEntPos = globalTransform->globalTransform.getPosition() + (physics->velocity * dt);
-			events.emit<MoveToPos>(moveToPos);
+			//	Move m_entity
+			//moveToPos.m_newEntPos = m_entity->getPosition() + (physics->velocity * dt);
+			m_entity->move(physics->velocity * dt);
+			//events.emit<MoveToPos>(moveToPos);
 			//transform->transform.move(physics->velocity * dt);		MIGHT THIS SIMPLY BE BETTER?
 		}
 	}
@@ -56,9 +55,18 @@ void PhysicsSystem::update(float dt, EventManager& events)
 
 void PhysicsSystem::receiveC(Collision* collision)
 {
-	Physics* physics = &collision->entity->getComponent<Physics>();
+	Physics* physics = &collision->m_entity->getComponent<Physics>();
 
-	switch (collision->direction)
+	//		TEMP	//
+	//	Set the new position of both the children AND the parents if collision has happened
+	sf::Vector2f newPosDist = collision->m_newEntPos - collision->m_entity->getPosition();
+	std::shared_ptr<Entity> paterfamilias = collision->m_entity;			//	Hehe	
+	while (paterfamilias->getParent() != NULL)
+		paterfamilias = paterfamilias->getParent();
+	paterfamilias->move(newPosDist);		//	Update from top-down in hierachy
+
+	///	Remove velocities on collision direction
+	switch (collision->m_direction)
 	{
 	case CollisionDirection::COLLISION_BOTTOM:	//	CollisionSystem
 		if (physics->velocity.y > 0)
@@ -103,29 +111,5 @@ void PhysicsSystem::receiveA(Action* action)
 		break;
 	case EntAction::STOP_ENTITY_RIGHT:	//	ControllerSystem
 		physics->horizontalVelocity -= movement->horizontalSpeed;
-	}
-}
-
-//	TEMPORARY SOLUTION (NEEDS ALOT OF IMPORVEMENT)
-//	TODO: Implement localmovement with globalmovement
-//	TODO: Find better way to handle movement of children
-void PhysicsSystem::receiveT(MoveToPos* moveToPos)
-{
-	Transform* transform = &moveToPos->m_entity->getComponent<Transform>();
-	Parentable* parentable = moveToPos->m_entity->hasComponent<Parentable>() ?
-		&moveToPos->m_entity->getComponent<Parentable>() : NULL;
-
-	sf::Vector2f distMoved = moveToPos->m_newEntPos - transform->globalTransform.getPosition();
-
-	transform->globalTransform.move(distMoved);
-
-	if (parentable)		//	Then we have to move the children as well
-	{
-		for (auto& child : parentable->children)
-		{
-			Transform* childTransform = &child->getComponent<Transform>();
-
-			childTransform->globalTransform.move(distMoved);
-		}
 	}
 }

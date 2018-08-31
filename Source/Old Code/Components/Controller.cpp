@@ -13,7 +13,7 @@
 //{
 //	//	TEMPORARY SOLUTION!
 //
-//	Physics* physics = &entity->getComponent<Physics>();
+//	Physics* physics = &m_entity->getComponent<Physics>();
 //
 //	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 //	{

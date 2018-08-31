@@ -4,7 +4,7 @@
 //
 //
 //Component::Component(Entity* ent)
-//	: entity{ ent }
+//	: m_entity{ ent }
 //{
 //}
 //

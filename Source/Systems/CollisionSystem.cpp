@@ -12,7 +12,7 @@ CollisionSystem::CollisionSystem()
 
 void CollisionSystem::configure(EventManager& events)
 {
-	events.subscribe<Message>(this, &CollisionSystem::receive);		
+	events.subscribe<Message>(this, &CollisionSystem::receive);
 }
 
 ////////////////////////////////////////////////////////////
@@ -23,54 +23,84 @@ void CollisionSystem::configure(EventManager& events)
 
 void CollisionSystem::update(float dt, EventManager& events)
 {
-	entities = entMan.getEntWithComps<Transform, Collider>();
+	entities = entMan.getEntWithComps<Collider>();
 
-	Transform * globalTransform;		//	Required
 	Collider* collider;			//	Required
 	Physics* physics;			//	Not required
 
 	CollisionDirection collisionDir;
 
-	for (auto& entity : entities)
+	for (auto& m_entity : entities)
 	{
-		if (entity->hasComponent<Player>())
-			playerComp = &entity->getComponent<Player>();
+		if (m_entity->hasComponent<Player>())
+			playerComp = &m_entity->getComponent<Player>();
 
-		MoveToPos moveToPos(entity);
-		globalTransform = &entity->getComponent<Transform>();
-		collider = &entity->getComponent<Collider>();
-		physics = entity->hasComponent<Physics>() ? &entity->getComponent<Physics>() : NULL;
+		//MoveToPos moveToPos(m_entity);
+		collider = &m_entity->getComponent<Collider>();
+		physics = m_entity->hasComponent<Physics>() ? &m_entity->getComponent<Physics>() : NULL;
 
-		if (!physics)		//	No point in checking for collision on static object
-			continue;
+		if (!physics)	//	No point in checking for collision on static object
+		{
+			//	Check if the parent of this entity has the Physics component. If yes, check for collision
+			if (!m_entity->hasParent())
+				continue;
+			else
+			{
+				std::shared_ptr<Entity> currEnt = m_entity;
+				bool hasphysics = false;
+
+				while (currEnt != NULL)
+				{
+					if (currEnt->hasComponent<Physics>())
+					{
+						hasphysics = true;
+						break;
+					}
+					currEnt->getParent();
+				}
+				if (hasphysics)
+					continue;
+			}
+		}
+
+
+		//	For children of physics component m_entity (Rigidbody):
+		//	if(thisEntity.hasCHildren)
+		//		if(child.hascomponent<collider>())
+		//			child.checkcollision
+		//			....
+
+		//	Later: Change Collision component to only keep data of the collision.
+		//	Do not handle positionchanging here. (Related to parent-child relationship)
+
+
 
 		//	Update collider box position from the physicsSystem
-		collider->colliderBox.left = globalTransform->globalTransform.getPosition().x;
-		collider->colliderBox.top = globalTransform->globalTransform.getPosition().y;
+		collider->colliderBox.left = m_entity->getPosition().x;
+		collider->colliderBox.top = m_entity->getPosition().y;
 
 		sf::Vector2f fixPos(0, 0);	//	In case of overlap (Look further down)
 		sf::Rect<float>* thisRect = &collider->colliderBox;
 		sf::Rect<float> otherRect;
 
-		//	For each entity collider
+		//	For each m_entity collider
 		for (auto& otherEntity : entities)
 		{
 			otherRect = otherEntity->getComponent<Collider>().colliderBox;
 
-			//	Check if otherEntity intersects and is not this entity
-			if (thisRect->intersects(otherRect) && entity != otherEntity)
+			//	Check if otherEntity intersects and is not this m_entity
+			if (thisRect->intersects(otherRect) && m_entity != otherEntity && !otherEntity->isChildOf(m_entity))
 			{
-				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision direction
+				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision m_direction
 				fixPos = fixPositionOnCollide(collisionDir, *thisRect, otherRect);		//	Fix position when colliding
 
-				Collision collision(collisionDir, fixPos, entity);
+				Collision collision(collisionDir, fixPos, m_entity, &otherEntity->getComponent<Collider>());
 				events.emit<Collision>(collision);
 
-				moveToPos.m_newEntPos = fixPos;
-				events.emit<MoveToPos>(moveToPos);
-				/*globalTransform->globalTransform.setPosition(fixPos);*/
-				collider->colliderBox.left = globalTransform->globalTransform.getPosition().x;
-				collider->colliderBox.top = globalTransform->globalTransform.getPosition().y;
+				//moveToPos.m_newEntPos = fixPos;
+				//events.emit<MoveToPos>(moveToPos);
+				collider->colliderBox.left = m_entity->getPosition().x;
+				collider->colliderBox.top = m_entity->getPosition().y;
 			}
 		}
 
@@ -79,21 +109,19 @@ void CollisionSystem::update(float dt, EventManager& events)
 		{
 			otherRect = terrainCollider.colliderBox;
 
-			//	Check if otherEntity intersects and is not this entity
+			//	Check if otherEntity intersects and is not this m_entity
 			if (thisRect->intersects(otherRect))
 			{
-				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision direction
+				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision m_direction
 				fixPos = fixPositionOnCollide(collisionDir, *thisRect, otherRect);		//	Fix position when colliding
 
-				Collision collision(collisionDir, fixPos, entity);
+				Collision collision(collisionDir, fixPos, m_entity, &terrainCollider);
 				events.emit<Collision>(collision);
 
-				moveToPos.m_newEntPos = fixPos;
-				events.emit<MoveToPos>(moveToPos);
-				/*globalTransform->globalTransform.setPosition(fixPos);*/
-				collider->colliderBox.left = globalTransform->globalTransform.getPosition().x;
-				collider->colliderBox.top = globalTransform->globalTransform.getPosition().y;
-
+				//moveToPos.m_newEntPos = fixPos;
+				//events.emit<MoveToPos>(moveToPos);
+				collider->colliderBox.left = m_entity->getPosition().x;
+				collider->colliderBox.top = m_entity->getPosition().y;
 			}
 		}
 	}
@@ -148,7 +176,7 @@ void CollisionSystem::receive(Message* message)
 	}
 }
 
-CollisionDirection CollisionSystem::checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect) 
+CollisionDirection CollisionSystem::checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect)
 {
 	float left = rect.left, top = rect.top,
 		width = rect.width, height = rect.height;

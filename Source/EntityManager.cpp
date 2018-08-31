@@ -35,6 +35,11 @@ bool EntityManager::removeEntity(unsigned int entID)
 	return false;				//	If not found
 }
 
+std::vector<EntPtr> EntityManager::getAllEntities()
+{
+	return entities;
+}
+
 //	Initialize static variables
 
 std::vector<EntPtr> EntityManager::entities{};

@@ -28,7 +28,7 @@ public:
 private:
 	//	Better to store path as it makes it easier to modify entities at
 	//	runtime for testing purposes.
-	//	First = Entity name, Second = path to entity file
+	//	First = Entity name, Second = path to m_entity file
 	std::map<std::string, std::string> entities;
 	TextureHolder<std::string> textureHolder;
 	TextureHolder<std::string> spriteSheetHolder;
@@ -48,7 +48,7 @@ private:
 			if (!p.is_regular_file())		//	Check if not directory, stream, etc.
 				continue;
 
-			///	Get the entity name
+			///	Get the m_entity name
 			std::string name = p.path().filename().string();		//	E.g. "Player.txt", "Player.dat"
 			std::string path = p.path().string();		//	E.g. "Player.txt"
 			auto checkIfFType = name.find_first_of('.');

@@ -18,9 +18,9 @@ void ControllerSystem::update(float dt, EventManager& events)
 	{
 		event = m_eventQueue->front();
 
-		for (auto& entity : entities)
+		for (auto& m_entity : entities)
 		{
-			Action entAction(entity);
+			Action entAction(m_entity);
 
 			if (event.type == sf::Event::KeyPressed)
 			{

@@ -2,6 +2,7 @@
 #include <string>
 #include "stdafx.h"
 class Entity;
+class Collider;
 
 
 struct Event
@@ -24,35 +25,36 @@ struct Collision : public Event
 	};
 
 	Collision() {}
-	Collision(CollisionDirection dir, sf::Vector2f newPos, std::shared_ptr<Entity> ent)
-		: direction{ dir }, newEntPos{ newPos }, entity{ ent }
+	Collision(CollisionDirection direction, sf::Vector2f newPos, std::shared_ptr<Entity> entity, Collider* otherCollider)
+		: m_direction{ direction }, m_newEntPos{ newPos }, m_entity{ entity }, m_otherCollider {otherCollider}
 	{
 
 	}
 
-	CollisionDirection direction;			//	Direction of collision
-	sf::Vector2f newEntPos;
-	std::shared_ptr<Entity> entity;			//	Entity that collided
+	CollisionDirection m_direction;			//	Direction of collision
+	sf::Vector2f m_newEntPos;
+	std::shared_ptr<Entity> m_entity;			//	Entity that collided
+	Collider* m_otherCollider;				//	Other collider that ^^^^^^^ collided with
 
 	const EventID eventID = COLLISION;
 };
 
-struct MoveToPos : public Event			//	Move an entity to the desired position (REQUIRED TO MOVE AN ENTITY)
-{
-	MoveToPos() {}
-	MoveToPos(std::shared_ptr<Entity> entity, sf::Vector2f newEntPos = sf::Vector2f(0,0))
-		: m_entity{ entity }, m_newEntPos{ newEntPos }
-	{
+//struct MoveToPos : public Event			//	Move an m_entity to the desired position (REQUIRED TO MOVE AN ENTITY)
+//{
+//	MoveToPos() {}
+//	MoveToPos(std::shared_ptr<Entity> m_entity, sf::Vector2f m_newEntPos = sf::Vector2f(0,0))
+//		: m_entity{ m_entity }, m_newEntPos{ m_newEntPos }
+//	{
+//
+//	}
+//
+//	sf::Vector2f m_newEntPos;
+//	std::shared_ptr<Entity> m_entity;			//	Entity to move
+//
+//	const EventID eventID = MOVETOPOS;
+//};
 
-	}
-
-	sf::Vector2f m_newEntPos;
-	std::shared_ptr<Entity> m_entity;			//	Entity to move
-
-	const EventID eventID = MOVETOPOS;
-};
-
-struct Action : public Event				//	An action that the entity performed
+struct Action : public Event				//	An action that the m_entity performed
 {
 	const enum EntAction
 	{
@@ -67,13 +69,13 @@ struct Action : public Event				//	An action that the entity performed
 	};
 
 	Action() {}
-	Action(std::shared_ptr<Entity> entity, EntAction action = NOTHING)
-		: m_entity{ entity }, m_action{ action }
+	Action(std::shared_ptr<Entity> m_entity, EntAction action = NOTHING)
+		: m_entity{ m_entity }, m_action{ action }
 	{
 		 
 	}
 
-	EntAction m_action = NOTHING;						//	Action the entity performed
+	EntAction m_action = NOTHING;						//	Action the m_entity performed
 	std::shared_ptr<Entity> m_entity;			
 
 	const EventID eventID = ACTION;

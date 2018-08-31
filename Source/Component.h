@@ -12,7 +12,7 @@ using namespace Settings;
 enum COMP_TYPE
 {
 	//BASE_COMP = 0,
-	TRANSFORM_COMP = 0,
+	//TRANSFORM_COMP = 0,
 	PARENTABLE_COMP,
 	PHYSICS_COMP,
 	COLLIDER_COMP,
@@ -30,21 +30,21 @@ struct BaseComponent
 	virtual ~BaseComponent() {};
 };
 
-struct Transform : BaseComponent	//	Position, rotation, scale
-{
-	sf::Transformable globalTransform;			//	Global world position/rotation
-	//				  VVVVVVVVVVVVVV	(0,0) if no parent
-	sf::Transformable localTransform;			//	Local -----     ||    -------- relative to parent
+//struct Transform : BaseComponent	//	Position, rotation, scale
+//{
+//	sf::Transformable globalTransform;			//	Global world position/rotation
+//	//				  VVVVVVVVVVVVVV	(0,0) if no parent
+//	sf::Transformable localTransform;			//	Local -----     ||    -------- relative to parent
+//
+//	COMP_TYPE type = TRANSFORM_COMP;
+//};
 
-	COMP_TYPE type = TRANSFORM_COMP;
-};
-
-struct Parentable : BaseComponent	//	Creates a parent/child relationship between entities
-{
-	std::vector<std::shared_ptr<Entity>> children;
-
-	COMP_TYPE type = PARENTABLE_COMP;
-};
+//struct Parentable : BaseComponent	//	Creates a parent/child relationship between entities
+//{
+//	std::vector<std::shared_ptr<Entity>> children;
+//
+//	COMP_TYPE type = PARENTABLE_COMP;
+//};
 
 struct Physics : BaseComponent		//	Making an object fall
 {
@@ -59,14 +59,14 @@ struct Physics : BaseComponent		//	Making an object fall
 
 struct Collider : BaseComponent		//	Collides with other objects
 {
-	sf::Rect<float> colliderBox;	//	Simply a box around the entity sprite
+	sf::Rect<float> colliderBox;	//	Simply a box around the m_entity sprite
 	//	 VVVVVVVVV -> TODO
 	//bool isTrigger = false;			//	If true, this collider works as a trigger instead (E.g. death)
 
 	COMP_TYPE type = COLLIDER_COMP;
 };
 
-struct Player : BaseComponent		//	Can only be applied to one entity at a time
+struct Player : BaseComponent		//	Can only be applied to one m_entity at a time
 {
 	//	Maybe move VVVV into custom component?
 	std::vector<std::unique_ptr<Chunk>> loadedChunks;		//	List with chunks that are currently active
