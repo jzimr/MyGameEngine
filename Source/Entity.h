@@ -26,7 +26,9 @@ public:
 	bool					hasChildren() const;
 	bool					hasParent() const;
 	EntPtr					getParent();
-	bool					isChildOf(const EntPtr entity) const;
+	bool					isChildOf(const EntPtr entity);			//	This entity is child of param
+	bool					isParentOf(const EntPtr entity);		//	This entity is parent of param
+	bool					isRelatedWith(const EntPtr entity);
 
 
 	//	Functions of sf::Transformable

@@ -55,15 +55,23 @@ void PhysicsSystem::update(float dt, EventManager& events)
 
 void PhysicsSystem::receiveC(Collision* collision)
 {
-	Physics* physics = &collision->m_entity->getComponent<Physics>();
+	Physics* physics = NULL;
 
 	//		TEMP	//
 	//	Set the new position of both the children AND the parents if collision has happened
 	sf::Vector2f newPosDist = collision->m_newEntPos - collision->m_entity->getPosition();
 	std::shared_ptr<Entity> paterfamilias = collision->m_entity;			//	Hehe	
-	while (paterfamilias->getParent() != NULL)
+
+	physics = paterfamilias->hasComponent<Physics>() ? &paterfamilias->getComponent<Physics>() : NULL;
+	while (paterfamilias->hasParent())
+	{
 		paterfamilias = paterfamilias->getParent();
+		physics = paterfamilias->hasComponent<Physics>() ? &paterfamilias->getComponent<Physics>() : NULL;
+	}
 	paterfamilias->move(newPosDist);		//	Update from top-down in hierachy
+
+
+	//Physics* physics = &collision->m_entity->getComponent<Physics>();
 
 	///	Remove velocities on collision direction
 	switch (collision->m_direction)

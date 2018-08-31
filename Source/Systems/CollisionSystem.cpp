@@ -39,7 +39,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 		collider = &m_entity->getComponent<Collider>();
 		physics = m_entity->hasComponent<Physics>() ? &m_entity->getComponent<Physics>() : NULL;
 
-		if (!physics)	//	No point in checking for collision on static object
+		if (!physics)	//	No point in checking for collision on static object unless parent has physics
 		{
 			//	Check if the parent of this entity has the Physics component. If yes, check for collision
 			if (!m_entity->hasParent())
@@ -47,18 +47,18 @@ void CollisionSystem::update(float dt, EventManager& events)
 			else
 			{
 				std::shared_ptr<Entity> currEnt = m_entity;
-				bool hasphysics = false;
+				bool parentHasPhysics = false;
 
 				while (currEnt != NULL)
 				{
 					if (currEnt->hasComponent<Physics>())
 					{
-						hasphysics = true;
+						parentHasPhysics = true;
 						break;
 					}
-					currEnt->getParent();
+					currEnt = currEnt->getParent();
 				}
-				if (hasphysics)
+				if (!parentHasPhysics)
 					continue;
 			}
 		}
@@ -89,7 +89,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 			otherRect = otherEntity->getComponent<Collider>().colliderBox;
 
 			//	Check if otherEntity intersects and is not this m_entity
-			if (thisRect->intersects(otherRect) && m_entity != otherEntity && !otherEntity->isChildOf(m_entity))
+			if (thisRect->intersects(otherRect) && m_entity != otherEntity && !m_entity->isRelatedWith(otherEntity))
 			{
 				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision m_direction
 				fixPos = fixPositionOnCollide(collisionDir, *thisRect, otherRect);		//	Fix position when colliding

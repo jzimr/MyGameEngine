@@ -21,6 +21,8 @@ int Entity::getID() const
 void Entity::attachChild(EntPtr child)
 {
 	children.push_back(child);
+	//std::shared_ptr<Entity>(this);
+	child->parent = std::shared_ptr<Entity>(this);
 }
 
 Entity::EntPtr Entity::detachChild(EntPtr child)
@@ -43,8 +45,8 @@ Entity::EntPtr Entity::getParent()
 	return parent;
 }
 
-//	Check the whole hierarchy with recursion
-bool Entity::isChildOf(const EntPtr entity) const
+//	Check the upper hierachy with recursion
+bool Entity::isChildOf(const EntPtr entity)
 {
 	if (parent)
 	{
@@ -56,6 +58,32 @@ bool Entity::isChildOf(const EntPtr entity) const
 	}
 
 	return false;
+}
+
+bool Entity::isParentOf(const EntPtr entity)
+{
+	for (const auto& child : children)
+	{
+		//	Some more recursion :D
+		if (child == entity)
+			return true;
+
+		if (child->isParentOf(entity))
+			return true;
+	}
+	return false;		
+}
+
+bool Entity::isRelatedWith(const EntPtr entity)
+{
+	if (/*std::shared_ptr<Entity>(this) == entity ||*/
+		isChildOf(entity) || isParentOf(entity))
+		return true;
+	else
+		return false;
+
+
+
 }
 
 
