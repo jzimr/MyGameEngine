@@ -21,8 +21,8 @@ public:
 	/// Parent-child relationship
 	///
 	////////////////////////////////////////////////////////////
-	void					attachChild(EntPtr child);
-	EntPtr					detachChild(EntPtr child);
+	void					attachChild(EntPtr child, EntPtr parent);
+	/*EntPtr*/ void					detachChild(EntPtr child);
 	bool					hasChildren() const;
 	bool					hasParent() const;
 	EntPtr					getParent();

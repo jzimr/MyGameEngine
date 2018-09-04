@@ -28,27 +28,44 @@ void EntityInteractionSystem::receiver(Action* action)
 }
 void EntityInteractionSystem::handleGrabbing(Action* action)
 {
-	//	Get all entities that are grabbable
-	std::vector<EntPtr> grabbableEntities = entMan.getEntWithComp<Grabbable>();
-	
-	//	Create the bounding box for our m_entity
-	sf::Vector2f entPos = action->m_entity->getPosition();
-	sf::FloatRect entBoundaries = action->m_entity->getComponent<Anim>().activeAnim.getGlobalBounds();
-	entBoundaries.left = entPos.x; entBoundaries.top = entPos.y;
+	if (action->m_action != action->ENTITY_GRAB)	return;
 
-	//	Create the bounding box for the grabbable object
-	sf::Vector2f grabEntPos;
-	sf::FloatRect grabEntBoundaries;
+	std::shared_ptr<Entity> entity = action->m_entity;
 
-	for (const auto& grabEntity : grabbableEntities)
+	//	If entity is currently not holding any object
+	if (!entity->getComponent<LivingThing>().holdingGrabbableObject)
 	{
-		grabEntPos = grabEntity->getPosition();
-		grabEntBoundaries = grabEntity->getComponent<Sprite2D>().sprite.getGlobalBounds();
-		grabEntBoundaries.left = grabEntPos.x; grabEntBoundaries.top = grabEntPos.y;
+		//	Get all entities that are grabbable
+		std::vector<EntPtr> grabbableEntities = entMan.getEntWithComp<Grabbable>();
 
-		if (grabEntBoundaries.left - (entBoundaries.left + entBoundaries.width) <= GrabbableDistance)
+		//	Create the bounding box for our m_entity
+		sf::Vector2f entPos = entity->getPosition();
+		sf::FloatRect entBoundaries = entity->getComponent<Anim>().activeAnim.getGlobalBounds();
+		entBoundaries.left = entPos.x; entBoundaries.top = entPos.y;
+
+		//	Create the bounding box for the grabbable object
+		sf::Vector2f grabEntPos;
+		sf::FloatRect grabEntBoundaries;
+
+		for (const auto& grabEntity : grabbableEntities)
 		{
-			action->m_entity->attachChild(grabEntity);
+			grabEntPos = grabEntity->getPosition();
+			grabEntBoundaries = grabEntity->getComponent<Sprite2D>().sprite.getGlobalBounds();
+			grabEntBoundaries.left = grabEntPos.x; grabEntBoundaries.top = grabEntPos.y;
+
+			if (grabEntBoundaries.left - (entBoundaries.left + entBoundaries.width) <= GrabbableDistance)
+			{
+				entity->attachChild(grabEntity, entity);
+				entity->getComponent<LivingThing>().holdingGrabbableObject = grabEntity;
+			}
 		}
+	}
+	//	Else throw object
+	else
+	{
+		LivingThing* lThing = &entity->getComponent<LivingThing>();
+		EntPtr temp = lThing->holdingGrabbableObject;
+		lThing->holdingGrabbableObject = NULL;
+		action->m_entity->detachChild(temp);
 	}
 }

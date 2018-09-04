@@ -60,8 +60,8 @@ EntPtr EntityFactory::spawnEntity(int uniqueID, std::string ID, sf::Vector2f pos
 					m_entity->addComponent<Player>();
 				else if (words[1] == "Anim")
 					m_entity->addComponent<Anim>();
-				//else if (words[1] == "Parentable")
-				//	m_entity->addComponent<Parentable>();
+				else if (words[1] == "LivingThing")
+					m_entity->addComponent<LivingThing>();
 				else if (words[1] == "Grabbable")
 					m_entity->addComponent<Grabbable>();
 			}

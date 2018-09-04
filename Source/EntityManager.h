@@ -19,12 +19,12 @@ public:
 	EntityManager();
 
 	// Create a custom m_entity and add to list
-	EntPtr& createEntity(sf::Vector2f position = sf::Vector2f(0,0));
+	EntPtr createEntity(sf::Vector2f position = sf::Vector2f(0,0));
 	//	Create a premade m_entity (preferred)
-	EntPtr& createEntity(std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
+	EntPtr createEntity(std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
 	//EntPtr& addEntity(Entity* ent);			//	Add the m_entity from parameter to list
 	bool removeEntity(unsigned int entID);		//	Delete the m_entity from the list
-	//EntPtr* getEntity(unsigned int entID);		//	Get m_entity by ID
+	EntPtr getEntity(unsigned int entID);		//	Get m_entity by ID
 
 	template<class T> std::vector<EntPtr>	getEntWithComp();
 	template<class T, class... params> std::vector<EntPtr> getEntWithComps();
@@ -39,12 +39,14 @@ private:
 template<class T> std::vector<EntPtr> EntityManager::getEntWithComp()
 {
 	std::vector<EntPtr> ents;
+	EntPtr ent;
 
 	for (size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->hasComponent<T>())
 		{
-			ents.push_back(entities[i]);
+			//ent = std::make_shared<Entity>(entities[i].get());
+			ents.push_back(std::shared_ptr<Entity>(entities[i]));
 		}
 	}
 	return ents;
@@ -52,11 +54,15 @@ template<class T> std::vector<EntPtr> EntityManager::getEntWithComp()
 template<class T, class... params> std::vector<EntPtr> EntityManager::getEntWithComps()
 {
 	std::vector<EntPtr> ents;
+	EntPtr ent;
 
 	for (size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->hasComponents<T, params...>())
-			ents.push_back(entities[i]);
+		{
+			//ent = std::make_shared<Entity>(*entities[i]);
+			ents.push_back(std::shared_ptr<Entity>(entities[i]));
+		}
 	}
 	return ents;
 }

@@ -12,7 +12,6 @@ void PhysicsSystem::configure(EventManager& events)
 {
 	events.subscribe<Collision>(this, &PhysicsSystem::receiveC);
 	events.subscribe<Action>(this, &PhysicsSystem::receiveA);
-	//events.subscribe<MoveToPos>(this, &PhysicsSystem::receiveT);	//	Maybe move into own System?
 }
 
 void PhysicsSystem::update(float dt, EventManager& events)
@@ -39,11 +38,9 @@ void PhysicsSystem::update(float dt, EventManager& events)
 			if (physics->velocity.y >= physics->maxFallingSpeed)
 				physics->velocity.y = physics->maxFallingSpeed;
 
-			//	Move m_entity
-			//moveToPos.m_newEntPos = m_entity->getPosition() + (physics->velocity * dt);
+			//std::cout << physics->velocity.y * dt << '\n';
+
 			m_entity->move(physics->velocity * dt);
-			//events.emit<MoveToPos>(moveToPos);
-			//transform->transform.move(physics->velocity * dt);		MIGHT THIS SIMPLY BE BETTER?
 		}
 	}
 }
@@ -56,22 +53,22 @@ void PhysicsSystem::update(float dt, EventManager& events)
 void PhysicsSystem::receiveC(Collision* collision)
 {
 	Physics* physics = NULL;
+	std::shared_ptr<Entity> entity;
 
 	//		TEMP	//
 	//	Set the new position of both the children AND the parents if collision has happened
 	sf::Vector2f newPosDist = collision->m_newEntPos - collision->m_entity->getPosition();
-	std::shared_ptr<Entity> paterfamilias = collision->m_entity;			//	Hehe	
+	entity = collision->m_entity;
 
-	physics = paterfamilias->hasComponent<Physics>() ? &paterfamilias->getComponent<Physics>() : NULL;
-	while (paterfamilias->hasParent())
+	physics = collision->m_entity->hasComponent<Physics>() ? &collision->m_entity->getComponent<Physics>() : NULL;
+
+	while (entity->hasParent() && physics == NULL)
 	{
-		paterfamilias = paterfamilias->getParent();
-		physics = paterfamilias->hasComponent<Physics>() ? &paterfamilias->getComponent<Physics>() : NULL;
+		entity = entity->getParent();
+		physics = entity->hasComponent<Physics>() ? &entity->getComponent<Physics>() : NULL;
 	}
-	paterfamilias->move(newPosDist);		//	Update from top-down in hierachy
 
-
-	//Physics* physics = &collision->m_entity->getComponent<Physics>();
+	entity->move(newPosDist);		//	Update from top-down in hierachy
 
 	///	Remove velocities on collision direction
 	switch (collision->m_direction)

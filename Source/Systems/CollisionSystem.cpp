@@ -39,7 +39,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 		collider = &m_entity->getComponent<Collider>();
 		physics = m_entity->hasComponent<Physics>() ? &m_entity->getComponent<Physics>() : NULL;
 
-		if (!physics)	//	No point in checking for collision on static object unless parent has physics
+		if (!physics)	//	Only make exception to check for collision if parent has physics
 		{
 			//	Check if the parent of this entity has the Physics component. If yes, check for collision
 			if (!m_entity->hasParent())
@@ -63,18 +63,6 @@ void CollisionSystem::update(float dt, EventManager& events)
 			}
 		}
 
-
-		//	For children of physics component m_entity (Rigidbody):
-		//	if(thisEntity.hasCHildren)
-		//		if(child.hascomponent<collider>())
-		//			child.checkcollision
-		//			....
-
-		//	Later: Change Collision component to only keep data of the collision.
-		//	Do not handle positionchanging here. (Related to parent-child relationship)
-
-
-
 		//	Update collider box position from the physicsSystem
 		collider->colliderBox.left = m_entity->getPosition().x;
 		collider->colliderBox.top = m_entity->getPosition().y;
@@ -97,8 +85,6 @@ void CollisionSystem::update(float dt, EventManager& events)
 				Collision collision(collisionDir, fixPos, m_entity, &otherEntity->getComponent<Collider>());
 				events.emit<Collision>(collision);
 
-				//moveToPos.m_newEntPos = fixPos;
-				//events.emit<MoveToPos>(moveToPos);
 				collider->colliderBox.left = m_entity->getPosition().x;
 				collider->colliderBox.top = m_entity->getPosition().y;
 			}
@@ -118,8 +104,6 @@ void CollisionSystem::update(float dt, EventManager& events)
 				Collision collision(collisionDir, fixPos, m_entity, &terrainCollider);
 				events.emit<Collision>(collision);
 
-				//moveToPos.m_newEntPos = fixPos;
-				//events.emit<MoveToPos>(moveToPos);
 				collider->colliderBox.left = m_entity->getPosition().x;
 				collider->colliderBox.top = m_entity->getPosition().y;
 			}

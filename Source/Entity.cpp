@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Entity.h"
+#include "EntityManager.h"
 
 Entity::Entity(int id)
 	: uniqueID{ id }
@@ -18,16 +19,27 @@ int Entity::getID() const
 ///
 ////////////////////////////////////////////////////////////
 
-void Entity::attachChild(EntPtr child)
+//	Necessary with "parent", as this will send the shared_ptr over here.
+//	TODO: CHANGE!
+void Entity::attachChild(EntPtr child, EntPtr parent)		
 {
 	children.push_back(child);
-	//std::shared_ptr<Entity>(this);
-	child->parent = std::shared_ptr<Entity>(this);
+	child->parent = parent;
 }
 
-Entity::EntPtr Entity::detachChild(EntPtr child)
+/*Entity::EntPtr*/void Entity::detachChild(EntPtr child)
 {
-	return nullptr;
+	std::shared_ptr<Entity> found;
+	auto it = std::find_if(children.begin(), children.end(), [&](std::shared_ptr<Entity> &p) { if (p == child) { found = p; return true; } });
+
+	std::cout << found->parent.use_count();
+
+	assert(it != children.end());
+	children.erase(it);
+
+	child->parent = NULL;
+	
+	//return found;
 }
 
 bool Entity::hasChildren() const

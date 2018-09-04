@@ -17,6 +17,7 @@ enum COMP_TYPE
 	PHYSICS_COMP,
 	COLLIDER_COMP,
 	PLAYER_COMP,
+	LIVINGTHING_COMP,
 	CONTROLLER_COMP,
 	MOVEMENT_COMP,
 	ANIM_COMP,
@@ -29,22 +30,6 @@ struct BaseComponent
 	//	Need a virtual function in base class to be able to use dynamic_cast
 	virtual ~BaseComponent() {};
 };
-
-//struct Transform : BaseComponent	//	Position, rotation, scale
-//{
-//	sf::Transformable globalTransform;			//	Global world position/rotation
-//	//				  VVVVVVVVVVVVVV	(0,0) if no parent
-//	sf::Transformable localTransform;			//	Local -----     ||    -------- relative to parent
-//
-//	COMP_TYPE type = TRANSFORM_COMP;
-//};
-
-//struct Parentable : BaseComponent	//	Creates a parent/child relationship between entities
-//{
-//	std::vector<std::shared_ptr<Entity>> children;
-//
-//	COMP_TYPE type = PARENTABLE_COMP;
-//};
 
 struct Physics : BaseComponent		//	Making an object fall
 {
@@ -73,6 +58,13 @@ struct Player : BaseComponent		//	Can only be applied to one m_entity at a time
 	//	Maybe add sf::View object here too so we can better load chunks?
 
 	COMP_TYPE type = PLAYER_COMP;
+};
+
+struct LivingThing : BaseComponent		//	Change name, not descriptive enough
+{
+	std::shared_ptr<Entity> holdingGrabbableObject = NULL;		//	default = NULl
+
+	COMP_TYPE type = LIVINGTHING_COMP;
 };
 
 ///	Requires : MovementComponent
@@ -135,7 +127,5 @@ struct Sprite2D : BaseComponent
 
 struct Grabbable : BaseComponent
 {
-
-
 	COMP_TYPE type = GRABBABLE_COMP;
 };
