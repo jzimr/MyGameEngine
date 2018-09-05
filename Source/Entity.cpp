@@ -6,6 +6,7 @@ Entity::Entity(int id)
 	: uniqueID{ id }
 	, parent{ NULL }
 	, children{}
+	, localPosition{0, 0}
 {
 }
 
@@ -21,25 +22,32 @@ int Entity::getID() const
 
 //	Necessary with "parent", as this will send the shared_ptr over here.
 //	TODO: CHANGE!
-void Entity::attachChild(EntPtr child, EntPtr parent)		
+void Entity::attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset)		
 {
 	children.push_back(child);
 	child->parent = parent;
+
+	if (offset == sf::Vector2f(0, 0))
+		child->localPosition = child->getPosition() - transform.getPosition();
+	else
+		child->localPosition = offset;
+	child->setPosition(getPosition());
+
+	std::cout << child->localPosition.x << " | " << child->localPosition.y << '\n';
+
 }
 
-/*Entity::EntPtr*/void Entity::detachChild(EntPtr child)
+EntPtr Entity::detachChild(EntPtr child)
 {
 	std::shared_ptr<Entity> found;
 	auto it = std::find_if(children.begin(), children.end(), [&](std::shared_ptr<Entity> &p) { if (p == child) { found = p; return true; } });
-
-	std::cout << found->parent.use_count();
 
 	assert(it != children.end());
 	children.erase(it);
 
 	child->parent = NULL;
 	
-	//return found;
+	return found;
 }
 
 bool Entity::hasChildren() const
@@ -52,7 +60,7 @@ bool Entity::hasParent() const
 	return parent != NULL ? true : false;
 }
 
-Entity::EntPtr Entity::getParent()
+EntPtr Entity::getParent()
 {
 	return parent;
 }
@@ -93,37 +101,50 @@ bool Entity::isRelatedWith(const EntPtr entity)
 		return true;
 	else
 		return false;
-
-
-
 }
 
-
-
-
-
+////////////////////////////////////////////////////////////
+/// Transform manipulation
+///
+////////////////////////////////////////////////////////////
 
 void Entity::setPosition(float x, float y)
 {
-	sf::Vector2f distToNewPos = sf::Vector2f(x, y) - getPosition();
-	transform.setPosition(x, y);
+	std::cout << localPosition.x << " " << localPosition.y << '\n';
 
+	///	NEW
+	transform.setPosition(sf::Vector2f(x + localPosition.x, y + localPosition.y));
 	for (auto& child : children)
-	{
-		child->move(distToNewPos);
-	}
+		child->setPosition(transform.getPosition().x, transform.getPosition().y);
+
+	///	OLD 
+	//sf::Vector2f distToNewPos = sf::Vector2f(x, y) - getPosition();
+	//transform.setPosition(x, y);
+
+	//for (auto& child : children)
+	//{
+	//	child->move(distToNewPos);
+	//}
 
 }
 
 void Entity::setPosition(const sf::Vector2f position)
 {
-	sf::Vector2f distToNewPos = position - getPosition();
-	transform.setPosition(position);
+	std::cout << localPosition.x << " " << localPosition.y << '\n';
 
+	///	NEW
+	transform.setPosition(position + localPosition);
 	for (auto& child : children)
-	{
-		child->move(distToNewPos);
-	}
+		child->setPosition(transform.getPosition());
+
+	///	OLD
+	//sf::Vector2f distToNewPos = position - getPosition();
+	//transform.setPosition(position);
+
+	//for (auto& child : children)
+	//{
+	//	child->move(distToNewPos);
+	//}
 }
 
 const sf::Vector2f Entity::getPosition() const
@@ -149,6 +170,21 @@ void Entity::move(const sf::Vector2f & offset)
 	{
 		child->move(offset);
 	}
+}
+
+void Entity::setLocalPosition(float x, float y)
+{
+	localPosition = sf::Vector2f(x, y);
+}
+
+void Entity::setLocalPosition(const sf::Vector2f position)
+{
+	localPosition = position;
+}
+
+sf::Vector2f Entity::getLocalPosition() const
+{
+	return localPosition;
 }
 
 

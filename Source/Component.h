@@ -29,6 +29,9 @@ struct BaseComponent
 {
 	//	Need a virtual function in base class to be able to use dynamic_cast
 	virtual ~BaseComponent() {};
+
+//	VVVVVVVVVVVVVVVVVVVV	TODO: IMPLEMENT
+	bool enabled = true;			// Is the component active?	
 };
 
 struct Physics : BaseComponent		//	Making an object fall
@@ -36,6 +39,8 @@ struct Physics : BaseComponent		//	Making an object fall
 	float gravity = 400.0f;	//	Default gravity (Disable for e.g. bullets)
 	sf::Vector2f velocity = sf::Vector2f{ 0,0 };
 	float horizontalVelocity = 0.0f;
+
+	sf::Vector2f addedForce = sf::Vector2f{ 0,0 };		//	If you want to add any temporary force to object
 
 	const float maxFallingSpeed = 1000.0f;
 

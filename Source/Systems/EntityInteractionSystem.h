@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "System.h"
+#include "SystemBehaviourSettings.h"
 
 class EntityInteractionSystem : public System
 {

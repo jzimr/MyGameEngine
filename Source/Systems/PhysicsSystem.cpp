@@ -31,8 +31,8 @@ void PhysicsSystem::update(float dt, EventManager& events)
 		if (physics)
 		{
 			///	Do physics
-			physics->velocity.y += physics->gravity * dt;
-			physics->velocity.x = physics->horizontalVelocity;
+			physics->velocity.y += (physics->gravity * dt) + physics->addedForce.y;
+			physics->velocity.x = physics->horizontalVelocity + physics->addedForce.x;
 
 			//	Limit the falling speed
 			if (physics->velocity.y >= physics->maxFallingSpeed)
@@ -75,7 +75,10 @@ void PhysicsSystem::receiveC(Collision* collision)
 	{
 	case CollisionDirection::COLLISION_BOTTOM:	//	CollisionSystem
 		if (physics->velocity.y > 0)
+		{
 			physics->velocity.y = 0;
+			physics->addedForce = sf::Vector2f(0, 0);		//	TEMP
+		}
 		break;
 	case CollisionDirection::COLLISION_RIGHT:	//	CollisionSystem
 		if (physics->velocity.x > 0)

@@ -20,9 +20,10 @@ public:
 	////////////////////////////////////////////////////////////
 	/// Parent-child relationship
 	///
+	///	TODO: Move into own component
 	////////////////////////////////////////////////////////////
-	void					attachChild(EntPtr child, EntPtr parent);
-	/*EntPtr*/ void					detachChild(EntPtr child);
+	void					attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset = sf::Vector2f(0, 0));
+	EntPtr					detachChild(EntPtr child);
 	bool					hasChildren() const;
 	bool					hasParent() const;
 	EntPtr					getParent();
@@ -38,6 +39,13 @@ public:
 	void					move(float offsetX, float offsetY);
 	void					move(const sf::Vector2f &offset);
 
+	//	Custom functions for transform manipulation
+	void					setLocalPosition(float x, float y);
+	void					setLocalPosition(const sf::Vector2f position);
+	sf::Vector2f			getLocalPosition() const;
+
+
+
 private:
 	std::vector<CompPtr>	components;		//	Components attached to this m_entity
 	std::bitset<MAX_COMPS>	compFlags;	//	So we can quickly lookup an m_entity's components instead of looping through the whole list
@@ -48,6 +56,7 @@ private:
 
 	EntPtr				parent;
 	std::vector<EntPtr>	children;
+	sf::Vector2f		localPosition;			//	Position relative to parent		
 
 
 

@@ -236,6 +236,9 @@
     <ClInclude Include="Source\Systems\EntityInteractionSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SystemBehaviourSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TextureHolder.inl">

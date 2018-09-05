@@ -133,6 +133,7 @@
     </ClInclude>
     <ClInclude Include="Source\SceneNode.h" />
     <ClInclude Include="Source\stdafx.h" />
+    <ClInclude Include="Source\SystemBehaviourSettings.h" />
     <ClInclude Include="Source\Systems\AnimationSystem.h" />
     <ClInclude Include="Source\Systems\CollisionSystem.h" />
     <ClInclude Include="Source\Systems\CombatSystem.h" />
