@@ -9,16 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{8d9ea834-53d2-4c32-97be-63a9ef8c4af8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entity Factories">
-      <UniqueIdentifier>{c580cd04-e703-4b87-ad0e-e7d78ea88afd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{25d77080-5454-4dc6-b649-a716a8e3531c}</UniqueIdentifier>
     </Filter>
@@ -33,6 +23,9 @@
     </Filter>
     <Filter Include="ECS">
       <UniqueIdentifier>{17882c54-29d2-4a20-898d-a526e7a98e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeveloperTools">
+      <UniqueIdentifier>{f0d6197c-ca23-4afa-a4e8-8d409275af8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Source\Entity.cpp">
       <Filter>ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="DeveloperTools\DevTools.cpp">
+      <Filter>DeveloperTools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +234,9 @@
     </ClInclude>
     <ClInclude Include="Source\SystemBehaviourSettings.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeveloperTools\DevTools.h">
+      <Filter>DeveloperTools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

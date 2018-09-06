@@ -24,7 +24,6 @@ void PhysicsSystem::update(float dt, EventManager& events)
 
 	for (auto& m_entity : entities)
 	{
-		//MoveToPos moveToPos(m_entity);
 		physics = &m_entity->getComponent<Physics>();
 		movement = m_entity->hasComponent<Movement>() ? &m_entity->getComponent<Movement>() : NULL;
 
@@ -110,9 +109,19 @@ void PhysicsSystem::receiveA(Action* action)
 		break;
 	case EntAction::ENTITY_LEFT:		//	ControllerSystem
 		physics->horizontalVelocity -= movement->horizontalSpeed;
+		for (auto child : action->m_entity->getChildren())
+		{
+			if(child->getLocalPosition().x > 0)
+				child->setLocalPosition(child->getLocalPosition().x * (-1), child->getLocalPosition().y);
+		}
 		break;
 	case EntAction::ENTITY_RIGHT:		//	ControllerSystem
 		physics->horizontalVelocity += movement->horizontalSpeed;
+		for (auto child : action->m_entity->getChildren())
+		{
+			if(child->getLocalPosition().x < 0)
+				child->setLocalPosition(child->getLocalPosition().x * (-1), child->getLocalPosition().y);
+		}
 		break;
 	case EntAction::STOP_ENTITY_LEFT:	//	ControllerSystem
 		physics->horizontalVelocity += movement->horizontalSpeed;

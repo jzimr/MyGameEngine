@@ -54,13 +54,16 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 			grabEntBoundaries = grabEntity->getComponent<Sprite2D>().sprite.getGlobalBounds();
 			grabEntBoundaries.left = grabEntPos.x; grabEntBoundaries.top = grabEntPos.y;
 
-			if (grabEntBoundaries.left - (entBoundaries.left + entBoundaries.width) <= GRABBABLE_DISTANCE)
+			if (abs(grabEntBoundaries.left - (entBoundaries.left + entBoundaries.width)) <= GRABBABLE_DISTANCE)
 			{
-				entity->attachChild(grabEntity, entity, sf::Vector2f(10, -8));			//	Temp offset
+				sf::Vector2f holdingPosition = sf::Vector2f(entBoundaries.width + 1, entBoundaries.height / 2 - 2);
+				entity->attachChild(grabEntity, entity, holdingPosition);			//	Temp offset
 				entity->getComponent<LivingThing>().holdingGrabbableObject = grabEntity;
 				
 				if (grabEntity->hasComponent<Physics>())								//	Temp
 					grabEntity->removeComponent<Physics>();								//	Temp
+
+				return;	
 			}
 		}
 	}
@@ -77,6 +80,10 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 		Physics* childPhys = &droppedObj->getComponent<Physics>();
 		Physics* parentPhys = &entity->getComponent<Physics>();
 
-		childPhys->addedForce = sf::Vector2f(200 + parentPhys->velocity.x, 0);
+		int direction = 1;
+		if (droppedObj->getLocalPosition().x < 0)
+			direction *= -1;
+
+		childPhys->addedForce = sf::Vector2f((200 + abs(parentPhys->velocity.x)) * direction, 0);
 	}
 }

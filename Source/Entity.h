@@ -24,12 +24,13 @@ public:
 	////////////////////////////////////////////////////////////
 	void					attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset = sf::Vector2f(0, 0));
 	EntPtr					detachChild(EntPtr child);
-	bool					hasChildren() const;
 	bool					hasParent() const;
-	EntPtr					getParent();
-	bool					isChildOf(const EntPtr entity);			//	This entity is child of param
-	bool					isParentOf(const EntPtr entity);		//	This entity is parent of param
-	bool					isRelatedWith(const EntPtr entity);
+	EntPtr					getParent() const;
+	bool					hasChildren() const;
+	std::vector<EntPtr>		getChildren() const;
+	bool					isChildOf(const EntPtr entity) const;		//	This entity is child of param
+	bool					isParentOf(const EntPtr entity) const;		//	This entity is parent of param
+	bool					isRelatedWith(const EntPtr entity) const;
 
 
 	//	Functions of sf::Transformable

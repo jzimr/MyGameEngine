@@ -51,8 +51,3 @@ void AnimationSystem::receiver(Action* action)
 		break;
 	}
 }
-
-void AnimationSystem::flipTexture(sf::Texture& texture)
-{
-	
-}

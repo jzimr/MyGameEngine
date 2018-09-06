@@ -32,9 +32,6 @@ void Entity::attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset)
 	else
 		child->localPosition = offset;
 	child->setPosition(getPosition());
-
-	std::cout << child->localPosition.x << " | " << child->localPosition.y << '\n';
-
 }
 
 EntPtr Entity::detachChild(EntPtr child)
@@ -46,6 +43,7 @@ EntPtr Entity::detachChild(EntPtr child)
 	children.erase(it);
 
 	child->parent = NULL;
+	//child->localPosition = sf::Vector2f(0, 0);
 	
 	return found;
 }
@@ -55,18 +53,23 @@ bool Entity::hasChildren() const
 	return !children.empty();
 }
 
+std::vector<EntPtr> Entity::getChildren() const
+{
+	return children;
+}
+
 bool Entity::hasParent() const
 {
 	return parent != NULL ? true : false;
 }
 
-EntPtr Entity::getParent()
+EntPtr Entity::getParent() const
 {
 	return parent;
 }
 
 //	Check the upper hierachy with recursion
-bool Entity::isChildOf(const EntPtr entity)
+bool Entity::isChildOf(const EntPtr entity) const
 {
 	if (parent)
 	{
@@ -80,7 +83,7 @@ bool Entity::isChildOf(const EntPtr entity)
 	return false;
 }
 
-bool Entity::isParentOf(const EntPtr entity)
+bool Entity::isParentOf(const EntPtr entity) const
 {
 	for (const auto& child : children)
 	{
@@ -94,7 +97,7 @@ bool Entity::isParentOf(const EntPtr entity)
 	return false;		
 }
 
-bool Entity::isRelatedWith(const EntPtr entity)
+bool Entity::isRelatedWith(const EntPtr entity) const
 {
 	if (/*std::shared_ptr<Entity>(this) == entity ||*/
 		isChildOf(entity) || isParentOf(entity))
@@ -116,16 +119,6 @@ void Entity::setPosition(float x, float y)
 	transform.setPosition(sf::Vector2f(x + localPosition.x, y + localPosition.y));
 	for (auto& child : children)
 		child->setPosition(transform.getPosition().x, transform.getPosition().y);
-
-	///	OLD 
-	//sf::Vector2f distToNewPos = sf::Vector2f(x, y) - getPosition();
-	//transform.setPosition(x, y);
-
-	//for (auto& child : children)
-	//{
-	//	child->move(distToNewPos);
-	//}
-
 }
 
 void Entity::setPosition(const sf::Vector2f position)
@@ -136,15 +129,6 @@ void Entity::setPosition(const sf::Vector2f position)
 	transform.setPosition(position + localPosition);
 	for (auto& child : children)
 		child->setPosition(transform.getPosition());
-
-	///	OLD
-	//sf::Vector2f distToNewPos = position - getPosition();
-	//transform.setPosition(position);
-
-	//for (auto& child : children)
-	//{
-	//	child->move(distToNewPos);
-	//}
 }
 
 const sf::Vector2f Entity::getPosition() const
@@ -175,11 +159,13 @@ void Entity::move(const sf::Vector2f & offset)
 void Entity::setLocalPosition(float x, float y)
 {
 	localPosition = sf::Vector2f(x, y);
+	setPosition(parent->getPosition());
 }
 
 void Entity::setLocalPosition(const sf::Vector2f position)
 {
 	localPosition = position;
+	setPosition(parent->getPosition());
 }
 
 sf::Vector2f Entity::getLocalPosition() const

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DeveloperTools\DevTools.cpp" />
     <ClCompile Include="Source\AnimatedSprite.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Entity Factories\EntityFactory.cpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DeveloperTools\DevTools.h" />
     <ClInclude Include="Source\AnimatedSprite.hpp" />
     <ClInclude Include="Source\Animation.hpp" />
     <ClInclude Include="Source\Chunk.h" />
@@ -223,7 +225,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\zimme\source\repos\MyGameEngine\Source;C:\External Libraries\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\zimme\source\repos\MyGameEngine\DeveloperTools;C:\Users\zimme\source\repos\MyGameEngine\Source;C:\External Libraries\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
