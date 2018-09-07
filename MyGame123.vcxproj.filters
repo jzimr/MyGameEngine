@@ -122,6 +122,9 @@
     <ClCompile Include="DeveloperTools\DevTools.cpp">
       <Filter>DeveloperTools</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\DebugSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -237,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="DeveloperTools\DevTools.h">
       <Filter>DeveloperTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\DebugSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

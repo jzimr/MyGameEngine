@@ -72,6 +72,7 @@
     <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\CombatSystem.cpp" />
     <ClCompile Include="Source\Systems\ControllerSystem.cpp" />
+    <ClCompile Include="Source\Systems\DebugSystem.cpp" />
     <ClCompile Include="Source\Systems\EntityInteractionSystem.cpp" />
     <ClCompile Include="Source\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Source\Systems\CollisionSystem.h" />
     <ClInclude Include="Source\Systems\CombatSystem.h" />
     <ClInclude Include="Source\Systems\ControllerSystem.h" />
+    <ClInclude Include="Source\Systems\DebugSystem.h" />
     <ClInclude Include="Source\Systems\EntityInteractionSystem.h" />
     <ClInclude Include="Source\Systems\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />

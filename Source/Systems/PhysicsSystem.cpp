@@ -110,18 +110,14 @@ void PhysicsSystem::receiveA(Action* action)
 	case EntAction::ENTITY_LEFT:		//	ControllerSystem
 		physics->horizontalVelocity -= movement->horizontalSpeed;
 		for (auto child : action->m_entity->getChildren())
-		{
 			if(child->getLocalPosition().x > 0)
 				child->setLocalPosition(child->getLocalPosition().x * (-1), child->getLocalPosition().y);
-		}
 		break;
 	case EntAction::ENTITY_RIGHT:		//	ControllerSystem
 		physics->horizontalVelocity += movement->horizontalSpeed;
 		for (auto child : action->m_entity->getChildren())
-		{
 			if(child->getLocalPosition().x < 0)
 				child->setLocalPosition(child->getLocalPosition().x * (-1), child->getLocalPosition().y);
-		}
 		break;
 	case EntAction::STOP_ENTITY_LEFT:	//	ControllerSystem
 		physics->horizontalVelocity += movement->horizontalSpeed;

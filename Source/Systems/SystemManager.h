@@ -10,6 +10,7 @@
 #include "AnimationSystem.h"
 #include "CombatSystem.h"
 #include "EntityInteractionSystem.h"
+#include "DebugSystem.h"
 #include <memory>
 
 enum class SystemEvent

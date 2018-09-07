@@ -56,6 +56,6 @@ public:
 	}
 
 private:
-	std::multimap<EventID, EventFuncPtr> m_receivers;		//	Or "obsers" (Systems subscribed to events)
+	std::multimap<EventID, EventFuncPtr> m_receivers;		//	Or "observers" (Systems subscribed to events)
 
 };

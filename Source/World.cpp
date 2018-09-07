@@ -68,7 +68,7 @@ void World::buildScene()
 	entMan.createEntity("Block", sf::Vector2f(250, 300));
 	entMan.createEntity("Block", sf::Vector2f(250, 300));
 	entMan.createEntity("Block", sf::Vector2f(250, 300));
-	entMan.createEntity("Block", sf::Vector2f(250, 300));
+
 
 	//std::cout << ground->getComponent<Transform>().globalTransform.getPosition().y << '\n';
 	//std::cout << ground2->getComponent<Transform>().globalTransform.getPosition().y << '\n';

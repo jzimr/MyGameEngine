@@ -22,42 +22,42 @@ public:
 	///
 	///	TODO: Move into own component
 	////////////////////////////////////////////////////////////
-	void					attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset = sf::Vector2f(0, 0));
-	EntPtr					detachChild(EntPtr child);
-	bool					hasParent() const;
-	EntPtr					getParent() const;
-	bool					hasChildren() const;
-	std::vector<EntPtr>		getChildren() const;
-	bool					isChildOf(const EntPtr entity) const;		//	This entity is child of param
-	bool					isParentOf(const EntPtr entity) const;		//	This entity is parent of param
-	bool					isRelatedWith(const EntPtr entity) const;
+	void						attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset = sf::Vector2f(0, 0));
+	EntPtr						detachChild(EntPtr child);
+	bool						hasParent() const;
+	EntPtr						getParent() const;
+	bool						hasChildren() const;
+	std::vector<EntPtr>			getChildren() const;
+	bool						isChildOf(const EntPtr entity) const;		//	This entity is child of param
+	bool						isParentOf(const EntPtr entity) const;		//	This entity is parent of param
+	bool						isRelatedWith(const EntPtr entity) const;
 
 
 	//	Functions of sf::Transformable
-	void					setPosition(float x, float y);
-	void					setPosition(const sf::Vector2f position);
-	const sf::Vector2f		getPosition() const;
-	void					move(float offsetX, float offsetY);
-	void					move(const sf::Vector2f &offset);
+	void						setPosition(float x, float y);
+	void						setPosition(const sf::Vector2f position);
+	const sf::Vector2f			getPosition() const;
+	void						move(float offsetX, float offsetY);
+	void						move(const sf::Vector2f &offset);
 
 	//	Custom functions for transform manipulation
-	void					setLocalPosition(float x, float y);
-	void					setLocalPosition(const sf::Vector2f position);
-	sf::Vector2f			getLocalPosition() const;
+	void						setLocalPosition(float x, float y);
+	void						setLocalPosition(const sf::Vector2f position);
+	sf::Vector2f				getLocalPosition() const;
 
 
 
 private:
-	std::vector<CompPtr>	components;		//	Components attached to this m_entity
-	std::bitset<MAX_COMPS>	compFlags;	//	So we can quickly lookup an m_entity's components instead of looping through the whole list
+	std::vector<CompPtr>		components;	//	Components attached to this m_entity
+	std::bitset<MAX_COMPS>		compFlags;	//	So we can quickly lookup an m_entity's components instead of looping through the whole list
 
-	sf::Transformable transform;
+	sf::Transformable			transform;
 
-	int						uniqueID;
+	int							uniqueID;
 
-	EntPtr				parent;
-	std::vector<EntPtr>	children;
-	sf::Vector2f		localPosition;			//	Position relative to parent		
+	EntPtr						parent;
+	std::vector<EntPtr>			children;
+	sf::Vector2f				localPosition;			//	Position relative to parent		
 
 
 
@@ -67,7 +67,7 @@ private:
 	////////////////////////////////////////////////////////////
 public:
 
-	template<class T> T&	addComponent()
+	template<class T> T&		addComponent()
 	{
 		T comp;
 		compFlags.set(comp.type);
@@ -79,7 +79,7 @@ public:
 		return *dynamic_cast<T*>(components.back().get());
 	}
 
-	template<class T> T& getComponent() const
+	template<class T> T&		getComponent() const
 	{
 		T* it = NULL;
 
@@ -95,7 +95,7 @@ public:
 		return *it;
 	}
 
-	template<class T> bool hasComponent() const
+	template<class T> bool		hasComponent() const
 	{
 		T comp;
 
@@ -103,7 +103,7 @@ public:
 	}
 
 	//	For recusion of hasComponents() if in total only 1 argument left
-	template<class T> bool hasComponents() const
+	template<class T> bool		hasComponents() const
 	{
 		return hasComponent<T>();
 	}
@@ -118,7 +118,7 @@ public:
 		return false;
 	}
 
-	template<class T> void removeComponent()
+	template<class T> void		removeComponent()
 	{
 		T comp;
 		T* it = NULL;

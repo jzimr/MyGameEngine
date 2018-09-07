@@ -12,6 +12,7 @@ SystemManager::SystemManager(/*sf::RenderWindow& window*/)
 void SystemManager::configure()
 {
 	//	Initialize all systems (THE ORDER MATTERS!)
+	DebugSystem* debug = addSystem<DebugSystem>();
 	ControllerSystem* controller = addSystem<ControllerSystem>();	//	Must come first
 	PhysicsSystem* physics = addSystem<PhysicsSystem>();
 	CollisionSystem* collision = addSystem<CollisionSystem>();

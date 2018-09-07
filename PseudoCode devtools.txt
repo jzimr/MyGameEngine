@@ -1,0 +1,51 @@
+class DebugSystem : System{
+	
+	void runCommands()					//	Seperate thread (First priority to get done)
+	{
+		while input != 'exit'
+			wait for input
+			switch input
+				case spawnEntity
+					...
+				case setPosition
+					...
+				...
+	}
+	void inGameTools()					//	Seperate thread (Lowest priority to get done)
+	{
+		inDevMode = false;
+		while(inGame) 
+			if keyPress == 'F3'			//	Dev mode
+				devMode = !devMode
+			
+			if(devMode)
+				Do stuff
+	}
+	
+	void begin()
+	{
+		create new thread runCommands
+		create new thread inGameTools
+	}
+	
+	void update()
+	{
+		if !commands.empty()
+			entity = getEntWithComps<Transform>()
+		while !commands.empty()
+			execute commands
+			
+		
+	}
+	
+	private:
+		queue<Commands> commands;
+
+
+}
+
+/// Pseudocode 2
+What we need:
+- A new thread, so we can enter commands in the console
+- Communcation between the thread and The DebugSystem
+- Commands must be handled (e.g. spawnEntity (id), able to pick up and move entities with mouse)
