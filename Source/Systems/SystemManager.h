@@ -11,6 +11,8 @@
 #include "CombatSystem.h"
 #include "EntityInteractionSystem.h"
 #include "DebugSystem.h"
+#include "BuildingSystem.h"
+#include "CameraSystem.h"
 #include <memory>
 
 enum class SystemEvent
@@ -25,24 +27,30 @@ public:
 	typedef std::unique_ptr<System> SysPtr;
 
 public:
-								SystemManager();
+								SystemManager(sf::RenderWindow& window);
 
 	void						configure();
 	void						begin();
 	void						update(float dt);
 	void						end();
 
-	void						notify(Entity* m_entity, SystemEvent event);
-
 public:
-	template<class T> T*	addSystem()
+	//	Initialize a new system
+	template<class T> T*		addSystem()
 	{
 		SysPtr newSys(new T());
 		m_systems.push_back(std::move(newSys));
 		return dynamic_cast<T*>(m_systems.back().get());
 	}
+	//	Initialize a new system that requires extra parameters (e.g. sf::RenderWindow)
+	template<class T, typename P> T* addSystem(P& param)
+	{
+		SysPtr newSys(new T(param));
+		m_systems.push_back(std::move(newSys));
+		return dynamic_cast<T*>(m_systems.back().get());
+	}
 
-	template<class T> T& getSystem() const
+	template<class T> T&		getSystem() const
 	{
 		T* it = NULL;
 
@@ -60,5 +68,7 @@ public:
 private:
 	std::vector<std::unique_ptr<System>> m_systems;
 	EventManager m_eventManager;
+
+	sf::RenderWindow& m_window;
 
 };

@@ -46,7 +46,7 @@ private:
 	void						generateTable();	//	Generate gradients (0.0  -  1.0) for this seed
 
 private:
-	std::vector<ChunkPtr> availableChunks;						
+	std::vector<ChunkPtr> availableChunks;			//	Chunks that are not loaded				
 	TextureHolder<std::string> textureHolder;
 
 	int seed;

@@ -4,22 +4,17 @@
 #include <map>
 #include <memory>
 
-class RenderSystem : public System
+class CameraSystem : public System
 {
 public:
-								RenderSystem();
+	CameraSystem(sf::RenderWindow& window);
 
 	void						update(float dt, EventManager& events) override;
-
-	void						draw(sf::RenderTarget& target/*, sf::RenderStates states*/);
-
-private:
-	sf::FloatRect getViewBounds(const sf::View view);
 
 private:
 	sf::View* playerCamera;
 	std::shared_ptr<Entity> player;			//	Aquired in onEntityUpdate()
 
 	EntityManager entMan;
-
+	sf::RenderWindow& m_window;
 };

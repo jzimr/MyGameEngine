@@ -60,7 +60,9 @@ struct Player : BaseComponent		//	Can only be applied to one m_entity at a time
 {
 	//	Maybe move VVVV into custom component?
 	std::vector<std::unique_ptr<Chunk>> loadedChunks;		//	List with chunks that are currently active
-	//	Maybe add sf::View object here too so we can better load chunks?
+	sf::View camera;
+
+	bool inBuildingState = false;
 
 	COMP_TYPE type = PLAYER_COMP;
 };

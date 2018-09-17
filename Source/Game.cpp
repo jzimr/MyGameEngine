@@ -7,14 +7,14 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 using namespace Settings;
 
 Game::Game()		//	640, 360
-	: mWindow(sf::VideoMode(WINDOW_X, WINDOW_Y), "Input", sf::Style::Close)
-	, mWorld(mWindow)
-	//, mPlayer()
+	: mWindow(sf::VideoMode(WINDOW_X, WINDOW_Y), "My game :D", sf::Style::Close)
+	, mWorld()
 	, mFont()
 	, mFrameRate()
 	, mStatistics()
 	, mFrameRateUpdateTime()
 	, mFrameRateNumFrames(0)
+	, m_systemManager{ new SystemManager(mWindow) }
 {
 	mWindow.setKeyRepeatEnabled(false);
 
@@ -55,6 +55,7 @@ void Game::run()
 void Game::processInput()
 {
 	sf::Event event;
+	std::queue<sf::Event> eventQueue;
 
 	while (mWindow.pollEvent(event))
 	{
@@ -62,36 +63,38 @@ void Game::processInput()
 			mWindow.close();
 
 		//	Handled by ControllerSystem
-		mWorld.getEventQueue().push(event);
+		eventQueue.push(event);
 		//	Event flow:
-		//	Game -> (Input) -> World -> ControllerSystem -> (Command) -> Entity
+		//	Game -> (Input) -> ControllerSystem -> (Command) -> Entity
 	}
-	mWorld.handleInput();
+	m_systemManager->getSystem<ControllerSystem>().handleInput(eventQueue);
 }
 
 void Game::update(sf::Time elapsedTime)
 {
-	mWorld.update(elapsedTime.asSeconds());
+	m_systemManager->update(elapsedTime.asSeconds());
 }
 
 void Game::render()
 {
 	mWindow.clear();
-	mWorld.draw();
+	m_systemManager->getSystem<RenderSystem>().draw(mWindow);
 
 	//	Temporary	(DOES NOT WORK FOR RELEASE MODE FOR SOME REASON D:)
 	{
-		//sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
-		//sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
-		//mStatistics.setString("\n\nMouse position = x: " +
-		//	std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
+		sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
+		sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
+		mStatistics.setString("\n\nMouse position = x: " +
+			std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
 	}
 
-	sf::View view = mWindow.getDefaultView();
-	mWindow.setView(view);
+	sf::View saveView = mWindow.getView();			//	Save our custom view
+	mWindow.setView(mWindow.getDefaultView());		//	This is for some reason necessary in order for sf::Text to work (statistics)
 
 	mWindow.draw(mFrameRate);
-	//mWindow.draw(mStatistics);
+	mWindow.draw(mStatistics);
+
+	mWindow.setView(saveView);						//	Set back to our custom view
 	mWindow.display();
 }
 

@@ -30,9 +30,10 @@ public:
 	{
 		///	Find the event in our multimap
 		EventID found = BASE_EVENT;
-		std::multimap<EventID, EventFuncPtr>::iterator it;
+		//std::multimap<EventID, EventFuncPtr>::iterator& it = m_receivers.begin();
+		std::multimap<EventID, EventFuncPtr>::iterator it = m_receivers.begin();
 
-		for (it = m_receivers.begin(); it != m_receivers.end(); it++)
+		for (it; it != m_receivers.end(); it++)
 		{
 			if (event.eventID == it->first)
 			{
@@ -46,6 +47,10 @@ public:
 
 		///	Find all systems that are subscribed to that event
 		auto receiversElems = m_receivers.equal_range(found);
+		//auto rec = m_receivers[2];
+
+		//std::cout << sizeof(receiversElems) << " " << sizeof(m_receivers) << '\n';
+		
 
 		for (auto it2 = receiversElems.first; it2 != receiversElems.second; it2++)
 		{

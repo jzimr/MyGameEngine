@@ -23,6 +23,8 @@ public:
 
 private:
 	void						updateChunks();		//	Update collider on existing or new chunks
+	bool						colliding(const sf::Rect<float>& a, const sf::Rect<float>& b) const;
+
 	//	Check collision on an m_entity
 	CollisionDirection checkCollision(const sf::Rect<float>& rect, const sf::Rect<float>& otherRect);
 	sf::Vector2f fixPositionOnCollide(CollisionDirection collDirection, const sf::Rect<float>& rect, const sf::Rect<float>& otherRect);

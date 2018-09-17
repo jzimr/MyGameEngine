@@ -69,6 +69,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="Source\Systems\BuildingSystem.cpp" />
+    <ClCompile Include="Source\Systems\CameraSystem.cpp" />
     <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\CombatSystem.cpp" />
     <ClCompile Include="Source\Systems\ControllerSystem.cpp" />
@@ -138,6 +140,8 @@
     <ClInclude Include="Source\stdafx.h" />
     <ClInclude Include="Source\SystemBehaviourSettings.h" />
     <ClInclude Include="Source\Systems\AnimationSystem.h" />
+    <ClInclude Include="Source\Systems\BuildingSystem.h" />
+    <ClInclude Include="Source\Systems\CameraSystem.h" />
     <ClInclude Include="Source\Systems\CollisionSystem.h" />
     <ClInclude Include="Source\Systems\CombatSystem.h" />
     <ClInclude Include="Source\Systems\ControllerSystem.h" />

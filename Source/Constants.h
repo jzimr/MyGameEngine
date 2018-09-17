@@ -27,7 +27,7 @@ namespace Settings
 const enum EventID
 {
 	BASE_EVENT,
-	EXPLOSION,
+	MOUSE_POS,
 	MESSAGE,
 	COLLISION,
 	ACTION,

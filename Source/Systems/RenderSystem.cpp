@@ -13,10 +13,6 @@ RenderSystem::RenderSystem()
 {
 }
 
-void RenderSystem::configure(EventManager& events)
-{
-}
-
 void RenderSystem::update(float dt, EventManager& events)
 {
 	//	Create updates for some shit. E.g. That you do not need
@@ -29,23 +25,10 @@ void RenderSystem::update(float dt, EventManager& events)
 	entities.reserve(entSprites.size() + entAnims.size());
 	entities.insert(entities.end(), entSprites.begin(), entSprites.end());
 	entities.insert(entities.end(), entAnims.begin(), entAnims.end());
-
-	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();
-	player = p[0];
-
-	camera.setCenter(player->getPosition());
-}
-
-void RenderSystem::end()		//	Fix the camera view, etc.
-{
-	camera.setSize(RESOLUTION_X, RESOLUTION_Y /*+ 200*/);
-	//camera.zoom(4.0f);
 }
 
 void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 {
-	target.setView(camera);
-
 	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Temp
 	player = p[0];
 
@@ -59,14 +42,14 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 		Chunk* chunk = lChunk.get();
 		for (const auto& sprite : chunk->topBlocks)
 		{
-			sBounds = sprite.getGlobalBounds();
-			if (sBounds.intersects(viewBounds))
+			//sBounds = sprite.getGlobalBounds();
+			//if (sBounds.intersects(viewBounds))
 				target.draw(sprite);
 		}
 		for (const auto& sprite : chunk->underBlocks)
 		{
-			sBounds = sprite.getGlobalBounds();
-			if (sBounds.intersects(viewBounds))
+			//sBounds = sprite.getGlobalBounds();
+			//if (sBounds.intersects(viewBounds))
 				target.draw(sprite);
 		}
 	}	

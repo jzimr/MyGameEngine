@@ -21,7 +21,7 @@ struct Collision : public Event
 		COLLISION_BOTTOM,
 		COLLISION_RIGHT,
 		COLLISION_LEFT,
-		COLLISION_FAULT
+		COLLISION_FAULT,
 	};
 
 	Collision() {}
@@ -39,21 +39,6 @@ struct Collision : public Event
 	const EventID eventID = COLLISION;
 };
 
-//struct MoveToPos : public Event			//	Move an m_entity to the desired position (REQUIRED TO MOVE AN ENTITY)
-//{
-//	MoveToPos() {}
-//	MoveToPos(std::shared_ptr<Entity> m_entity, sf::Vector2f m_newEntPos = sf::Vector2f(0,0))
-//		: m_entity{ m_entity }, m_newEntPos{ m_newEntPos }
-//	{
-//
-//	}
-//
-//	sf::Vector2f m_newEntPos;
-//	std::shared_ptr<Entity> m_entity;			//	Entity to move
-//
-//	const EventID eventID = MOVETOPOS;
-//};
-
 struct Action : public Event				//	An action that the m_entity performed
 {
 	const enum EntAction
@@ -66,6 +51,7 @@ struct Action : public Event				//	An action that the m_entity performed
 		STOP_ENTITY_RIGHT,		//	Stop right movement
 
 		ENTITY_GRAB,			//	Entity is grabbing an object
+		ENTITY_BUILD,			//	Entity wants to build something
 	};
 
 	Action() {}
@@ -97,8 +83,8 @@ struct Message : public Event			//	Messages that don't require an Entity
 	const EventID eventID = MESSAGE;
 };
 
-struct Explosion : public Event		//	Currently used as an example on how to create Events
+struct MousePosition : public Event		//	Currently used as an example on how to create Events
 {
-	int damage;
-	const EventID eventID = EXPLOSION;
+	sf::Vector2f mousePos;				//	In world coordinates
+	const EventID eventID = MOUSE_POS;
 };

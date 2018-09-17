@@ -20,6 +20,12 @@ void CollisionSystem::configure(EventManager& events)
 ///	- Implement Grid Collision Checks for optimization.
 ///	- If velocity is too high and FPS too low, it might skip the collision detection
 ////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/// OPTIMIZATION TODO:
+///	1. Implement basic vertical slicing. Grids of e.g. 10 blocks width
+///	2. Further improve by creating a quadtree for collisionchecking (See bookmarked link):
+///		https://gamedev.stackexchange.com/questions/10202/quad-trees-grid-based-collision-putting-logic-into-action
+////////////////////////////////////////////////////////////
 
 void CollisionSystem::update(float dt, EventManager& events)
 {
@@ -198,7 +204,7 @@ CollisionDirection CollisionSystem::checkCollision(const sf::Rect<float>& rect, 
 	{
 		return CollisionDirection::COLLISION_LEFT;
 	}
-	//	If nothing collided after all (Probably because of corner of otherEntity)
+	//	If nothing collided after all
 	else
 	{
 		return CollisionDirection::COLLISION_FAULT;

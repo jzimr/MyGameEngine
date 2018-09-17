@@ -10,10 +10,6 @@
 
 class PhysicsSystem : public System
 {
-private:
-	struct EntComponents;
-	//enum Collision : int;
-
 public:
 								PhysicsSystem();
 

@@ -20,9 +20,9 @@ public:
 	void						update(float dt, EventManager& events) override;
 
 	//	Called before everything else
-	void						handleInput(std::queue<sf::Event>& events); 
+	void						handleInput(std::queue<sf::Event> events); 
 
 private:
 	EntityManager entMan;
-	std::queue<sf::Event>* m_eventQueue;
+	std::queue<sf::Event> m_eventQueue;
 };

@@ -14,9 +14,9 @@ void ControllerSystem::update(float dt, EventManager& events)
 
 	sf::Event event;
 
-	while (!m_eventQueue->empty())
+	while (!m_eventQueue.empty())
 	{
-		event = m_eventQueue->front();
+		event = m_eventQueue.front();
 
 		for (auto& m_entity : entities)
 		{
@@ -32,6 +32,8 @@ void ControllerSystem::update(float dt, EventManager& events)
 					entAction.m_action = EntAction::ENTITY_RIGHT;
 				else if (event.key.code == sf::Keyboard::E)
 					entAction.m_action = EntAction::ENTITY_GRAB;
+				else if (event.key.code == sf::Keyboard::B)
+					entAction.m_action = EntAction::ENTITY_BUILD;
 
 			}
 			else if (event.type == sf::Event::KeyReleased)
@@ -44,12 +46,12 @@ void ControllerSystem::update(float dt, EventManager& events)
 
 			events.emit<Action>(entAction);
 		}
-		m_eventQueue->pop();		//	Remove event from queue
+		m_eventQueue.pop();		//	Remove event from queue
 	}
 }
 
 //	Spaghetti?
-void ControllerSystem::handleInput(std::queue<sf::Event>& events)
+void ControllerSystem::handleInput(std::queue<sf::Event> events)
 {
-	m_eventQueue = &events;		//	Copy the queue to this system so we can use it in update()
+	m_eventQueue = events;		//	Copy the queue to this system so we can use it in update()
 }

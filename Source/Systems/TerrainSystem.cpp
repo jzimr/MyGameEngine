@@ -36,15 +36,14 @@ void TerrainSystem::begin()
 //	Only check for chunk updates every 1 second
 void TerrainSystem::update(float dt, EventManager& events)
 {
-	entities = entMan.getEntWithComps<Sprite2D>();
-	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Spaghetti
-
-	player = p[0];
-
 	d2_counter += dt;
 
 	if (d2_counter > 1.0f)
 	{
+		entities = entMan.getEntWithComps<Sprite2D>();
+		std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Spaghett
+		player = p[0];
+
 		updateChunks(events);
 
 		d2_counter = 0.0f;

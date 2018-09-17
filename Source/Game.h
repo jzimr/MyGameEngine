@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "World.h"
+#include "Systems/SystemManager.h"		//	If circular dependency error, probably this is the cause
 
 #include <queue>
 
@@ -25,13 +26,14 @@ private:
 
 	sf::RenderWindow		mWindow;
 	World					mWorld;
-	//Player					mPlayer;
 
 	sf::Font				mFont;
 	sf::Text				mFrameRate;
 	sf::Text				mStatistics;
 	sf::Time				mFrameRateUpdateTime;
 	std::size_t				mFrameRateNumFrames;
+
+	SystemManager*			m_systemManager;				//	Handles all systems
 };
 
 #endif
