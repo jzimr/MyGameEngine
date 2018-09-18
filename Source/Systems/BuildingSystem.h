@@ -14,12 +14,14 @@ public:
 	void						receive(Action* action);
 
 private:
-	void						spawnBuilding();
+	bool						placeBuilding();
 
 private:
 	EntityManager entMan;
 	std::shared_ptr<Entity> m_player;
 	sf::RenderWindow& m_window;
+
+	EntPtr buildingHeld;
 };
 
 //	Create buildingpart with parent-child relationship?

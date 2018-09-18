@@ -20,19 +20,46 @@ void BuildingSystem::update(float dt, EventManager& events)
 	{
 		sf::Vector2f worldPos = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
 
+		//	As of now, buildings are simply entities
+		if (!buildingHeld)
+			buildingHeld = entMan.createEntity("Wall", worldPos);
 
-		
+		buildingHeld->getComponent<Sprite2D>().sprite.setColor(sf::Color::Green);
+		buildingHeld->setPosition(worldPos);
 	}
+	else
+	{
+		if (buildingHeld)
+		{
+			entMan.removeEntity(buildingHeld->getID());
+			buildingHeld.reset();
+		}
+	}
+}
+
+bool BuildingSystem::placeBuilding()
+{
+	//	Add if statement to check if position is valid
+
+	buildingHeld.reset();
+	return true;
 }
 
 void BuildingSystem::receive(Action* action)
 {
-	if (action->m_action != action->ENTITY_BUILD)	return;
-
-	Player* player = action->m_entity->hasComponent<Player>() ? &action->m_entity->getComponent<Player>() : NULL;
-
-	if (player)
+	if (action->m_action == action->ENTITY_BUILD)
 	{
-		player->inBuildingState = !player->inBuildingState;		//	Toggle playerstate
+		Player* player = action->m_entity->hasComponent<Player>() ? &action->m_entity->getComponent<Player>() : NULL;
+
+		if (player)
+			player->inBuildingState = !player->inBuildingState;		//	Toggle playerstate
+	}
+	else if (action->m_action == action->ENTITY_CLICK_LEFT)
+	{
+		Player* player = action->m_entity->hasComponent<Player>() ? &action->m_entity->getComponent<Player>() : NULL;
+
+		if (player && player->inBuildingState)
+			if (placeBuilding())
+				player->inBuildingState = false;
 	}
 }

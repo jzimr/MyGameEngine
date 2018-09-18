@@ -43,6 +43,11 @@ void ControllerSystem::update(float dt, EventManager& events)
 				else if (event.key.code == sf::Keyboard::D)
 					entAction.m_action = EntAction::STOP_ENTITY_RIGHT;
 			}
+			else if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+					entAction.m_action = EntAction::ENTITY_CLICK_LEFT;
+			}
 
 			events.emit<Action>(entAction);
 		}

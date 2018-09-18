@@ -1,0 +1,4 @@
+Component Sprite2D
+	Texture Wall
+Component Collider
+	ColliderBox default

@@ -45,6 +45,11 @@ void CollisionSystem::update(float dt, EventManager& events)
 		collider = &m_entity->getComponent<Collider>();
 		physics = m_entity->hasComponent<Physics>() ? &m_entity->getComponent<Physics>() : NULL;
 
+		//	Update collider box position from the physicsSystem
+		//	We're doing this for all entities as other systems often change the position of the entity (BuildingSystem)
+		collider->colliderBox.left = m_entity->getPosition().x;
+		collider->colliderBox.top = m_entity->getPosition().y;
+
 		if (!physics)	//	Only make exception to check for collision if parent has physics
 		{
 			//	Check if the parent of this entity has the Physics component. If yes, check for collision
@@ -68,10 +73,6 @@ void CollisionSystem::update(float dt, EventManager& events)
 					continue;
 			}
 		}
-
-		//	Update collider box position from the physicsSystem
-		collider->colliderBox.left = m_entity->getPosition().x;
-		collider->colliderBox.top = m_entity->getPosition().y;
 
 		sf::Vector2f fixPos(0, 0);	//	In case of overlap (Look further down)
 		sf::Rect<float>* thisRect = &collider->colliderBox;

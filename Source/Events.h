@@ -52,6 +52,8 @@ struct Action : public Event				//	An action that the m_entity performed
 
 		ENTITY_GRAB,			//	Entity is grabbing an object
 		ENTITY_BUILD,			//	Entity wants to build something
+
+		ENTITY_CLICK_LEFT		//	User clicked left mouse button
 	};
 
 	Action() {}

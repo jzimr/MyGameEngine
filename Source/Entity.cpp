@@ -113,7 +113,7 @@ bool Entity::isRelatedWith(const EntPtr entity) const
 
 void Entity::setPosition(float x, float y)
 {
-	std::cout << localPosition.x << " " << localPosition.y << '\n';
+	//std::cout << localPosition.x << " " << localPosition.y << '\n';
 
 	///	NEW
 	transform.setPosition(sf::Vector2f(x + localPosition.x, y + localPosition.y));
@@ -123,7 +123,7 @@ void Entity::setPosition(float x, float y)
 
 void Entity::setPosition(const sf::Vector2f position)
 {
-	std::cout << localPosition.x << " " << localPosition.y << '\n';
+	//std::cout << localPosition.x << " " << localPosition.y << '\n';
 
 	///	NEW
 	transform.setPosition(position + localPosition);
