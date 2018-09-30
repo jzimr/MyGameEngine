@@ -13,7 +13,7 @@ void BuildingSystem::configure(EventManager& events)
 
 void BuildingSystem::update(float dt, EventManager& events)
 {
-	std::vector<std::shared_ptr<Entity>> list = entMan.getEntWithComp<Player>();		//	Spaghett
+	std::vector<Entity*> list = entMan.getEntWithComp<Player>();		//	Spaghett
 	m_player = list.empty() ? NULL : list[0];
 
 	if (m_player && m_player->getComponent<Player>().inBuildingState)	//	If player wants to build
@@ -23,7 +23,7 @@ void BuildingSystem::update(float dt, EventManager& events)
 		//	As of now, buildings are simply entities
 		if (!buildingHeld)
 			buildingHeld = entMan.createEntity("Wall", worldPos);
-
+		
 		buildingHeld->getComponent<Sprite2D>().sprite.setColor(sf::Color::Green);
 		buildingHeld->setPosition(worldPos);
 	}
@@ -32,7 +32,7 @@ void BuildingSystem::update(float dt, EventManager& events)
 		if (buildingHeld)
 		{
 			entMan.removeEntity(buildingHeld->getID());
-			buildingHeld.reset();
+			buildingHeld = NULL;
 		}
 	}
 }
@@ -41,7 +41,7 @@ bool BuildingSystem::placeBuilding()
 {
 	//	Add if statement to check if position is valid
 
-	buildingHeld.reset();
+	buildingHeld = NULL;
 	return true;
 }
 

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeveloperTools\DevTools.cpp" />
+    <ClCompile Include="MathHelperFunctions.cpp" />
     <ClCompile Include="Source\AnimatedSprite.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Entity Factories\EntityFactory.cpp" />
@@ -27,7 +28,9 @@
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\EventManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\Old Code\Components\Component.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -96,6 +99,7 @@
     <ClInclude Include="Source\EventManager.h" />
     <ClInclude Include="Source\Events.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\MathHelperFunctions.h" />
     <ClInclude Include="Source\Old Code\Components\Commands\Command.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

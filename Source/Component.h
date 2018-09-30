@@ -34,15 +34,16 @@ struct BaseComponent
 	bool enabled = true;			// Is the component active?	
 };
 
-struct Physics : BaseComponent		//	Making an object fall
+//	a = F/m
+
+struct Physics : BaseComponent		//	Space Physics
 {
-	float gravity = 400.0f;	//	Default gravity (Disable for e.g. bullets)
-	sf::Vector2f velocity = sf::Vector2f{ 0,0 };
-	float horizontalVelocity = 0.0f;
+	//float gravity = 0.0f;	//	Default gravity (Disabled in space)
+	sf::Vector2f velocity = sf::Vector2f{ 0,0 };		//	DO NOT MANIPULATE THIS VALUE DIRECTLY!!!
+	float maxSpeed = 30.0f;
 
-	sf::Vector2f addedForce = sf::Vector2f{ 0,0 };		//	If you want to add any temporary force to object
-
-	const float maxFallingSpeed = 1000.0f;
+	sf::Vector2f force = sf::Vector2f{ 0,0 };		//	If you want to add any temporary force to object
+	float mass = 1.0f;
 
 	COMP_TYPE type = PHYSICS_COMP;
 };
@@ -69,7 +70,7 @@ struct Player : BaseComponent		//	Can only be applied to one m_entity at a time
 
 struct LivingThing : BaseComponent		//	Change name, not descriptive enough
 {
-	std::shared_ptr<Entity> holdingGrabbableObject = NULL;		//	default = NULl
+	Entity* holdingGrabbableObject = NULL/*, weapon = NULL*/;		
 
 	COMP_TYPE type = LIVINGTHING_COMP;
 };
@@ -77,16 +78,19 @@ struct LivingThing : BaseComponent		//	Change name, not descriptive enough
 ///	Requires : MovementComponent
 struct Controller : BaseComponent
 {
-
 	COMP_TYPE type = CONTROLLER_COMP;
 };
 
 ///	Requires : PhysicsComponent
 struct Movement : BaseComponent		//	Can be applied to NPC's as well
 {
-	float horizontalSpeed = 200;
-	//float runSpeed = 50;
-	float jumpForce = 270;
+	//float horizontalSpeed = 30;
+	////float runSpeed = 50;
+	//float jumpForce = 200;
+	//float velocityWithoutAdditionalForce = 20.0f;		//	Enabled when 
+														//	1. A force that has exceeded this limit is no longer acting upon this object
+														//	2. The object's velocity is not under this limit (Or standing still)
+	float mSpeed = 500.0f;			//	normal movement speed
 
 	COMP_TYPE type = MOVEMENT_COMP;
 };
@@ -108,6 +112,8 @@ struct Anim : BaseComponent
 
 	Layer layer;
 
+	//short facingDirection = 1;					//	1 = Facing right, -1 = Facing left
+
 	std::map<AnimAction, Animation> rightAnimations;			//	All possible animations with their triggers
 	std::map<AnimAction, Animation> leftAnimations;				//	For both left and right
 	std::map<AnimAction, sf::Texture> textures;
@@ -125,6 +131,8 @@ struct Sprite2D : BaseComponent
 		LAYER_SIZE
 	};
 
+	//short facingDirection = 1;					//	1 = Facing right, -1 = Facing left
+
 	Layer layer;
 	sf::Texture texture;
 	sf::Sprite sprite;
@@ -132,7 +140,7 @@ struct Sprite2D : BaseComponent
 	COMP_TYPE type = SPRITE2D_COMP;
 };
 
-struct Grabbable : BaseComponent
+struct Grabbable : BaseComponent				//	If an object can be picked up
 {
 	COMP_TYPE type = GRABBABLE_COMP;
 };

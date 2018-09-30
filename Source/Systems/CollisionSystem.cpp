@@ -57,7 +57,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 				continue;
 			else
 			{
-				std::shared_ptr<Entity> currEnt = m_entity;
+				Entity* currEnt = m_entity;
 				bool parentHasPhysics = false;
 
 				while (currEnt != NULL)
@@ -89,7 +89,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision m_direction
 				fixPos = fixPositionOnCollide(collisionDir, *thisRect, otherRect);		//	Fix position when colliding
 
-				Collision collision(collisionDir, fixPos, m_entity, &otherEntity->getComponent<Collider>());
+				Collision collision(collisionDir, fixPos, m_entity, otherEntity);
 				events.emit<Collision>(collision);
 
 				collider->colliderBox.left = m_entity->getPosition().x;
@@ -108,7 +108,7 @@ void CollisionSystem::update(float dt, EventManager& events)
 				collisionDir = checkCollision(*thisRect, otherRect);			//	Get collision m_direction
 				fixPos = fixPositionOnCollide(collisionDir, *thisRect, otherRect);		//	Fix position when colliding
 
-				Collision collision(collisionDir, fixPos, m_entity, &terrainCollider);
+				Collision collision(collisionDir, fixPos, m_entity);	//	Don't need to add this collider for static object collisions
 				events.emit<Collision>(collision);
 
 				collider->colliderBox.left = m_entity->getPosition().x;

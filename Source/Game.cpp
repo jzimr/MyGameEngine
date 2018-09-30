@@ -22,11 +22,13 @@ Game::Game()		//	640, 360
 	mFrameRate.setFont(mFont);
 	mFrameRate.setPosition(5.f, 5.f);
 	mFrameRate.setCharacterSize(10);
-	
-	//mStatistics = mFrameRate;
-	mStatistics.setFont(mFont);
-	mStatistics.setPosition(5.f, 6.f);
-	mStatistics.setCharacterSize(10);
+
+	mStatistics = mFrameRate;
+	mDebugInfo = mFrameRate;
+	mDebugInfo.setPosition(5.f, 40.f);
+	//mStatistics.setFont(mFont);
+	//mStatistics.setPosition(5.f, 6.f);
+	//mStatistics.setCharacterSize(10);
 }
 
 void Game::run()
@@ -48,6 +50,7 @@ void Game::run()
 		}
 
 		updateStatistics(elapsedTime);
+		updateDebugInfo();
 		render();
 	}
 }
@@ -80,19 +83,12 @@ void Game::render()
 	mWindow.clear();
 	m_systemManager->getSystem<RenderSystem>().draw(mWindow);
 
-	//	Temporary	(DOES NOT WORK FOR RELEASE MODE FOR SOME REASON D:)
-	{
-		sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
-		sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
-		mStatistics.setString("\n\nMouse position = x: " +
-			std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
-	}
-
 	sf::View saveView = mWindow.getView();			//	Save our custom view
 	mWindow.setView(mWindow.getDefaultView());		//	This is for some reason necessary in order for sf::Text to work (statistics)
 
 	mWindow.draw(mFrameRate);
 	mWindow.draw(mStatistics);
+	mWindow.draw(mDebugInfo);
 
 	mWindow.setView(saveView);						//	Set back to our custom view
 	mWindow.display();
@@ -112,11 +108,26 @@ void Game::updateStatistics(sf::Time elapsedTime)
 		mFrameRateUpdateTime -= sf::seconds(1.0f);
 		mFrameRateNumFrames = 0;
 	}
-	if (mFrameRateUpdateTime >= sf::seconds(0.1f))
+
+	//	(DOES NOT WORK FOR RELEASE MODE FOR SOME REASON D:)
+	if (mFrameRateUpdateTime >= sf::seconds(0.01f))
 	{
-		//sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
-		//sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
-		//mStatistics.setString("\n\nMouse position = x: " + 
-		//	std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
+		sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
+		sf::Vector2f worldPos = mWindow.mapPixelToCoords(pixelPos, mWindow.getView());
+		mStatistics.setString("\n\nMouse position = x: " +
+			std::to_string(worldPos.x) + ", y: " + std::to_string(worldPos.y));
 	}
+}
+
+void Game::updateDebugInfo()
+{
+	std::vector<Entity*> list = m_entityManager.getEntWithComp<Player>();
+	Entity* player = NULL;
+
+	if (list.size() == 0)
+		return;
+	player = list[0];
+
+	mDebugInfo.setString("Velocity = x: " + std::to_string((int) player->getComponent<Physics>().velocity.x) +
+		", y: " + std::to_string((int) player->getComponent<Physics>().velocity.y));
 }

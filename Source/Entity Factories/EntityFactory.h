@@ -12,7 +12,7 @@ class EntityManager;
 class EntityFactory
 {
 public:
-	typedef std::shared_ptr<Entity> EntPtr;
+	typedef std::unique_ptr<Entity> EntPtr;
 
 public:
 								EntityFactory();
@@ -23,7 +23,7 @@ public:
 
 
 
-	std::shared_ptr<Entity>		spawnEntity(int uniqueID, std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
+	EntPtr		spawnEntity(int uniqueID, std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
 
 private:
 	//	Better to store path as it makes it easier to modify entities at

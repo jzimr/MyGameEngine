@@ -22,10 +22,10 @@ int Entity::getID() const
 
 //	Necessary with "parent", as this will send the shared_ptr over here.
 //	TODO: CHANGE!
-void Entity::attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset)		
+void Entity::attachChild(Entity* child, sf::Vector2f offset)
 {
 	children.push_back(child);
-	child->parent = parent;
+	child->parent = this;
 
 	if (offset == sf::Vector2f(0, 0))
 		child->localPosition = child->getPosition() - transform.getPosition();
@@ -34,17 +34,16 @@ void Entity::attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset)
 	child->setPosition(getPosition());
 }
 
-EntPtr Entity::detachChild(EntPtr child)
+Entity* Entity::detachChild(Entity* child)
 {
-	std::shared_ptr<Entity> found;
-	auto it = std::find_if(children.begin(), children.end(), [&](std::shared_ptr<Entity> &p) { if (p == child) { found = p; return true; } });
+	Entity* found;
+	auto it = std::find_if(children.begin(), children.end(), [&](Entity* &p) { if (p == child) { found = p; return true; } });
 
 	assert(it != children.end());
 	children.erase(it);
 
 	child->parent = NULL;
-	//child->localPosition = sf::Vector2f(0, 0);
-	
+
 	return found;
 }
 
@@ -53,7 +52,7 @@ bool Entity::hasChildren() const
 	return !children.empty();
 }
 
-std::vector<EntPtr> Entity::getChildren() const
+std::vector<Entity*> Entity::getChildren() const
 {
 	return children;
 }
@@ -63,13 +62,13 @@ bool Entity::hasParent() const
 	return parent != NULL ? true : false;
 }
 
-EntPtr Entity::getParent() const
+Entity* Entity::getParent() const
 {
 	return parent;
 }
 
 //	Check the upper hierachy with recursion
-bool Entity::isChildOf(const EntPtr entity) const
+bool Entity::isChildOf(const Entity* entity) const
 {
 	if (parent)
 	{
@@ -83,7 +82,7 @@ bool Entity::isChildOf(const EntPtr entity) const
 	return false;
 }
 
-bool Entity::isParentOf(const EntPtr entity) const
+bool Entity::isParentOf(const Entity* entity) const
 {
 	for (const auto& child : children)
 	{
@@ -97,7 +96,7 @@ bool Entity::isParentOf(const EntPtr entity) const
 	return false;		
 }
 
-bool Entity::isRelatedWith(const EntPtr entity) const
+bool Entity::isRelatedWith(const Entity* entity) const
 {
 	if (/*std::shared_ptr<Entity>(this) == entity ||*/
 		isChildOf(entity) || isParentOf(entity))
@@ -123,7 +122,6 @@ void Entity::setPosition(float x, float y)
 
 void Entity::setPosition(const sf::Vector2f position)
 {
-	//std::cout << localPosition.x << " " << localPosition.y << '\n';
 
 	///	NEW
 	transform.setPosition(position + localPosition);

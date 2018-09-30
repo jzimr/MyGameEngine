@@ -7,19 +7,19 @@ EntityManager::EntityManager()
 	std::cout << entities.size() << '\n';
 }
 
-EntPtr EntityManager::createEntity(sf::Vector2f position)
+Entity* EntityManager::createEntity(sf::Vector2f position)
 {
 	EntPtr newEntity(new Entity(uniqueID++));
-	entities.push_back(newEntity);
+	entities.push_back(std::move(newEntity));
 
-	return entities.back();
+	return entities.back().get();
 }
 
-EntPtr EntityManager::createEntity(std::string ID, sf::Vector2f position)
+Entity* EntityManager::createEntity(std::string ID, sf::Vector2f position)
 {
 	EntPtr newEntity = entityFactory.spawnEntity(uniqueID++, ID, position);
-	entities.push_back(newEntity);
-	return entities.back();
+	entities.push_back(std::move(newEntity));
+	return entities.back().get();
 }
 
 bool EntityManager::removeEntity(unsigned int entID)
@@ -35,13 +35,13 @@ bool EntityManager::removeEntity(unsigned int entID)
 	return false;				//	If not found
 }
 
-EntPtr EntityManager::getEntity(unsigned int entID)
+Entity* EntityManager::getEntity(unsigned int entID)
 {
 	for (size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->getID() == entID)
 		{
-			return entities[i];
+			return entities[i].get();
 		}
 	}
 	return NULL;
@@ -49,12 +49,20 @@ EntPtr EntityManager::getEntity(unsigned int entID)
 
 
 
-std::vector<EntPtr> EntityManager::getAllEntities()
+std::vector<Entity*> EntityManager::getAllEntities()
 {
-	return entities;
+	std::vector<Entity*> entsToReturn;
+	
+	for (int i = 0; i < entities.size(); i++)
+		entsToReturn.push_back(entities[i].get());
+
+	return entsToReturn;
 }
 
 //	Initialize static variables
 
 std::vector<EntPtr> EntityManager::entities{};
-unsigned int EntityManager::uniqueID{ 0 };
+unsigned int EntityManager::uniqueID{ 10 };		//	0-9 are reserverd:
+//	------ Reservations of IDs ------
+//	| 0 = ?
+//	| 1 = CollisionsSystem: Creation of temporary entities to send collision event

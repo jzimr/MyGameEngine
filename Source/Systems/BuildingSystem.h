@@ -18,10 +18,10 @@ private:
 
 private:
 	EntityManager entMan;
-	std::shared_ptr<Entity> m_player;
+	Entity* m_player;
 	sf::RenderWindow& m_window;
 
-	EntPtr buildingHeld;
+	Entity* buildingHeld;
 };
 
 //	Create buildingpart with parent-child relationship?

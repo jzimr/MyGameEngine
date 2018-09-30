@@ -131,6 +131,9 @@
     <ClCompile Include="Source\Systems\CameraSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="MathHelperFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -255,6 +258,9 @@
     </ClInclude>
     <ClInclude Include="Source\Systems\CameraSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathHelperFunctions.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

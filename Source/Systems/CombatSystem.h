@@ -9,9 +9,15 @@ class CombatSystem : public System
 public:
 	CombatSystem();
 
-	//void						init() override;
-	//void						update(float dt) override;
+	void						configure(EventManager& events) override;
+	void						update(float dt, EventManager& events) override;
 
+private:
+	void						receive(Action* action);
+	//void						
+
+private:
+	EntityManager entMan;
 
 private:
 };

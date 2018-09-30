@@ -20,8 +20,8 @@ void RenderSystem::update(float dt, EventManager& events)
 
 	entities.clear();
 	///	Get all entities that have either Sprite2D or Anim Component
-	std::vector<EntPtr> entSprites = entMan.getEntWithComp<Sprite2D>();
-	std::vector<EntPtr> entAnims = entMan.getEntWithComp<Anim>();
+	std::vector<Entity*> entSprites = entMan.getEntWithComp<Sprite2D>();
+	std::vector<Entity*> entAnims = entMan.getEntWithComp<Anim>();
 	entities.reserve(entSprites.size() + entAnims.size());
 	entities.insert(entities.end(), entSprites.begin(), entSprites.end());
 	entities.insert(entities.end(), entAnims.begin(), entAnims.end());
@@ -29,7 +29,7 @@ void RenderSystem::update(float dt, EventManager& events)
 
 void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 {
-	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Temp
+	std::vector<Entity*> p = entMan.getEntWithComp<Player>();		//	Temp
 	player = p[0];
 
 	Player* playerComp = &player->getComponent<Player>();
@@ -52,7 +52,7 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 			//if (sBounds.intersects(viewBounds))
 				target.draw(sprite);
 		}
-	}	
+	}
 
 	//	Draw m_entity sprites (This as well (look above))
 	for (const auto& m_entity : entities)
@@ -65,7 +65,7 @@ void RenderSystem::draw(sf::RenderTarget & target/*, sf::RenderStates states*/)
 		sf::Transformable* transItem = isSprite2D ? (sf::Transformable*) &m_entity->getComponent<Sprite2D>().sprite :
 			(sf::Transformable*)&m_entity->getComponent<Anim>().activeAnim;
 
-		transItem->setPosition(m_entity->getPosition()); 
+		transItem->setPosition(m_entity->getPosition());
 		target.draw(*drawableItem);
 	}
 }

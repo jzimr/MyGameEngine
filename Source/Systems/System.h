@@ -12,9 +12,6 @@
 class System : sf::NonCopyable
 {
 public:
-	typedef std::shared_ptr<Entity> EntPtr;
-
-public:
 								System();
 
 	virtual void				configure(EventManager& events);		//	At initialization of system
@@ -24,5 +21,5 @@ public:
 	virtual void				end();				//	After update()
 
 protected:
-	std::vector<EntPtr> entities;			//	List of entities for the system
+	std::vector<Entity*> entities;			//	List of entities for the system
 };

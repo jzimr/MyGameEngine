@@ -12,36 +12,61 @@ void ControllerSystem::update(float dt, EventManager& events)
 {
 	entities = entMan.getEntWithComps<Controller>();
 
-	sf::Event event;
-
-	while (!m_eventQueue.empty())
+	for (auto& m_entity : entities)
 	{
-		event = m_eventQueue.front();
+		Action entAction(m_entity);
 
-		for (auto& m_entity : entities)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			Action entAction(m_entity);
+			entAction.m_action = EntAction::ENTITY_UP;
+			events.emit<Action>(entAction);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			entAction.m_action = EntAction::ENTITY_LEFT;
+			events.emit<Action>(entAction);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			entAction.m_action = EntAction::ENTITY_DOWN;
+			events.emit<Action>(entAction);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			entAction.m_action = EntAction::ENTITY_RIGHT;
+			events.emit<Action>(entAction);
+		}
+
+		while (!m_eventQueue.empty())
+		{
+			sf::Event event;
+			event = m_eventQueue.front();
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Space)
-					entAction.m_action = EntAction::ENTITY_JUMP;
-				else if (event.key.code == sf::Keyboard::A)
-					entAction.m_action = EntAction::ENTITY_LEFT;
-				else if (event.key.code == sf::Keyboard::D)
-					entAction.m_action = EntAction::ENTITY_RIGHT;
-				else if (event.key.code == sf::Keyboard::E)
+				//if (event.key.code == sf::Keyboard::W)
+				//	entAction.m_action = EntAction::ENTITY_UP;
+				//else if (event.key.code == sf::Keyboard::S)
+				//	entAction.m_action = EntAction::ENTITY_DOWN;
+				//else if (event.key.code == sf::Keyboard::A)
+				//	entAction.m_action = EntAction::ENTITY_LEFT;
+				//else if (event.key.code == sf::Keyboard::D)
+				//	entAction.m_action = EntAction::ENTITY_RIGHT;
+				if (event.key.code == sf::Keyboard::E)
 					entAction.m_action = EntAction::ENTITY_GRAB;
 				else if (event.key.code == sf::Keyboard::B)
 					entAction.m_action = EntAction::ENTITY_BUILD;
-
 			}
 			else if (event.type == sf::Event::KeyReleased)
 			{
-				if (event.key.code == sf::Keyboard::A)
-					entAction.m_action = EntAction::STOP_ENTITY_LEFT;
-				else if (event.key.code == sf::Keyboard::D)
-					entAction.m_action = EntAction::STOP_ENTITY_RIGHT;
+				//if (event.key.code == sf::Keyboard::W)
+				//	entAction.m_action = EntAction::STOP_ENTITY_UP;
+				//else if (event.key.code == sf::Keyboard::S)
+				//	entAction.m_action = EntAction::STOP_ENTITY_DOWN;
+				//if (event.key.code == sf::Keyboard::A)
+				//	entAction.m_action = EntAction::STOP_ENTITY_LEFT;
+				//else if (event.key.code == sf::Keyboard::D)
+				//	entAction.m_action = EntAction::STOP_ENTITY_RIGHT;
 			}
 			else if (event.type == sf::Event::MouseButtonPressed)
 			{
@@ -50,8 +75,8 @@ void ControllerSystem::update(float dt, EventManager& events)
 			}
 
 			events.emit<Action>(entAction);
+			m_eventQueue.pop();		//	Remove event from queue
 		}
-		m_eventQueue.pop();		//	Remove event from queue
 	}
 }
 

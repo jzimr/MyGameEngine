@@ -22,5 +22,9 @@ public:
 	//void						receiveT(MoveToPos* moveToPos);		//	Maybe move into own System?
 
 private:
+	void						addForce(Physics* physics, const sf::Vector2f nForce);
+	void						doElasticCollision(Entity* a, Entity* b);
+
+private:
 	EntityManager entMan;
 };

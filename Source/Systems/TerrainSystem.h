@@ -58,5 +58,5 @@ private:
 private:
 	EntityManager entMan;
 
-	std::shared_ptr<Entity> player;
+	Entity* player;
 };

@@ -81,29 +81,3 @@ void DebugSystem::update(float dt, EventManager & events)
 	if (!m_commands.empty())
 		processCommands();
 }
-
-//FetchCommands::FetchCommands(std::mutex& allCommMtx, std::queue<std::vector<std::string>>& commands)
-//{
-//	std::string input;
-//
-//	while (input != "exit")
-//	{
-//		std::cout << "Command: ";
-//		std::getline(std::cin, input);		//	Wait and read for command
-//
-//		std::istringstream iss(input);
-//		std::vector<std::string> words{		//	Split command
-//			std::istream_iterator<std::string>(iss),{}
-//		};
-//		if (words.empty())					//	Blank line detected, skip
-//			continue;
-//
-//		while (true)						//	Foolproof access to queue
-//			if (allCommMtx.try_lock())
-//			{
-//				commands.push(words);
-//				allCommMtx.unlock();
-//				break;
-//			}
-//	}
-//}

@@ -13,7 +13,7 @@ public:
 
 private:
 	sf::View* playerCamera;
-	std::shared_ptr<Entity> player;			//	Aquired in onEntityUpdate()
+	Entity* player;			//	Aquired in onEntityUpdate()
 
 	EntityManager entMan;
 	sf::RenderWindow& m_window;

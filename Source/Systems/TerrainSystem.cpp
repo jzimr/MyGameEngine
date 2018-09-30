@@ -41,7 +41,7 @@ void TerrainSystem::update(float dt, EventManager& events)
 	if (d2_counter > 1.0f)
 	{
 		entities = entMan.getEntWithComps<Sprite2D>();
-		std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Spaghett
+		std::vector<Entity*> p = entMan.getEntWithComp<Player>();		//	Spaghett
 		player = p[0];
 
 		updateChunks(events);

@@ -9,7 +9,6 @@ class World : sf::NonCopyable
 {
 public:
 	typedef std::unique_ptr<BaseComponent> CompPtr;
-	typedef std::shared_ptr<Entity> EntPtr;
 
 public:
 								World();
@@ -17,7 +16,7 @@ public:
 private:
 	void						buildScene();
 	EntityManager entMan;
-	EntPtr player;
+	Entity* player;
 };
 
 ////////////////////////////////////////////////////////////

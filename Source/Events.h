@@ -25,16 +25,15 @@ struct Collision : public Event
 	};
 
 	Collision() {}
-	Collision(CollisionDirection direction, sf::Vector2f newPos, std::shared_ptr<Entity> entity, Collider* otherCollider)
-		: m_direction{ direction }, m_newEntPos{ newPos }, m_entity{ entity }, m_otherCollider {otherCollider}
+	Collision(CollisionDirection direction, sf::Vector2f newPos, Entity* entity, Entity* otherEntity = NULL)
+		: m_direction{ direction }, m_newEntPos{ newPos }, m_entity{ entity }, m_other_entity {otherEntity}
 	{
-
 	}
 
 	CollisionDirection m_direction;			//	Direction of collision
 	sf::Vector2f m_newEntPos;
-	std::shared_ptr<Entity> m_entity;			//	Entity that collided
-	Collider* m_otherCollider;				//	Other collider that ^^^^^^^ collided with
+	Entity* m_entity;			//	Entity that collided
+	Entity* m_other_entity = NULL;
 
 	const EventID eventID = COLLISION;
 };
@@ -44,11 +43,15 @@ struct Action : public Event				//	An action that the m_entity performed
 	const enum EntAction
 	{
 		NOTHING,
-		ENTITY_JUMP,			//	Trigger a jump event
-		ENTITY_LEFT,			//	Go left
-		ENTITY_RIGHT,			//	Go right
-		STOP_ENTITY_LEFT,		//	Stop left movement
-		STOP_ENTITY_RIGHT,		//	Stop right movement
+		/*ENTITY_JUMP,*/			//	Trigger a jump event
+		ENTITY_UP,				//	Go up
+		ENTITY_DOWN,			//	-- down 
+		ENTITY_LEFT,			//	-- left
+		ENTITY_RIGHT,			//	-- right
+		STOP_ENTITY_UP,			//	Stop up movement
+		STOP_ENTITY_DOWN,		//	---- down 
+		STOP_ENTITY_LEFT,		//	---- left 
+		STOP_ENTITY_RIGHT,		//	---- right
 
 		ENTITY_GRAB,			//	Entity is grabbing an object
 		ENTITY_BUILD,			//	Entity wants to build something
@@ -57,14 +60,15 @@ struct Action : public Event				//	An action that the m_entity performed
 	};
 
 	Action() {}
-	Action(std::shared_ptr<Entity> m_entity, EntAction action = NOTHING)
+	bool operator==(EntAction action) const { return m_action == action; }
+	Action(Entity* m_entity, EntAction action = NOTHING)
 		: m_entity{ m_entity }, m_action{ action }
 	{
 		 
 	}
 
 	EntAction m_action = NOTHING;						//	Action the m_entity performed
-	std::shared_ptr<Entity> m_entity;			
+	Entity* m_entity;
 
 	const EventID eventID = ACTION;
 };

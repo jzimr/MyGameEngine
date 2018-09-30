@@ -29,15 +29,13 @@ void EntityInteractionSystem::receiver(Action* action)
 }
 void EntityInteractionSystem::handleGrabbing(Action* action)
 {
-	if (action->m_action != action->ENTITY_GRAB)	return;
-
-	std::shared_ptr<Entity> entity = action->m_entity;
+	Entity* entity = action->m_entity;
 
 	//	If entity is currently not holding any object
 	if (!entity->getComponent<LivingThing>().holdingGrabbableObject)
 	{
 		//	Get all entities that are grabbable
-		std::vector<EntPtr> grabbableEntities = entMan.getEntWithComp<Grabbable>();
+		std::vector<Entity*> grabbableEntities = entMan.getEntWithComp<Grabbable>();
 
 		//	Create the bounding box for our m_entity
 		sf::Vector2f entPos = entity->getPosition();
@@ -57,7 +55,7 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 			if (abs(grabEntBoundaries.left - (entBoundaries.left + entBoundaries.width)) <= GRABBABLE_DISTANCE)
 			{
 				sf::Vector2f holdingPosition = sf::Vector2f(entBoundaries.width + 1, entBoundaries.height / 2 - 2);
-				entity->attachChild(grabEntity, entity, holdingPosition);			//	Temp offset
+				entity->attachChild(grabEntity, holdingPosition);			//	Temp offset
 				entity->getComponent<LivingThing>().holdingGrabbableObject = grabEntity;
 				
 				if (grabEntity->hasComponent<Physics>())								//	Temp
@@ -71,9 +69,9 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 	else
 	{
 		LivingThing* lThing = &entity->getComponent<LivingThing>();
-		EntPtr temp = lThing->holdingGrabbableObject;
+		Entity* temp = lThing->holdingGrabbableObject;
 		lThing->holdingGrabbableObject = NULL;
-		EntPtr droppedObj = action->m_entity->detachChild(temp);
+		Entity* droppedObj = action->m_entity->detachChild(temp);
 
 		//	Temp throwing
 		&droppedObj->addComponent<Physics>();
@@ -84,6 +82,6 @@ void EntityInteractionSystem::handleGrabbing(Action* action)
 		if (droppedObj->getLocalPosition().x < 0)
 			direction *= -1;
 
-		childPhys->addedForce = sf::Vector2f((200 + abs(parentPhys->velocity.x)) * direction, 0);
+		childPhys->force = sf::Vector2f((200 + abs(parentPhys->velocity.x)) * direction, 0);
 	}
 }

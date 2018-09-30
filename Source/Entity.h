@@ -11,7 +11,6 @@ class Entity : public sf::NonCopyable
 {
 public:
 	typedef std::unique_ptr<BaseComponent> CompPtr;
-	typedef std::shared_ptr<Entity> EntPtr;
 
 public:
 	Entity(int id);
@@ -22,15 +21,15 @@ public:
 	///
 	///	TODO: Move into own component
 	////////////////////////////////////////////////////////////
-	void						attachChild(EntPtr child, EntPtr parent, sf::Vector2f offset = sf::Vector2f(0, 0));
-	EntPtr						detachChild(EntPtr child);
+	void						attachChild(Entity* child, sf::Vector2f offset = sf::Vector2f(0, 0));
+	Entity*						detachChild(Entity* child);
 	bool						hasParent() const;
-	EntPtr						getParent() const;
+	Entity*						getParent() const;
 	bool						hasChildren() const;
-	std::vector<EntPtr>			getChildren() const;
-	bool						isChildOf(const EntPtr entity) const;		//	This entity is child of param
-	bool						isParentOf(const EntPtr entity) const;		//	This entity is parent of param
-	bool						isRelatedWith(const EntPtr entity) const;
+	std::vector<Entity*>		getChildren() const;
+	bool						isChildOf(const Entity* entity) const;		//	This entity is child of param
+	bool						isParentOf(const Entity* entity) const;		//	This entity is parent of param
+	bool						isRelatedWith(const Entity* entity) const;
 
 
 	//	Functions of sf::Transformable
@@ -55,8 +54,8 @@ private:
 
 	int							uniqueID;
 
-	EntPtr						parent;
-	std::vector<EntPtr>			children;
+	Entity*						parent;
+	std::vector<Entity*>		children;
 	sf::Vector2f				localPosition;			//	Position relative to parent		
 
 

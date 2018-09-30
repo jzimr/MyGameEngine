@@ -37,27 +37,20 @@ public:
 		{
 			if (event.eventID == it->first)
 			{
-				found = event.eventID;
-				break;
+				auto receiversElems = m_receivers.equal_range(event.eventID);
+
+				for (auto it2 = receiversElems.first; it2 != receiversElems.second; it2++)
+				{
+					EventFuncPtr receiver = (it2->second);
+
+					receiver(&event);								//	Call the function of subscribed system with the wished element
+				}
+				return;
 			}
 		}
 
 		//	VVVVVVVVV	Means you probably have not applied the EventID to the derived Event struct
 		assert(found != BASE_EVENT);				//	Throw error if not found
-
-		///	Find all systems that are subscribed to that event
-		auto receiversElems = m_receivers.equal_range(found);
-		//auto rec = m_receivers[2];
-
-		//std::cout << sizeof(receiversElems) << " " << sizeof(m_receivers) << '\n';
-		
-
-		for (auto it2 = receiversElems.first; it2 != receiversElems.second; it2++)
-		{
-			EventFuncPtr receiver = (it2->second);
-
-			receiver(&event);								//	Call the function of subscribed system with the wished element
-		}
 	}
 
 private:

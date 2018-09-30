@@ -19,6 +19,7 @@ private:
 	void					update(sf::Time elapsedTime);
 	void					render();
 	void					updateStatistics(sf::Time elapsedTime);
+	void					updateDebugInfo();
 
 
 private:
@@ -30,10 +31,12 @@ private:
 	sf::Font				mFont;
 	sf::Text				mFrameRate;
 	sf::Text				mStatistics;
+	sf::Text				mDebugInfo;
 	sf::Time				mFrameRateUpdateTime;
 	std::size_t				mFrameRateNumFrames;
 
 	SystemManager*			m_systemManager;				//	Handles all systems
+	EntityManager			m_entityManager;
 };
 
 #endif

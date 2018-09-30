@@ -5,7 +5,7 @@
 #include "Entity.h"
 #include "Entity Factories/EntityFactory.h"
 
-typedef std::shared_ptr<Entity> EntPtr;
+typedef std::unique_ptr<Entity> EntPtr;
 
 //////////////////////	
 //
@@ -19,49 +19,47 @@ public:
 	EntityManager();
 
 	// Create a custom m_entity and add to list
-	EntPtr createEntity(sf::Vector2f position = sf::Vector2f(0,0));
+	Entity* createEntity(sf::Vector2f position = sf::Vector2f(0, 0));
 	//	Create a premade m_entity (preferred)
-	EntPtr createEntity(std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
+	Entity* createEntity(std::string ID, sf::Vector2f position = sf::Vector2f(0, 0));
 	//EntPtr& addEntity(Entity* ent);			//	Add the m_entity from parameter to list
 	bool removeEntity(unsigned int entID);		//	Delete the m_entity from the list
-	EntPtr getEntity(unsigned int entID);		//	Get m_entity by ID
+	Entity* getEntity(unsigned int entID);		//	Get m_entity by ID
 
-	template<class T> std::vector<EntPtr>	getEntWithComp();
-	template<class T, class... params> std::vector<EntPtr> getEntWithComps();
-	std::vector<EntPtr>						getAllEntities();
+	template<class T> std::vector<Entity*>	getEntWithComp();
+	template<class T, class... params> std::vector<Entity*> getEntWithComps();
+	std::vector<Entity*>						getAllEntities();
 
 private:
-	static std::vector<EntPtr> entities;
+	static std::vector<EntPtr> entities;		//	Only true holder of entities
 	EntityFactory entityFactory;
 	static unsigned int uniqueID;
 };
 
-template<class T> std::vector<EntPtr> EntityManager::getEntWithComp()
+template<class T> std::vector<Entity*> EntityManager::getEntWithComp()
 {
-	std::vector<EntPtr> ents;
-	EntPtr ent;
+	std::vector<Entity*> ents;
 
 	for (size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->hasComponent<T>())
 		{
 			//ent = std::make_shared<Entity>(entities[i].get());
-			ents.push_back(std::shared_ptr<Entity>(entities[i]));
+			ents.push_back(entities[i].get());
 		}
 	}
 	return ents;
 }
-template<class T, class... params> std::vector<EntPtr> EntityManager::getEntWithComps()
+template<class T, class... params> std::vector<Entity*> EntityManager::getEntWithComps()
 {
-	std::vector<EntPtr> ents;
-	EntPtr ent;
+	std::vector<Entity*> ents;
 
 	for (size_t i = 0; i < entities.size(); i++)
 	{
 		if (entities[i]->hasComponents<T, params...>())
 		{
 			//ent = std::make_shared<Entity>(*entities[i]);
-			ents.push_back(std::shared_ptr<Entity>(entities[i]));
+			ents.push_back(entities[i].get());
 		}
 	}
 	return ents;

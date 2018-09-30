@@ -10,7 +10,7 @@ CameraSystem::CameraSystem(sf::RenderWindow& window)
 
 void CameraSystem::update(float dt, EventManager& events)
 {
-	std::vector<EntPtr> p = entMan.getEntWithComp<Player>();		//	Temp
+	std::vector<Entity*> p = entMan.getEntWithComp<Player>();		//	Temp
 	player = p[0];
 	playerCamera = &player->getComponent<Player>().camera;
 

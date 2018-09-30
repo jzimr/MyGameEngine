@@ -1,0 +1,4 @@
+Component Sprite2D
+	Texture Spear
+Component Collider
+	ColliderBox default
